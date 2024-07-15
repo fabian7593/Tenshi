@@ -1,0 +1,15 @@
+{
+    "EMAIL_REGEX": {
+        "message":"Incorrect Email Format",
+        "regex":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
+    "DESCRIPTION_REGEX": {
+        "message":"Incorrect Description Lenght",
+        "regex":"^.{0,400}$"
+    },
+    "PASSWORD_REQUIRED_REGEX": {
+        "message":"Your Password Need at Least 8 digits, Numbers, Letters, and Symbols",
+        "regex":"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,20}$"
+    }
+}
+  

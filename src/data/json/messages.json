@@ -1,0 +1,35 @@
+{
+    "INCOMPLETE_HEADER_REQUEST": "Missed Required Header",
+    "INCOMPLETE_BODY_REQUEST": "Missed Body Request",
+    "REQUIRED_FIELDS": "Missed Required Fields",
+    "REQUIRED_URL_PARAMS": "Missed Required URL Params",
+    "REQUIRED_FILE": "Missed Required File",
+
+    "EMAIL_NOT_EXISTS_ERROR": "Email doesn't exist",
+    "EMAIL_SENT_SUCCESS": "Email Sent Successfull",
+    "USER_PASS_ERROR": "Incorrect Email or Password",
+    "ROLE_AUTH_ERROR": "This user is not authorized to perform this function",
+    "THERE_ARE_NOT_INFO": "There are not information to show",
+    "DONT_DELETE": "It was not eliminated any entry",
+    "DONT_EXISTS": "Entry doesn't exists",
+    "RESET_PASSWORD": "Change Password Success",
+
+    "INVALID_TOKEN": "Invalid Token",
+    "INVALID_API_KEY": "Invalid Api Key",
+    "VALID_TOKEN_SUCCESS": "Valid Token Successful",
+    "REFRESH_TOKEN_SUCCESS": "Refresh Token Successful",
+    "INVALID_REFRESH_TOKEN": "Invalid Refresh Token",
+
+    "DATA_BASE_ERROR": "Data Base Error",
+
+    "INSERT_SUCCESS": "Insert Entry Successful",
+    "UPDATE_SUCCESS": "Update Entry Successful",
+    "DELETE_SUCCESS": "Delete Entry Successful",
+    "GET_SUCCESS": "Get Entries Successful",
+    "GET_BY_ID_SUCCESS": "Get Entry Successful",
+    "LOGIN_SUCCESS": "Login Successful",
+    "SEND_MAIL_SUCCESS": "Send Mail Successful",
+
+    "ERROR_GENERAL" : "Internal Server Error"
+  }
+  

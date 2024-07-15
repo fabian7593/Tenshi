@@ -1,0 +1,47 @@
+[
+  {
+      "errno": "1452",
+      "code": "ER_NO_REFERENCED_ROW_2",
+      "message": "Review the foreign keys, the constraint fails"
+  },
+  {
+      "errno": "1062",
+      "code": "ER_DUP_ENTRY",
+      "message": "Duplicate Entry"
+  },
+  {
+      "errno": "1406",
+      "code": "ER_DATA_TOO_LONG",
+      "message": "Data Too Long"
+  },
+  {
+      "errno": "1136",
+      "code": "ER_WRONG_VALUE_COUNT_ON_ROW",
+      "message": "Wrong quantity of values insert"
+  },
+  {
+      "errno": "1048",
+      "code": "ER_BAD_NULL_ERROR",
+      "message": "Null value in required field"
+  },
+  {
+      "errno": "1452",
+      "code": "ER_NO_REFERENCED_ROW_2",
+      "message": "Foreign Key Doesn't Exist"
+  },
+  {
+      "errno": "1292",
+      "code": "ER_TRUNCATED_WRONG_VALUE",
+      "message": "Truncated Wrong Value Type"
+  },
+  {
+      "errno": "1064",
+      "code": "ER_SQL_QUERY",
+      "message": "Error in SQL Query"
+  },
+  {
+      "errno": "1265",
+      "code": "WARN_DATA_TRUNCATED",
+      "message": "Incorrect Data For Some Column"
+  }
+]
