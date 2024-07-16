@@ -13,7 +13,8 @@ import { default as bodyParser } from 'body-parser';
 import UserRouter from '@user/routers/UserRouter';
 import UdcRouter from '@udc/routers/UdcRouter';
 import NotificationRouter from '@notification/routers/NotificationRouter';
-import UserNotificationRouter from '@index/modules/notification/routers/UserNotificationRouter';
+import UserNotificationRouter from '@notification/routers/UserNotificationRouter';
+import LogRouter from '@log/routers/LogRouter';
 
 import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLog } from '@utils/logsUtils';
@@ -70,7 +71,7 @@ app.use(UserRouter);
 app.use(UdcRouter);
 app.use(NotificationRouter);
 app.use(UserNotificationRouter);
-
+app.use(LogRouter);
 
 //*************************************** */
 //              LISTENER
