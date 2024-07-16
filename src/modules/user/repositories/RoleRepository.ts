@@ -3,7 +3,7 @@ import { FindOneOptions, FindManyOptions  } from "typeorm";
 import { createConnection } from 'typeorm';
 
 //Entities
-import GenericRepository from '../../../generic/Repository/GenericRepository';
+import GenericRepository from '../../../generics/Repository/GenericRepository';
 import { RoleFunctionallity } from '../../../entity/RoleFunctionallity';
 import { RoleScreen } from '../../../entity/RoleScreen';
 

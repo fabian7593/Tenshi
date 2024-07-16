@@ -3,7 +3,7 @@ import { FindOneOptions  } from "typeorm";
 import { createConnection } from 'typeorm';
 
 //Entities
-import GenericRepository from '../../../generic/Repository/GenericRepository';
+import GenericRepository from '../../../generics/Repository/GenericRepository';
 import { User } from "../../../entity/User";
 
 export default  class UserRepository extends GenericRepository{

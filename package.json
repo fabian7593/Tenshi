@@ -2,19 +2,16 @@
   "name": "unbreakable",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "migration": "ts-node src/createDb.ts",
     "connection": "ts-node-dev src/dbconnection.ts",
     "mail": "ts-node-dev src/sendMail.ts",
-
-    "dev": "ts-node-dev src/index.ts",
-
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "compile": "tsc",
     "copyjson": "copyfiles -u 1 src/data/json/*.json build",
     "copytemp": "copyfiles -u 1 src/templates/*.html build",
-    "start": "ts-node src/index.ts",
-    
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -43,5 +40,9 @@
     "ts-node-dev": "^2.0.0",
     "typeorm": "^0.3.20",
     "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3",
+    "tsconfig-paths": "^4.2.0"
   }
 }

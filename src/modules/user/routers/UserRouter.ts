@@ -1,11 +1,9 @@
-import { Router, Request, Response } from "express";
-import ControllerObject from "../../../objects/ControllerObject";
-import UserController from "../controllers/UserController";
-import { User } from "../../../entity/User";
-import RequestHandler from "../../../generic/RequestHandler/RequestHandler";
-import RequestHandlerBuilder from "../../../generic/RequestHandler/RequestHandlerBuilder";
-import UserDTO from "../dtos/UserDTO";
-import {debuggingMessage} from '../../../utils/logsUtils';
+import { Router, Request, Response, 
+         RequestHandler, RequestHandlerBuilder,
+         ControllerObject, 
+         UserController, UserDTO, User, 
+         debuggingMessage } from "@user/index";
+
 
 const route = Router();
 

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 //Repository
 import UserRepository from "../repositories/UserRepository"
-import GenericRepository from '../../../generic/Repository/GenericRepository';
+import GenericRepository from '../../../generics/Repository/GenericRepository';
 
 //ORM
 import { User } from "../../../entity/User";
@@ -24,8 +24,8 @@ import HttpAction from '../../../helpers/HttpAction';
 //JWT
 import { generateToken, generateRefreshToken, generateRegisterToken, generateForgotPasswordToken } from '../../../helpers/JWT'
 import { RoleFunctionallity } from '../../../entity/RoleFunctionallity';
-import GenericController from '../../../generic/Controller/GenericController';
-import RequestHandler from '../../../generic/RequestHandler/RequestHandler';
+import GenericController from '../../../generics/Controller/GenericController';
+import RequestHandler from '../../../generics/RequestHandler/RequestHandler';
 
 //import asd from '../../../templates'
 //Emails

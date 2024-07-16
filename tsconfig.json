@@ -1,10 +1,7 @@
 
 {
    "compilerOptions": {
-     "lib": [
-       "es5",
-       "es6"
-    ],
+     "lib": ["es5", "es6"],
      "target": "ES2020",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
      "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
      "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
@@ -22,7 +19,28 @@
      "strictPropertyInitialization": false,             /* Check for class properties that are declared but not set in the constructor. */
      
      /* Completeness */
-     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+     "baseUrl": "./src",
+      "paths": {
+        "@index/*": ["./*"],
+        "@templates/*": ["templates/*"],
+        "@modules/*": ["modules/*"],
+        "@utils/*": ["utils/*"],
+        "@objects/*": ["objects/*"],
+        "@middlewares/*": ["middlewares/*"],
+        "@helpers/*": ["helpers/*"],
+        "@generics/*": ["generics/*"],
+        "@entity/*": ["entity/*"],
+        "@data/*": ["data/json/*"],
+        "@config/*": ["config/*"],
+
+        "@user/*": ["modules/user/*"],
+        "@udc/*": ["modules/udc/*"],
+        "@document/*": ["modules/document/*"],
+        "@email/*": ["modules/email/*"],
+        "@log/*": ["modules/log/*"],
+        "@notification/*": ["modules/notification/*"],
+      },
    }
  }
  

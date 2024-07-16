@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { Log } from '../entity/Log'
-import GenericRepository from '..//generic/Repository/GenericRepository';
+import GenericRepository from '../generics/Repository/GenericRepository';
 
 /*
     Logs Utils class is for logs in console for debbuging &

@@ -12,11 +12,9 @@ export default  class GenericRepository implements IGenericRepository{
     
     async add(entity: any): Promise<any> {
 
-        console.log("befpre create connection");
         const connection = await createConnection();
 
         try {
-            console.log("enter into repository add");
             const savedEntity = await connection.manager.save(entity);
             return savedEntity;
 
@@ -106,10 +104,10 @@ export default  class GenericRepository implements IGenericRepository{
 
             const entity = await repository.findOne(options); 
 
-            if(entity.is_deleted != undefined){
-                entity.is_deleted = true;
+            if (entity["is_deleted"] !== undefined) {
+                entity["is_deleted"] = true;
             }
-
+            
             //update the entity by id, with the new data
             await connection.manager.update(entityType, id, entity);
             return entity;
