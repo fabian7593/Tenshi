@@ -5,7 +5,7 @@ import { GenericRepository,
         GenericController, RequestHandler,
         RoleFunctionallity,
         JWTObject, fs, path, 
-        RoleRepository} from "@modules/index";
+        RoleRepository } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword,

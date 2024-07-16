@@ -1,5 +1,6 @@
 //Generic
-export { generateToken, generateRefreshToken, generateRegisterToken, generateForgotPasswordToken } from '@helpers/JWT';
+export { generateToken, generateRefreshToken, 
+         generateRegisterToken, generateForgotPasswordToken } from '@helpers/JWT';
 export { encryptPassword, decryptPassword } from "@utils/encryptionUtils";
 
 //user

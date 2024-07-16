@@ -1,6 +1,5 @@
 import { FindOneOptions, FindManyOptions, createConnection, 
-          RoleFunctionallity, 
-         RoleScreen } from "@modules/index";
+         RoleFunctionallity, RoleScreen } from "@modules/index";
 
 import { default as GenericRepository } from "@generics/Repository/GenericRepository"
 

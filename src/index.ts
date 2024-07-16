@@ -1,5 +1,3 @@
-
-
 //*************************************** */
 //              IMPORTS
 //*************************************** */
@@ -12,9 +10,14 @@ import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
 
 //Import classes
-import userRouter from '@user/routers/UserRouter';
+import UserRouter from '@user/routers/UserRouter';
+import UdcRouter from '@udc/routers/UdcRouter';
+import NotificationRouter from '@notification/routers/NotificationRouter';
+import UserNotificationRouter from '@index/modules/notification/routers/UserNotificationRouter';
+
 import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLog } from '@utils/logsUtils';
+import { executeQuery } from '@utils/executionDBUtils';
 
 
 
@@ -31,7 +34,7 @@ export { default as JWTObject } from '@objects/JWTObject';
 export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
-export { debuggingMessage, insertLog };
+export { debuggingMessage, insertLog, executeQuery };
 
 
 
@@ -63,8 +66,10 @@ app.use(StartMiddleware);
 //              ROUTES
 //*************************************** */
 //Add Routers
-app.use(userRouter);
-
+app.use(UserRouter);
+app.use(UdcRouter);
+app.use(NotificationRouter);
+app.use(UserNotificationRouter);
 
 
 //*************************************** */
