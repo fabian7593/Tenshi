@@ -26,7 +26,8 @@ export function setNameDocument (file : Express.Multer.File,  documentBody : Doc
     fileName = name + "__" + documentBody.type + "__" + formatDate;
 
     documentBody.file_name = fileName;
-    documentBody.title = documentBody.action_type + "__" + formatDate;
+    documentBody.title = fileName + documentBody.action_type + "__" + formatDate;
+    documentBody.code = fileName + documentBody.action_type + "__" + formatDate;
 
     return documentBody;
 }

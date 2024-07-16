@@ -15,6 +15,8 @@ import UdcRouter from '@udc/routers/UdcRouter';
 import NotificationRouter from '@notification/routers/NotificationRouter';
 import UserNotificationRouter from '@notification/routers/UserNotificationRouter';
 import LogRouter from '@log/routers/LogRouter';
+import EmailRouter from '@email/routers/EmailRouter';
+import DocumentRouter from '@document/routers/DocumentRouter';
 
 import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLog } from '@utils/logsUtils';
@@ -72,6 +74,8 @@ app.use(UdcRouter);
 app.use(NotificationRouter);
 app.use(UserNotificationRouter);
 app.use(LogRouter);
+app.use(EmailRouter);
+app.use(DocumentRouter);
 
 //*************************************** */
 //              LISTENER

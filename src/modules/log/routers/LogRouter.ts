@@ -3,10 +3,10 @@ import { Router, Request, Response,
     RequestHandler, RequestHandlerBuilder,
     ControllerObject } from "@modules/index";
 
-import { Log, LogDTO, LogController } from '@log/index'
+import { Log, LogDTO, LogController } from '@log/index';
+
 
 const route = Router();
-
 const controllerObj: ControllerObject = {
     create: "LOG_CREATE",
     update: "LOG_UPDATE",
