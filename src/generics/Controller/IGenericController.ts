@@ -1,4 +1,4 @@
-import RequestHandler from "../RequestHandler/RequestHandler"
+import RequestHandler from "@generics/RequestHandler/RequestHandler";
 
 interface IGenericController {
     insert(reqHandler: RequestHandler): Promise<any>;

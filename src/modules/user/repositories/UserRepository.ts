@@ -1,12 +1,9 @@
-//Type ORM
-import { FindOneOptions  } from "typeorm";
-import { createConnection } from 'typeorm';
+import { FindOneOptions, createConnection, 
+         GenericRepository } from "@modules/index";
 
-//Entities
-import GenericRepository from '../../../generics/Repository/GenericRepository';
-import { User } from "../../../entity/User";
+import { User } from "@user/index";
 
-export default  class UserRepository extends GenericRepository{
+export default class UserRepository extends GenericRepository{
 
     async getUserByEmail(entity: any): Promise<User | null> {
 

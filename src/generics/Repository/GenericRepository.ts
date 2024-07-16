@@ -1,6 +1,5 @@
-import { EntityTarget, FindOneOptions, FindManyOptions  } from "typeorm";
-import IGenericRepository from "./IGenericRepository"
-const { createConnection } = require('typeorm');
+import { EntityTarget, FindOneOptions, FindManyOptions, createConnection} from '@generics/index';
+import IGenericRepository from "@generics/Repository/IGenericRepository";
 
 /*
     This class have the Connection to DB with ORM &&

@@ -1,37 +1,18 @@
+import { Validations, HttpAction, 
+        sendMail, replaceCompanyInfoEmails } from "@index/index";
 
-import * as fs from 'fs';
+import { GenericRepository, 
+        GenericController, RequestHandler,
+        RoleFunctionallity,
+        JWTObject, fs, path, 
+        RoleRepository} from "@modules/index";
 
+import { UserRepository, encryptPassword, 
+        decryptPassword,
+        generateToken, generateRefreshToken, 
+        generateRegisterToken, generateForgotPasswordToken,
+        User, UserDTO } from "@user/index";
 
-//Repository
-import UserRepository from "../repositories/UserRepository"
-import GenericRepository from '../../../generics/Repository/GenericRepository';
-
-//ORM
-import { User } from "../../../entity/User";
-import UserDTO from "../dtos/UserDTO";
-import RoleRepository from "../repositories/RoleRepository"
-
-//Structures
-import JWTObject from '../../../objects/JWTObject';
-
-//Utils / Validations
-import { encryptPassword, decryptPassword } from '../../../utils/encryptionUtils';
-import Validations from '../../../helpers/Validations';
-
-//Errors
-import HttpAction from '../../../helpers/HttpAction';
-
-//JWT
-import { generateToken, generateRefreshToken, generateRegisterToken, generateForgotPasswordToken } from '../../../helpers/JWT'
-import { RoleFunctionallity } from '../../../entity/RoleFunctionallity';
-import GenericController from '../../../generics/Controller/GenericController';
-import RequestHandler from '../../../generics/RequestHandler/RequestHandler';
-
-//import asd from '../../../templates'
-//Emails
-import {sendMail, replaceCompanyInfoEmails} from "../../../utils/sendEmailsUtils";
-
-import path from 'path';
 const templatesDir = path.join(__dirname, '../../../templates');
 
 const htmlRegisterTemplate : string = fs.readFileSync(path.join(templatesDir, 'register_email.html'), 'utf8');

@@ -1,9 +1,10 @@
-import { Router, Request, Response, 
-         RequestHandler, RequestHandlerBuilder,
-         ControllerObject, 
-         UserController, UserDTO, User, 
-         debuggingMessage } from "@user/index";
+import { debuggingMessage } from "@index/index";
 
+import { Router, Request, Response, 
+    RequestHandler, RequestHandlerBuilder,
+    ControllerObject } from "@modules/index";
+
+import { UserController, UserDTO, User } from "@user/index";
 
 const route = Router();
 

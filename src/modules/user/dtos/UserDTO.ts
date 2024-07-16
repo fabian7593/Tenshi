@@ -1,6 +1,5 @@
-import { Request } from 'express';
-import { User } from "../../../entity/User";
-import IAdapterFromBody from '../../../generics/Adapter/IAdapterFromBody';
+import { Request, IAdapterFromBody } from "@modules/index";
+import { User } from "@user/index";
 
 export default  class UserDTO implements IAdapterFromBody{
     req: Request;

@@ -1,6 +1,6 @@
+import { JWTObject } from '@index/index';
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-import JWTObject from '../objects/JWTObject';
 
 /*
  JWT Class is a class for generate access token, refresh token and any type of tokens &&

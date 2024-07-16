@@ -1,13 +1,13 @@
 // The json files
-const messages = require('../data/json/messages.json');
-const regexes = require('../data/json/regex.json');
-const statusResponseList = require('../data/json/statusResponse.json');
-const errorDbList = require('../data/json/errorDBList.json');
+const messages = require('@data/messages.json');
+const regexes = require('@data/regex.json');
+const statusResponseList = require('@data/statusResponse.json');
+const errorDbList = require('@data/errorDBList.json');
 
 //Class and Objects imported
-import ErrorMessage from "../objects/ErrorMessageObject";
-import StatusResponseObject from "../objects/StatusResponseObject";
-import RegexObject from "../objects/RegexObject";
+import ErrorMessage from "@objects/ErrorMessageObject";
+import StatusResponseObject from "@objects/StatusResponseObject";
+import RegexObject from "@objects/RegexObject";
 
 
 /*

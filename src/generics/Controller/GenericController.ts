@@ -1,24 +1,12 @@
-//ORM
-import RoleRepository from "../../modules/user/repositories/RoleRepository"
-import GenericRepository from '../Repository/GenericRepository';
+import { JWTObject, Validations, HttpAction } from "@index/index"
+import { EntityTarget, RequestHandler } from '@generics/index';
 
-//Structures
-import JWTObject from '../../objects/JWTObject';
-import Validations from '../../helpers/Validations';
+import RoleRepository from "@user/repositories/RoleRepository"
+import GenericRepository from '@generics/Repository/GenericRepository';
 
-//Errors
-import HttpAction from '../../helpers/HttpAction';
-
-//JWT and roles
-import { RoleFunctionallity } from '../../entity/RoleFunctionallity';
-
-//Generics
-import IGenericController from './IGenericController';
-import { EntityTarget } from 'typeorm';
-import RequestHandler from "../RequestHandler/RequestHandler"
-
-import ControllerObject from '../../objects/ControllerObject';
-
+import IGenericController from '@generics/Controller/IGenericController';
+import { RoleFunctionallity } from '@entity/RoleFunctionallity';
+import ControllerObject from '@objects/ControllerObject';
 
 /*
     This class have the necessary methods (CRUDS) to send into the routing

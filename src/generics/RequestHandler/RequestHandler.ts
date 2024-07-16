@@ -1,7 +1,5 @@
-
-import { Request, Response } from 'express';
-import IAdapterFromBody from "../Adapter/IAdapterFromBody";
-import { FindManyOptions } from 'typeorm';
+import { Request, Response, 
+         IAdapterFromBody, FindManyOptions} from '@generics/index';
 
 /*
     This class is an object to send into Controllers to do some necessary functionallities

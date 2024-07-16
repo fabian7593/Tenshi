@@ -1,4 +1,5 @@
-import { EntityTarget, FindManyOptions } from "typeorm";
+import { EntityTarget, FindManyOptions} from '@generics/index';
+
 interface IGenericRepository {
    
     add(entity: any): Promise<any>;
@@ -12,6 +13,7 @@ interface IGenericRepository {
     findByCode(entityType: EntityTarget<any>, code: string, hasLogicalDeleted : boolean): Promise<any | undefined>;
     findByFilters(entityType: EntityTarget<any>, options: FindManyOptions, hasLogicalDeleted: boolean, page: number, size: number): Promise<any | undefined>;
     findAll(entityType: EntityTarget<any>, hasLogicalDeleted: boolean, page: number, size: number): Promise<any[] | null>;
+
 }
 
 export default IGenericRepository;

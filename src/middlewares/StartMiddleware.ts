@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
-import Validations from "../helpers/Validations";
-import JWTObject from '../objects/JWTObject';
-import HttpAction from '../helpers/HttpAction';
+
+import { Request, Response, NextFunction,
+        Validations, HttpAction, JWTObject } from "@index/index";
+
 require('dotenv').config();
 
 /*

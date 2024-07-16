@@ -1,15 +1,12 @@
-//Type ORM
-import { FindOneOptions, FindManyOptions  } from "typeorm";
-import { createConnection } from 'typeorm';
+import { FindOneOptions, FindManyOptions, createConnection, 
+          RoleFunctionallity, 
+         RoleScreen } from "@modules/index";
 
-//Entities
-import GenericRepository from '../../../generics/Repository/GenericRepository';
-import { RoleFunctionallity } from '../../../entity/RoleFunctionallity';
-import { RoleScreen } from '../../../entity/RoleScreen';
+import { default as GenericRepository } from "@generics/Repository/GenericRepository"
 
-export default  class UserRepository extends GenericRepository{
+export default class RoleRepository extends GenericRepository{
 
-    //search by code role and function code
+    //search by code role and function codes
     async getPermissionByFuncAndRole(roleCode: string, funCode: string): Promise<RoleFunctionallity | null> {
 
         const connection = await createConnection();
@@ -67,7 +64,5 @@ export default  class UserRepository extends GenericRepository{
             }
         }
     }
-
-
 }
 

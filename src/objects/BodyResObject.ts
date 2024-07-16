@@ -1,4 +1,4 @@
-import StatusResponseObject from "./StatusResponseObject"
+import StatusResponseObject from "@objects/StatusResponseObject"
 
 interface StructureResponse {
     status: {

@@ -1,8 +1,6 @@
-import { Request, Response } from 'express';
-import IAdapterFromBody from "../Adapter/IAdapterFromBody";
-import IRequestHandlerBuilder from "./IRequestHandlerBuilder"
-import RequestHandler from "./RequestHandler"
-import { FindManyOptions } from 'typeorm';
+import { Request, Response, 
+         IAdapterFromBody,  FindManyOptions,
+         IRequestHandlerBuilder, RequestHandler} from '@generics/index';
 
 /*
     This class is the design patterns builder for the object Request handlers

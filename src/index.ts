@@ -1,3 +1,5 @@
+
+
 //*************************************** */
 //              IMPORTS
 //*************************************** */
@@ -12,9 +14,7 @@ import { default as bodyParser } from 'body-parser';
 //Import classes
 import userRouter from '@user/routers/UserRouter';
 import StartMiddleware from '@middlewares/StartMiddleware';
-
-//Import functions
-import { debuggingMessage } from '@utils/logsUtils';
+import { debuggingMessage, insertLog } from '@utils/logsUtils';
 
 
 
@@ -23,6 +23,15 @@ import { debuggingMessage } from '@utils/logsUtils';
 //*************************************** */
 export { Router, Request, Response, NextFunction };
 export { express, cors, bodyParser };
+
+//Objects
+export { default as JWTObject } from '@objects/JWTObject';
+
+//Utils & helpers
+export { default as Validations } from '@helpers/Validations';
+export { default as HttpAction } from '@helpers/HttpAction';
+export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
+export { debuggingMessage, insertLog };
 
 
 

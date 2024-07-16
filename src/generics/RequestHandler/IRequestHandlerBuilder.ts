@@ -1,6 +1,4 @@
-import IAdapterFromBody from "../Adapter/IAdapterFromBody";
-import RequestHandler from "./RequestHandler";
-import { FindManyOptions } from "typeorm";
+import { RequestHandler, IAdapterFromBody, FindManyOptions} from '@generics/index';
 
 export default interface IRequestHandlerBuilder {
     setMethod(method: string): IRequestHandlerBuilder;

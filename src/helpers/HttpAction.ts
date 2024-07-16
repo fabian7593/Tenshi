@@ -1,7 +1,6 @@
-import {  Response } from 'express';
-import { insertLog } from '../utils/logsUtils';
-import { responseStruct } from '../objects/BodyResObject'
-import { getErrorDBbySqlState, getStatus, getMessage } from '../utils/jsonUtils';
+import { Response, insertLog } from '@index/index';
+import { responseStruct } from '@objects/BodyResObject'
+import { getErrorDBbySqlState, getStatus, getMessage } from '@utils/jsonUtils';
 
 /*
     HttpAction is a class for return res status for success and general errors

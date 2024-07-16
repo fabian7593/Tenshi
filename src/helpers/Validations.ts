@@ -1,7 +1,6 @@
-import { Request, Response } from 'express';
-import { getRegex } from "../utils/jsonUtils"
-import JWTObject from '../objects/JWTObject';
-import HttpAction from './HttpAction';
+import { Request, Response, HttpAction, JWTObject } from '@index/index';
+import { getRegex } from "@utils/jsonUtils";
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 

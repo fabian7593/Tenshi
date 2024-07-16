@@ -1,4 +1,4 @@
-import {  Request } from "express";
+import { Request } from "@index/index";
 
 /*
     General Utils is a class that works for every environments

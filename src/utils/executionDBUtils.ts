@@ -1,4 +1,4 @@
-import pool from "../config/db_config_pool";
+import pool from "@config/db_config_pool";
 import { PoolConnection } from 'mariadb';
 
 /*
