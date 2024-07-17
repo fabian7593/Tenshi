@@ -6,3 +6,5 @@ tmp/
 temp/
 .env
 unbreakable.config.json
+unbreakable.local.json
+unbreakable.empty.json

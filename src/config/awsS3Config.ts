@@ -1,13 +1,13 @@
 const AWS = require('aws-sdk');
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
-require('dotenv').config();
+import {config} from "@index/index";
 
 // Configuración del AWS SDK
 AWS.config.update({
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    region: process.env.BUCKET_REGION, 
-    Bucket: process.env.BUCKET_NAME,
+    accessKeyId:  config.AWS.ACCESS_KEY,
+    secretAccessKey: config.AWS.SECRET_ACCESS_KEY,
+    region: config.AWS.REGION, 
+    Bucket: config.AWS.BUCKET_NAME,
   });
   
 const s3 = new AWS.S3();

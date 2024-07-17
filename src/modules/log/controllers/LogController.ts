@@ -1,4 +1,4 @@
-import { HttpAction, executeQuery } from "@index/index";
+import { HttpAction, executeQuery, config } from "@index/index";
 
 import { GenericController, RequestHandler,
          RoleFunctionallity,
@@ -48,11 +48,11 @@ export default  class LogController extends GenericController{
                 //get by url params the page and the size of the response
                 const page : number = reqHandler.getRequest().query.page ? 
                             parseInt(reqHandler.getRequest().query.page as string) : 
-                            parseInt(process.env.PAGE_OFFSET || "1");
+                            config.HTTP_REQUEST.PAGE_OFFSET;
 
                 const size : number = reqHandler.getRequest().query.size ? 
                             parseInt(reqHandler.getRequest().query.size as string) : 
-                            parseInt(process.env.PAGE_SIZE || "3000");
+                            config.HTTP_REQUEST.PAGE_SIZE;
 
                 //Execute Action DB
                 const entities = await this.getAllLogs(appGuid, environment, userId, type, page, size);

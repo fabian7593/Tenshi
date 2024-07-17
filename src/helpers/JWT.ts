@@ -1,6 +1,5 @@
-import { JWTObject } from '@index/index';
+import { JWTObject, config } from '@index/index';
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 /*
  JWT Class is a class for generate access token, refresh token and any type of tokens &&
@@ -9,26 +8,26 @@ require('dotenv').config();
 */
 
 export function generateToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE });
+  return jwt.sign(JWTObject, config.JWT.MAIN_TOKEN.SECRET_KEY, { expiresIn: config.JWT.MAIN_TOKEN.EXPIRE });
 }
 
 export function generateRefreshToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject,  process.env.JWT_REFRESH_SECRET_KEY, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
+  return jwt.sign(JWTObject, config.JWT.REFRESH_TOKEN.SECRET_KEY, { expiresIn: config.JWT.REFRESH_TOKEN.EXPIRE });
 }
 
 export function generateForgotPasswordToken(email: string) {
-    return jwt.sign({email},  process.env.JWT_FORGOT_PASSWORD_TOKEN, { expiresIn: process.env.JWT_FORGOT_PASSWORD_EXPIRE });
+    return jwt.sign({email}, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY, { expiresIn: config.JWT.FORGOT_PASS_TOKEN.EXPIRE });
 }
 
 export function generateRegisterToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject, process.env.JWT_REGISTER_TOKEN);
+  return jwt.sign(JWTObject, config.JWT.REGISTER_TOKEN.SECRET_KEY);
 }
 
 
 //Verify the refresh token
 export function verifyRefreshToken(token:string) {
   try {
-      return jwt.verify(token, process.env.JWT_REFRESH_SECRET_KEY);
+      return jwt.verify(token, config.JWT.REFRESH_TOKEN.SECRET_KEY);
   } catch (error) {
       return null;
   }

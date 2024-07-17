@@ -1,10 +1,11 @@
-require('dotenv').config();
+
 import s3 from '@config/awsS3Config';
 import { Document } from '@entity/Document';
+import { config } from '@index/index';
 
 export async function uploadFile(file : Express.Multer.File, filename: string) : Promise<any>{
     const params = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: config.AWS.BUCKET_NAME,
         Key: filename,
         Body: file.buffer,
         ContentType: file.mimetype, 

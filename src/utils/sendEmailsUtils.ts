@@ -1,17 +1,17 @@
 import nodemailer from 'nodemailer';
-require('dotenv').config();
+import config from "../../unbreakable-config";
 
 const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
+    service: config.EMAIL.SERVICE,
     auth: {
-        user: process.env.EMAIL_AUTH_USER, 
-        pass: process.env.EMAIL_AUTH_PASSWORD      
+        user: config.EMAIL.AUTH_USER, 
+        pass: config.EMAIL.AUTH_PASSWORD     
     }
 });
 
 export function sendMail(toMail: string, subject: string, message: string): Promise<boolean> {
     const mailOptions = {
-        from: process.env.EMAIL_FROM,      
+        from: config.EMAIL.EMAIL_FROM,      
         to: toMail,  
         subject: subject,      
         html: message
@@ -33,10 +33,10 @@ export function sendMail(toMail: string, subject: string, message: string): Prom
 
 export function replaceCompanyInfoEmails(htmlTemplate: string): string{
     const htmlBody = htmlTemplate
-    .replace(/\{\{ companyDomain \}\}/g, process.env.COMPANY_DOMAIN!)
-    .replace(/\{\{ companyName \}\}/g, process.env.COMPANY_NAME!)
-    .replace(/\{\{ companyLogo \}\}/g, process.env.COMPANY_LOGO!)
-    .replace(/\{\{ mainColor \}\}/g, process.env.COMPANY_MAIN_COLOR!);
+    .replace(/\{\{ companyDomain \}\}/g, config.COMPANY.LANDING_PAGE)
+    .replace(/\{\{ companyName \}\}/g, config.COMPANY.NAME)
+    .replace(/\{\{ companyLogo \}\}/g, config.COMPANY.LOGO)
+    .replace(/\{\{ mainColor \}\}/g,  config.COMPANY.MAIN_COLOR);
 
     return htmlBody;
 }

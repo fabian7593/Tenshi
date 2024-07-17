@@ -1,8 +1,7 @@
-import { Request, Response, HttpAction, JWTObject } from '@index/index';
+import { Request, Response, HttpAction, JWTObject, config } from '@index/index';
 import { getRegex } from "@utils/jsonUtils";
 
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 /*
     This Validations Class have all the required validation in the app
@@ -46,7 +45,7 @@ export default class Validations{
     public validateMultipleRegex (listRegex: [string, string][] | null)
     {
         //Validate just in production
-        if(parseInt(process.env.IS_DEBUGGING || '0', 10) == 0){
+        if(!config.GENERAL.IS_DEBUGGING){
 
             if(listRegex != null){
                 for (const [listKey, value] of listRegex) {
@@ -106,7 +105,7 @@ export default class Validations{
                     const jwtAuth = this.req.headers['authorization'];
                   
                     try {
-                        const decoded = jwt.verify(jwtAuth, process.env.JWT_SECRET_KEY); // Verifica el token usando tu clave secreta
+                        const decoded = jwt.verify(jwtAuth, config.JWT.MAIN_TOKEN.SECRET_KEY); // Verifica el token usando tu clave secreta
                         returnJwt = decoded;
                     } catch (error) {
                         this.httpAction.unauthorizedError("INVALID_TOKEN");
@@ -141,7 +140,7 @@ export default class Validations{
                     const xApiKey = this.req.headers['x-api-key'];
                   
                     try {
-                        if(xApiKey == process.env.COMPANY_SECRET_API_KEY){
+                        if(xApiKey == config.SERVER.SECRET_API_KEY){
                             varReturn = true;
                         }else{
                             this.httpAction.unauthorizedError("INVALID_API_KEY");
