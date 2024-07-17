@@ -1,4 +1,4 @@
-import { JWTObject, Validations, HttpAction } from "@index/index"
+import { JWTObject, Validations, HttpAction, config } from "@index/index"
 import { EntityTarget, RequestHandler } from '@generics/index';
 
 import RoleRepository from "@user/repositories/RoleRepository"
@@ -378,11 +378,11 @@ export default  class GenericController implements IGenericController{
                 //get by url params the page and the size of the response
                 const page : number = reqHandler.getRequest().query.page ? 
                             parseInt(reqHandler.getRequest().query.page as string) : 
-                            parseInt(process.env.PAGE_OFFSET || "1");
+                            config.HTTP_REQUEST.PAGE_OFFSET;
 
                 const size : number = reqHandler.getRequest().query.size ? 
                             parseInt(reqHandler.getRequest().query.size as string) : 
-                            parseInt(process.env.PAGE_SIZE || "3000");
+                            config.HTTP_REQUEST.PAGE_SIZE;
 
                 //Execute Action DB
                 const entities = await repository.findAll(this.entityType, reqHandler.getNeedLogicalRemove(), page, size);
@@ -422,11 +422,11 @@ export default  class GenericController implements IGenericController{
                 //get by url params the page and the size of the response
                 const page : number = reqHandler.getRequest().query.page ? 
                                         parseInt(reqHandler.getRequest().query.page as string) : 
-                                        parseInt(process.env.PAGE_OFFSET || "1");
+                                        config.HTTP_REQUEST.PAGE_OFFSET;
 
                 const size : number = reqHandler.getRequest().query.size ? 
                                       parseInt(reqHandler.getRequest().query.size as string) : 
-                                      parseInt(process.env.PAGE_SIZE || "3000");
+                                      config.HTTP_REQUEST.PAGE_SIZE;
                 //Execute Action DB
                 const entities = await repository.findByFilters(this.entityType, reqHandler.getFilters()!,
                                                                 reqHandler.getNeedLogicalRemove(), page, size);

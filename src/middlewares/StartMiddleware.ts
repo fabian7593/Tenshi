@@ -1,8 +1,8 @@
 
 import { Request, Response, NextFunction,
-        Validations, HttpAction, JWTObject } from "@index/index";
+        Validations, HttpAction, JWTObject,
+        config } from "@index/index";
 
-require('dotenv').config();
 
 /*
     Start Middleware class has the function to start the rest before the next function
@@ -45,7 +45,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         jwtData
     }
 
-    if(parseInt(process.env.COMPANY_HAS_SECRET_API_KEY || '0', 10) == 1){
+    if(config.SERVER.VALIDATE_API_KEY){
         if(validation.validateRequireSecretApiKey() === true){
             nextMethod = true;
         }else{

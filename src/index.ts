@@ -8,6 +8,7 @@ import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
+import config from '../unbreakable-config';
 
 //Import classes
 import UserRouter from '@user/routers/UserRouter';
@@ -37,9 +38,8 @@ export { default as JWTObject } from '@objects/JWTObject';
 export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
-export { debuggingMessage, insertLog, executeQuery };
 
-
+export { debuggingMessage, insertLog, executeQuery, config };
 
 //*************************************** */
 //              VARIABLES
@@ -81,7 +81,7 @@ app.use(DocumentRouter);
 //              LISTENER
 //*************************************** */
 //Open port and listen API
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT =  3000;
 app.listen(PORT, () => {
   debuggingMessage(`UNBREAKABLE Express TypeScript Service Start in Port ${PORT}`);
 });

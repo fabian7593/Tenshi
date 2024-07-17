@@ -1,12 +1,12 @@
 import mariadb from 'mariadb';
-require('dotenv').config();
+import {config} from "@index/index";
 
 const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: parseInt(process.env.DB_PORT || '3307'),
+  host: config.DB.HOST,
+  user: config.DB.USER,
+  password: config.DB.PASSWORD,
+  database: config.DB.NAME,
+  port: config.DB.PORT,
   connectionLimit: 150,
   charset: 'utf8mb4',
   collation: 'utf8mb4_unicode_ci'

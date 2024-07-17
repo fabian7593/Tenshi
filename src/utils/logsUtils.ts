@@ -1,13 +1,14 @@
-require('dotenv').config();
+
 import { Log } from '@entity/Log'
 import GenericRepository from '@generics/Repository/GenericRepository';
+import {config} from "@index/index"
 
 /*
     Logs Utils class is for logs in console for debbuging &
     In Logs for a DB traceabillity for errors, use of information and others
 */
 export function debuggingMessage(message : any) {
-    if(parseInt(process.env.IS_DEBUGGING || '0', 10) == 1){
+    if(config.GENERAL.IS_DEBUGGING == true){
         console.log("\n");
         console.log(message);
     }

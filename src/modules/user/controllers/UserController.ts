@@ -1,5 +1,6 @@
 import { Validations, HttpAction, 
-        sendMail, replaceCompanyInfoEmails } from "@index/index";
+        sendMail, replaceCompanyInfoEmails, 
+        config } from "@index/index";
 
 import { GenericRepository, 
         GenericController, RequestHandler,
@@ -20,7 +21,6 @@ const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDi
 const htmlforgotPassTemplate: string = fs.readFileSync(path.join(templatesDir, 'forgot_password_email.html'), 'utf8');
 
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 
 export default class UserController extends GenericController{
@@ -56,7 +56,7 @@ export default class UserController extends GenericController{
 
                 if(userBody.password != undefined && userBody.password != null){
                     //Password encryption
-                    userBody.password = encryptPassword(userBody.password, process.env.SALT!);
+                    userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
                 }
                 
                 //Execute Action DB
@@ -106,7 +106,7 @@ export default class UserController extends GenericController{
     
             try{
                 //Password encryption
-                userBody.password = encryptPassword(userBody.password, process.env.SALT!);
+                userBody.password = encryptPassword(userBody.password,  config.SERVER.PASSWORD_SALT);
                 userBody.isActive = 1;
     
                 //Execute Action DB
@@ -124,8 +124,6 @@ export default class UserController extends GenericController{
 
     //Logic to register user
     async register(reqHandler: RequestHandler) : Promise<any>{
-
-        console.log("register controller");
 
         const successMessage : string = "INSERT_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
@@ -151,7 +149,7 @@ export default class UserController extends GenericController{
     
             try{
                 //Password encryption
-                userBody.password = encryptPassword(userBody.password, process.env.SALT!);
+                userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
 
                 const jwtObj : JWTObject = {
                     id: 0,
@@ -169,9 +167,9 @@ export default class UserController extends GenericController{
 
                 htmlBody = htmlBody
                 .replace(/\{\{ userName \}\}/g, userBody!.firstName + " " + userBody!.lastName)
-                .replace(/\{\{ confirmationLink \}\}/g, process.env.COMPANY_HOST! + 'confirmation_register/'+ registerToken);
+                .replace(/\{\{ confirmationLink \}\}/g,  config.COMPANY.BACKEND_HOST + 'confirmation_register/'+ registerToken);
             
-                await sendMail(userBody!.email, process.env.COMPANY_REGISTER_SUBJECT!, htmlBody);
+                await sendMail(userBody!.email, config.EMAIL.CONTENT.REGISTER_SUBJECT, htmlBody);
 
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
@@ -220,7 +218,7 @@ export default class UserController extends GenericController{
     
                 if(user != null){
     
-                    const decryptedPass = decryptPassword(user.password, process.env.SALT!);
+                    const decryptedPass = decryptPassword(user.password, config.SERVER.PASSWORD_SALT);
                     
                     //validate the decrypted pass to the pass in the body json
                     if(decryptedPass == userBody.password){
@@ -275,7 +273,7 @@ export default class UserController extends GenericController{
 
             let verify = null;
             try {
-                  verify =  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+                  verify =  jwt.verify(refreshToken, config.JWT.REFRESH_TOKEN.SECRET_KEY);
             } catch (error) {
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
@@ -304,7 +302,7 @@ export default class UserController extends GenericController{
             const registerToken = reqHandler.getRequest().params.registerToken;
             let verify = null;
             try {
-                verify =  jwt.verify(registerToken, process.env.JWT_REGISTER_TOKEN);
+                verify =  jwt.verify(registerToken, config.JWT.REGISTER_TOKEN.SECRET_KEY);
             } catch (error) {
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
@@ -355,9 +353,9 @@ export default class UserController extends GenericController{
 
                 htmlBody = htmlBody
                 .replace(/\{\{ userName \}\}/g, user!.first_name + " " + user!.last_name)
-                .replace(/\{\{ resetLink \}\}/g, process.env.COMPANY_FRONT_END_HOST! + 'verify_forgot_password/' + forgotUserPasswordToken);
+                .replace(/\{\{ resetLink \}\}/g, config.COMPANY.FRONT_END_HOST + 'verify_forgot_password/' + forgotUserPasswordToken);
             
-                await sendMail(user!.email, process.env.COMPANY_FORGOT_PASS_SUBJECT!, htmlBody);
+                await sendMail(user!.email, config.EMAIL.CONTENT.FORGOT_PASS_SUBJECT, htmlBody);
 
                 return httpExec.successAction(null, "EMAIL_SENT_SUCCESS");
             }else{
@@ -378,14 +376,13 @@ export default class UserController extends GenericController{
 
         try{
             const forgotPassToken = reqHandler.getRequest().params.forgotPassToken;
-            let verify = null;
             try {
-                verify =  jwt.verify(forgotPassToken, process.env.JWT_FORGOT_PASSWORD_TOKEN);
+                jwt.verify(forgotPassToken, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY);
             } catch (error) {
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
 
-            return reqHandler.getResponse().redirect(process.env.COMPANY_RESET_PASS_FRONT_END_URL + forgotPassToken);
+            return reqHandler.getResponse().redirect( config.COMPANY.FRONT_END_HOST + forgotPassToken);
         } catch(error : any){
             return await httpExec.generalError(error);
         }
@@ -403,7 +400,7 @@ export default class UserController extends GenericController{
 
             let verify = null;
             try {
-                verify =  jwt.verify(forgotPassToken, process.env.JWT_FORGOT_PASSWORD_TOKEN);
+                verify =  jwt.verify(forgotPassToken, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY);
             } catch (error) {
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
@@ -412,7 +409,7 @@ export default class UserController extends GenericController{
 
             if(user != undefined && user != null){
 
-                user.password = encryptPassword(password, process.env.SALT!)!;
+                user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
                 await repository.update(User, user.id, user, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(user.email, "RESET_PASSWORD");
             }else{

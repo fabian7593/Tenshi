@@ -1,0 +1,69 @@
+{
+    "COMPANY": {
+        "NAME" : "Unbreakable",
+        "LOGO" : "https://raw.githubusercontent.com/fabian7593/EasyRestApiLand/main/00/logo_alone.png",
+        "BACKEND_HOST": "http://localhost:3000/",
+        "FRONT_END_HOST": "http://localhost:3000/",
+        "RESET_PASSWORD_URL" : "password_reset/",
+        "MAIN_COLOR": "#6666FF",
+        "LANDING_PAGE": "https://www.example.com"
+    },
+    "GENERAL":{
+        "IS_DEBUGGING": true,
+        "FAIL_LOGIN_MAX_NUMBER": 3
+    },
+    "HTTP_REQUEST":{
+        "PAGE_SIZE": 3000,
+        "PAGE_OFFSET":1
+    },
+    "SERVER" : {
+        "PORT": 3000,
+        "SECRET_API_KEY": "8170fcb2-ef45-4173-9a1b-f682d38ddae9",
+        "VALIDATE_API_KEY" : false,
+        "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000"
+    },
+    "DB": {
+        "PORT": 3306,
+        "HOST": "localhost",
+        "USER": "root",
+        "PASSWORD": "password",
+        "NAME": "unbreakable",
+        "CONNECTION_LIMIT": 150
+    },
+    "JWT": {
+        "MAIN_TOKEN" :{
+            "EXPIRE": "30000s",
+            "SECRET_KEY": "f749b45a-06e9-4dcb-a842-630184b443f6"
+        },
+        "REFRESH_TOKEN" :{
+            "EXPIRE": "1d",
+            "SECRET_KEY": "44e7d167-f31e-41f4-9e48-e6218fbf0a41"
+        },
+        "FORGOT_PASS_TOKEN" :{
+            "EXPIRE": "900s",
+            "SECRET_KEY": "f749b45a-45y5-77ty-12we-630184b443f6"
+        },
+        "REGISTER_TOKEN" :{
+            "EXPIRE": null,
+            "SECRET_KEY": "44fr2167-1oi8-55ht-3ew1-630184b443f6"
+        }
+    },
+    "AWS": {
+        "BUCKET_NAME": "name bucket",
+        "REGION": "us-east-2",
+        "ACCESS_KEY": "",
+        "SECRET_ACCESS_KEY": "",
+        "PUBLIC_FOLDER" : ""
+    },
+    "EMAIL" : {
+        "SERVICE" : "gmail",
+        "AUTH_USER": "",
+        "AUTH_PASSWORD": "",
+        "EMAIL_FROM": "test@gmail.com",
+        "CONTENT": {
+            "REGISTER_SUBJECT" : "Account Verification",
+            "FORGOT_PASS_SUBJECT" : "Forgot Password"
+        }
+    }
+}
+
