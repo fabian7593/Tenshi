@@ -23,6 +23,8 @@ import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLog } from '@utils/logsUtils';
 import { executeQuery } from '@utils/executionDBUtils';
 
+import { Database } from "@config/TypeORMConnection";
+
 
 
 //*************************************** */
@@ -81,7 +83,7 @@ app.use(DocumentRouter);
 //              LISTENER
 //*************************************** */
 //Open port and listen API
-const PORT =  3000;
-app.listen(PORT, () => {
-  debuggingMessage(`UNBREAKABLE Express TypeScript Service Start in Port ${PORT}`);
+app.listen(config.SERVER.PORT, () => {
+  Database.getInstance();
+  debuggingMessage(`UNBREAKABLE Express TypeScript Service Start in Port ${config.SERVER.PORT}`);
 });

@@ -2,7 +2,7 @@
 export { Router, Request, Response } from "@index/index";
 export * as fs from 'fs';
 export {default as path} from 'path';
-export { FindOneOptions, FindManyOptions, createConnection } from "typeorm";
+export { FindOneOptions, FindManyOptions, Repository } from "typeorm";
 export { default as RequestHandler } from "@generics/RequestHandler/RequestHandler";
 export { default as RequestHandlerBuilder } from "@generics/RequestHandler/RequestHandlerBuilder";
 export { default as GenericController } from "@generics/Controller/GenericController";

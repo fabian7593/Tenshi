@@ -1,49 +1,38 @@
-import { FindOneOptions, FindManyOptions, createConnection, 
-         RoleFunctionallity, RoleScreen } from "@modules/index";
+import { FindOneOptions, FindManyOptions, RoleFunctionallity, Repository, RoleScreen } from "@modules/index";
 
 import { default as GenericRepository } from "@generics/Repository/GenericRepository"
+import { Role } from "@index/entity/Role";
 
 export default class RoleRepository extends GenericRepository{
 
+    private repositoryRoleFunctionallity: Repository<RoleFunctionallity>;
+    private repositoryRoleScreen: Repository<RoleScreen>;
+
     constructor() {
-        super(RoleRepository);
+        super(Role);
+        this.repositoryRoleFunctionallity = this.dataSource.getRepository(RoleFunctionallity);
+        this.repositoryRoleScreen = this.dataSource.getRepository(RoleScreen);
     }
 
     //search by code role and function codes
     async getPermissionByFuncAndRole(roleCode: string, funCode: string): Promise<RoleFunctionallity | null> {
-
-        const connection = await createConnection();
-
         try {
-
             //find by user and password
-            const repository = connection.getRepository(RoleFunctionallity); 
             const options: FindOneOptions = { where: { "role_code" : roleCode, "function_code": funCode } }; 
-            const getEntity = await repository.findOne(options); 
-            
+            const getEntity = await this.repositoryRoleFunctionallity.findOne(options); 
             return getEntity; 
 
         } catch (error : any) {
             throw error;
-
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
     async getScreensByRole(roleCode: string): Promise<string[] | null> {
 
-        const connection = await createConnection();
-
         try {
 
-            //find by user and password
-            const repository = connection.getRepository(RoleScreen); 
-
             const options: FindManyOptions = { where: { "role_code" : roleCode} }; 
-            const getEntities = await repository.find(options); 
+            const getEntities = await this.repositoryRoleScreen.find(options); 
             const listScreens: string[] = [];
 
             if(getEntities != null){
@@ -59,13 +48,9 @@ export default class RoleRepository extends GenericRepository{
             }
 
         } catch (error : any) {
+        
             throw error;
-
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 }
 

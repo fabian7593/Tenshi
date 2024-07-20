@@ -1,5 +1,3 @@
-import { debuggingMessage } from "@index/index";
-
 import { Router, Request, Response, 
          RequestHandler, RequestHandlerBuilder,
          ControllerObject } from "@modules/index";
@@ -83,14 +81,10 @@ route.post("/user/register", async (req: Request, res: Response) => {
         ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
     ];
 
-    debuggingMessage(`register added`);
-
     const requiredBodyList:  Array<string> = 
                             [req.body.first_name, req.body.last_name, 
                              req.body.email, req.body.password, 
                              req.body.role_code];
-
-    debuggingMessage(requiredBodyList);
 
     const requestHandler : RequestHandler = 
     new RequestHandlerBuilder(res,req)

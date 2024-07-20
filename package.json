@@ -4,8 +4,6 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "migration": "ts-node src/createDb.ts",
-    "connection": "ts-node-dev src/dbconnection.ts",
     "mail": "ts-node-dev src/sendMail.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "compile": "tsc",

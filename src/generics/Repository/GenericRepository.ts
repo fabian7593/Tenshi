@@ -1,5 +1,6 @@
-import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database} from '@generics/index';
+import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from '@generics/index';
 import IGenericRepository from "@generics/Repository/IGenericRepository";
+import { DataSource } from 'typeorm';
 
 /*
     This class have the Connection to DB with ORM &&
@@ -9,12 +10,24 @@ import IGenericRepository from "@generics/Repository/IGenericRepository";
 
 export default  class GenericRepository implements IGenericRepository{
 
-    private entityManager: EntityManager;
+    //the ds to get it on hereby
+    protected dataSource: DataSource;
+
+    //This is the dynamic object for entitie DB
     private entityTarget: EntityTarget<any>;
 
+    //this variable is for do dynamic crud, sending the specific entity target
+    protected entityManager: EntityManager;
+    
+    //this variable is protected, because we need to use it on hereby classes
+    //to do specific CRUDS, to specifics repositories
+    protected repository: Repository<any>;
+   
+    //the constructor method init the Singleton of DB connection and send it the entity target
     constructor(entityTarget : EntityTarget<any>) {
-        const dataSource = Database.getInstance();
-        this.entityManager = dataSource.manager;
+        this.dataSource = Database.getInstance();
+        this.repository = this.dataSource.getRepository(entityTarget);
+        this.entityManager = this.dataSource.manager;
         this.entityTarget = entityTarget;
     }
     
@@ -68,7 +81,6 @@ export default  class GenericRepository implements IGenericRepository{
            
         } catch (error : any) {
             throw error;
-
         } 
     }
 
@@ -89,7 +101,6 @@ export default  class GenericRepository implements IGenericRepository{
 
         } catch (error : any) {
             throw error;
-
         } 
     }
 

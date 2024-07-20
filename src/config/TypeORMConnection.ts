@@ -1,6 +1,6 @@
 // src/utils/Database.ts
 import { DataSource } from "typeorm";
-import { config } from "@index/index";
+import { config, debuggingMessage } from "@index/index";
 import { User } from "@entity/User";
 import { Role } from "@entity/Role";
 import { RoleFunctionallity } from "@entity/RoleFunctionallity";
@@ -35,7 +35,7 @@ export class Database {
 
             Database.instance.initialize()
                 .then(() => {
-                    console.log("Data Source has been initialized!");
+                    debuggingMessage("Data Source has been initialized!");
                 })
                 .catch((err) => {
                     throw err;
