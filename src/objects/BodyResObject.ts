@@ -3,7 +3,8 @@ import StatusResponseObject from "@objects/StatusResponseObject"
 interface StructureResponse {
     status: {
         id: number,
-        message: string
+        message: string,
+        http_code: number,
     },
     data: any | null,
     info: string | null
@@ -15,7 +16,8 @@ export function responseStruct(status : StatusResponseObject,
     const structure: StructureResponse = {
         status: {
             id: status.id,
-            message: status.name
+            message: status.name,
+            http_code: status.httpStatus
         },
         data: dataInfo,
         info: info
