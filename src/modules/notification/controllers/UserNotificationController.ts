@@ -19,7 +19,10 @@ export default  class UserNotificationController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     
         try{
-            const repository = new GenericRepository();
+            const repositoryUser = new GenericRepository(User);
+            const repositoryNotification = new GenericRepository(Notification);
+            const repositoryUserNotification = new GenericRepository(UserNotification);
+
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
@@ -41,11 +44,14 @@ export default  class UserNotificationController extends GenericController{
 
              //Get data From some tables
              const userNotifications : UserNotification = reqHandler.getAdapter().entityFromPostBody();
-             const notification : Notification = await repository.findByCode(Notification, userNotifications.notification_code, reqHandler.getNeedLogicalRemove());
+             const notification : Notification =
+                 await repositoryNotification.findByCode(
+                    userNotifications.notification_code, 
+                    reqHandler.getNeedLogicalRemove());
              
              if(notification != undefined && notification != null){
                 if(notification.required_send_email){
-                    const user : User = await repository.findById(User, userNotifications.id_user_receive, true);
+                    const user : User = await repositoryUser.findById(userNotifications.id_user_receive, true);
                     let htmlBody = replaceCompanyInfoEmails(htmlGenericTemplate);
                     htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
                     htmlBody = htmlBody.replace(/\{\{ emailSubject \}\}/g, notification.subject);
@@ -60,7 +66,7 @@ export default  class UserNotificationController extends GenericController{
 
             try{
                 //Execute Action DB
-                const userNotificationAdded: UserNotification = await repository.add(userNotifications);
+                const userNotificationAdded: UserNotification = await repositoryUserNotification.add(userNotifications);
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(userNotificationAdded, notification);
                 return httpExec.successAction(responseWithNewAdapter, successMessage);
             
@@ -81,7 +87,10 @@ export default  class UserNotificationController extends GenericController{
 
         try{
              //This is for use the basic CRUD
-             const repository = new GenericRepository();
+             const repository = new GenericRepository(UserNotification);
+
+             const repositoryNotification = new GenericRepository(Notification);
+
              //This is for validate role
              const roleRepository = new RoleRepository();
              //This is for do validations
@@ -106,7 +115,7 @@ export default  class UserNotificationController extends GenericController{
             //should be the user id of the user request (JWT)
             let userId : number | null= null;
             let userNotification : UserNotification;
-            userNotification = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+            userNotification = await repository.findById(id, reqHandler.getNeedLogicalRemove());
 
             if(userNotification != undefined && userNotification != null){}
             else{
@@ -131,9 +140,9 @@ export default  class UserNotificationController extends GenericController{
 
             try{
                 //Execute Action DB
-                const updateEntity = await repository.update(this.entityType, id, userNotification,  
+                const updateEntity = await repositoryNotification.update(id, userNotification,  
                                                              reqHandler.getNeedLogicalRemove());
-                const notification : Notification = await repository.findByCode(Notification, updateEntity.notificationCode, false);
+                const notification : Notification = await repositoryNotification.findByCode(updateEntity.notificationCode, false);
 
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(updateEntity, notification);
                 return httpExec.successAction(responseWithNewAdapter, successMessage);

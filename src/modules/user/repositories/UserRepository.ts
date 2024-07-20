@@ -5,6 +5,10 @@ import { User } from "@user/index";
 
 export default class UserRepository extends GenericRepository{
 
+    constructor() {
+        super(User);
+    }
+
     async getUserByEmail(entity: any): Promise<User | null> {
 
         const connection = await createConnection();

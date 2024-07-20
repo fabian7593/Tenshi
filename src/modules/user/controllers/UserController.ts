@@ -30,7 +30,7 @@ export default class UserController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(User);
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
@@ -60,7 +60,7 @@ export default class UserController extends GenericController{
                 }
                 
                 //Execute Action DB
-                const user: User = await repository.update(User, id, userBody, reqHandler.getNeedLogicalRemove());
+                const user: User = await repository.update(id, userBody, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
@@ -77,7 +77,7 @@ export default class UserController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(User);
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
@@ -129,7 +129,7 @@ export default class UserController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(User);
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
 
             //Get data From Body
@@ -312,7 +312,7 @@ export default class UserController extends GenericController{
             if(user != undefined && user != null){
 
                 user!.is_active = true;
-                await repository.update(User, user!.id, user!, reqHandler.getNeedLogicalRemove());
+                await repository.update(user!.id, user!, reqHandler.getNeedLogicalRemove());
                 
                 let htmlBody = replaceCompanyInfoEmails(htmlActiveAccountTemplate);
                 htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
@@ -347,7 +347,7 @@ export default class UserController extends GenericController{
                 const forgotUserPasswordToken = generateForgotPasswordToken(email); 
                 user.forgot_password_token = forgotUserPasswordToken!;
     
-                await repository.update(User, user.id, user, reqHandler.getNeedLogicalRemove());
+                await repository.update(user.id, user, reqHandler.getNeedLogicalRemove());
 
                 let htmlBody = replaceCompanyInfoEmails(htmlforgotPassTemplate);
 
@@ -410,7 +410,7 @@ export default class UserController extends GenericController{
             if(user != undefined && user != null){
 
                 user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
-                await repository.update(User, user.id, user, reqHandler.getNeedLogicalRemove());
+                await repository.update(user.id, user, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(user.email, "RESET_PASSWORD");
             }else{
                 return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");

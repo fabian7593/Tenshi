@@ -28,7 +28,7 @@ export async function insertLog(method: string, className: string, message: stri
     log.created_date = new Date();
     log.environment = "BACKEND";
 
-    const genericRepository = new GenericRepository();
+    const genericRepository = new GenericRepository(Log);
     await genericRepository.add(log);
 }
 

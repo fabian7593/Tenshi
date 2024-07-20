@@ -5,6 +5,10 @@ import { default as GenericRepository } from "@generics/Repository/GenericReposi
 
 export default class RoleRepository extends GenericRepository{
 
+    constructor() {
+        super(RoleRepository);
+    }
+
     //search by code role and function codes
     async getPermissionByFuncAndRole(roleCode: string, funCode: string): Promise<RoleFunctionallity | null> {
 

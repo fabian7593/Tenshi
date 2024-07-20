@@ -114,7 +114,7 @@ export default  class EmailController extends GenericController{
 
             try{
                 //Execute Action DB
-                const users : User[] = await repository.findByFilters(this.entityType, reqHandler.getFilters()!,
+                const users : User[] = await repository.findByFilters(reqHandler.getFilters()!,
                                                                 reqHandler.getNeedLogicalRemove());
 
                 if(users != undefined && users != null){

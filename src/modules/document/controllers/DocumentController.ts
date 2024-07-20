@@ -14,7 +14,7 @@ export default  class DocumentController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(Document);
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
@@ -69,7 +69,7 @@ export default  class DocumentController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
 
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(Document);
             const roleRepository = new RoleRepository();
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
@@ -100,7 +100,7 @@ export default  class DocumentController extends GenericController{
 
                 //call the get by id, if the user ID of the entity is different  to user ID of JWT
                 //the user request dont have this authorization
-                const entity = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findById(id, reqHandler.getNeedLogicalRemove());
 
                 if(entity != undefined && entity != null){
                     if(userId != null && entity.userId != userId){
@@ -120,7 +120,7 @@ export default  class DocumentController extends GenericController{
 
             try{
                 //Execute Action DB
-                const updateEntity = await repository.update(this.entityType, id, documentBody, reqHandler.getNeedLogicalRemove());
+                const updateEntity = await repository.update(id, documentBody, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
             }catch(error : any){

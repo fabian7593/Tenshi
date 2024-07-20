@@ -1,4 +1,4 @@
-import { EntityTarget, FindOneOptions, FindManyOptions, createConnection} from '@generics/index';
+import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database} from '@generics/index';
 import IGenericRepository from "@generics/Repository/IGenericRepository";
 
 /*
@@ -8,37 +8,33 @@ import IGenericRepository from "@generics/Repository/IGenericRepository";
 */
 
 export default  class GenericRepository implements IGenericRepository{
+
+    private entityManager: EntityManager;
+    private entityTarget: EntityTarget<any>;
+
+    constructor(entityTarget : EntityTarget<any>) {
+        const dataSource = Database.getInstance();
+        this.entityManager = dataSource.manager;
+        this.entityTarget = entityTarget;
+    }
     
     async add(entity: any): Promise<any> {
 
-        const connection = await createConnection();
-
         try {
-            const savedEntity = await connection.manager.save(entity);
+            const savedEntity = await this.entityManager.save(this.entityTarget,entity);
             return savedEntity;
 
         } catch (error : any) {
-            console.log(error);
             throw error;
-
-        } finally {
-           if(connection){
-                await connection.close();
-           }
-        }
+        } 
     }
 
-    async update(entityType: EntityTarget<any>, id: number, 
+    async update(id: number, 
                  newData: Partial<any>, 
                  hasLogicalDeleted : boolean): Promise<any | undefined> {
-        const connection = await createConnection();
-
         try {
             //update the entity by id, with the new data
-            await connection.manager.update(entityType, id, newData);
-
-            //find by id
-            const repository = await connection.getRepository(entityType); 
+            await this.entityManager.update(this.entityTarget, id, newData);
 
             let options: FindOneOptions<any> = {
                 where: { id: id }
@@ -51,85 +47,56 @@ export default  class GenericRepository implements IGenericRepository{
                     };
                 }
             }
-            
-            const updatedEntity = await repository.findOne(options); 
-
+            const updatedEntity = await this.entityManager.findOne(this.entityTarget, options); 
             return updatedEntity; 
-
         } catch (error : any) {
             throw error;
-
-        } finally {
-            if(connection){
-                await connection.close();
-            }
         }
     }
 
-    async remove(entityType: EntityTarget<any>, id: number): Promise<any> {
-        const connection = await createConnection();
+    async remove(id: number): Promise<any> {
 
         try {
-            const repository = await connection.getRepository(entityType); 
-
             let options : FindOneOptions;
             options = { where: { id : id }  }; 
 
-            const entity = await repository.findOne(options); 
+            const entity = await this.entityManager.findOne(this.entityTarget, options); 
 
             //update the entity by id, with the new data
-            await connection.manager.delete(entityType, id);
+            await this.entityManager.delete(this.entityTarget, id);
             return entity;
            
         } catch (error : any) {
             throw error;
 
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
-    async logicalRemove(entityType: EntityTarget<any>, id: number): Promise<any> {
-        const connection = await createConnection();
-
+    async logicalRemove(id: number): Promise<any> {
         try {
-
-            const repository = await connection.getRepository(entityType); 
-
             let options : FindOneOptions;
             options = { where: { id : id }  }; 
 
-            const entity = await repository.findOne(options); 
+            const entity = await this.entityManager.findOne(this.entityTarget, options); 
 
             if (entity["is_deleted"] !== undefined) {
                 entity["is_deleted"] = true;
             }
             
             //update the entity by id, with the new data
-            await connection.manager.update(entityType, id, entity);
+            await this.entityManager.update(this.entityTarget, id, entity);
             return entity;
 
         } catch (error : any) {
             throw error;
 
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
-    async findById(entityType: EntityTarget<any>, id: number, 
+    async findById(id: number, 
                    hasLogicalDeleted : boolean): Promise<any> {
-        const connection = await createConnection();
-
         try {
-            const repository = await connection.getRepository(entityType); 
-
             let options : FindOneOptions;
-
             options = { where: { id : id}  }; 
 
             if(hasLogicalDeleted){
@@ -140,27 +107,18 @@ export default  class GenericRepository implements IGenericRepository{
                     };
                 }
             }
-
-            const entity = await repository.findOne(options); 
-
+            const entity = await this.entityManager.findOne(this.entityTarget, options); 
             return entity;
 
         } catch (error : any) {
             throw error;
 
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
-    async findByCode(entityType: EntityTarget<any>, code: string, 
+    async findByCode(code: string, 
                      hasLogicalDeleted : boolean): Promise<any> {
-        const connection = await createConnection();
         try {
-            const repository = await connection.getRepository(entityType); 
-
             let options : FindManyOptions;
             options = { where: { code : code}  }; 
 
@@ -172,30 +130,21 @@ export default  class GenericRepository implements IGenericRepository{
                     };
                 }
             }
-
-            const entity = await repository.findOne(options); 
-
+            const entity = await this.entityManager.findOne(this.entityTarget, options); 
             return entity;
 
         } catch (error : any) {
             throw error;
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
-    async findAll(entityType: EntityTarget<any>, hasLogicalDeleted: boolean, 
+    async findAll(hasLogicalDeleted: boolean, 
                   page: number = 1, size: number = 3000): Promise<any[] | null> {
-        const connection = await createConnection();
-
         try {
 
             const offset = (page - 1) * size;
 
             //find by user and password
-            const repository = connection.getRepository(entityType); 
             let options : FindManyOptions;
             if(hasLogicalDeleted){
                 options = { where: { "is_deleted" : 0 }  }; 
@@ -205,28 +154,19 @@ export default  class GenericRepository implements IGenericRepository{
             
             options.skip = offset;
             options.take = size;
-            const getEntities = await repository.find(options); 
+            const getEntities = await this.entityManager.find(this.entityTarget, options); 
            
             return getEntities;
         } catch (error : any) {
             throw error;
-
-        } finally {
-            if(connection){
-                await connection.close();
-            }
-        }
+        } 
     }
 
-    async findByFilters(entityType: EntityTarget<any>, options: FindManyOptions, hasLogicalDeleted: boolean,
+    async findByFilters(options: FindManyOptions, hasLogicalDeleted: boolean,
                         page: number = 1, size: number = 3000
     ): Promise<any>{
-        const connection = await createConnection();
-
         try {
             const offset = (page - 1) * size;
-
-            const repository = connection.getRepository(entityType); 
 
             if(hasLogicalDeleted){
                 if (typeof options.where === 'object' && options.where !== null) {
@@ -239,19 +179,13 @@ export default  class GenericRepository implements IGenericRepository{
 
             options.skip = offset;
             options.take = size;
-            const getEntities = await repository.find(options); 
+            const getEntities = await this.entityManager.find(this.entityTarget, options); 
             return getEntities;
         } catch (error : any) {
             throw error;
-
-        } finally {
-            if(connection){
-                await connection.close();
-            }
         }
     }
     
-
     //Execute query scripting and stored procedures.
     /*async executeQueryExample(user: User): Promise<void>{
        await executeQuery(async (conn) => {

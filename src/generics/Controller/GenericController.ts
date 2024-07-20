@@ -34,7 +34,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             //This is for use the basic CRUD
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(this.entityType);
             //This is for validate role
             const roleRepository = new RoleRepository();
             //This is for do validations
@@ -94,7 +94,7 @@ export default  class GenericController implements IGenericController{
 
         try{
              //This is for use the basic CRUD
-             const repository = new GenericRepository();
+             const repository = new GenericRepository(this.entityType);
              //This is for validate role
              const roleRepository = new RoleRepository();
              //This is for do validations
@@ -132,7 +132,7 @@ export default  class GenericController implements IGenericController{
 
                 //call the get by id, if the user ID of the entity is different  to user ID of JWT
                 //the user request dont have this authorization
-                const entity = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findById(id, reqHandler.getNeedLogicalRemove());
 
                 if(entity != undefined && entity != null){
                     if(userId != null && entity.userId != userId){
@@ -148,7 +148,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                const updateEntity = await repository.update(this.entityType, id, body,  
+                const updateEntity = await repository.update(id, body,  
                                                              reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
@@ -167,7 +167,7 @@ export default  class GenericController implements IGenericController{
 
         try{
              //This is for use the basic CRUD
-             const repository = new GenericRepository();
+             const repository = new GenericRepository(this.entityType);
              //This is for validate role
              const roleRepository = new RoleRepository();
              //This is for do validations
@@ -199,7 +199,7 @@ export default  class GenericController implements IGenericController{
 
                 //call the get by id, if the user ID of the entity is different  to user ID of JWT
                 //the user request dont have this authorization
-                const entity = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findById(id, reqHandler.getNeedLogicalRemove());
 
                 if(entity != undefined && entity != null){
                     if(userId != null && entity.userId != userId){
@@ -214,10 +214,10 @@ export default  class GenericController implements IGenericController{
             try{
                 //Execute Action DB
                 if(reqHandler.getNeedLogicalRemove()){
-                    const deletedEntity = await repository.logicalRemove(this.entityType, id);
+                    const deletedEntity = await repository.logicalRemove(id);
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), successMessage);
                 }else{
-                    const deletedEntity = await repository.remove(this.entityType, id);
+                    const deletedEntity = await repository.remove(id);
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), successMessage);
                 }
                 
@@ -236,7 +236,7 @@ export default  class GenericController implements IGenericController{
 
         try{
              //This is for use the basic CRUD
-             const repository = new GenericRepository();
+             const repository = new GenericRepository(this.entityType);
              //This is for validate role
              const roleRepository = new RoleRepository();
              //This is for do validations
@@ -268,7 +268,7 @@ export default  class GenericController implements IGenericController{
 
                 //call the get by id, if the user ID of the entity is different  to user ID of JWT
                 //the user request dont have this authorization
-                const entity = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findById(id, reqHandler.getNeedLogicalRemove());
 
                 if(entity != undefined && entity != null){
                     if(userId != null && entity.userId != userId){
@@ -282,7 +282,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                const entity = await repository.findById(this.entityType, id, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findById(id, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
@@ -299,7 +299,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             //This is for use the basic CRUD
-             const repository = new GenericRepository();
+             const repository = new GenericRepository(this.entityType);
              //This is for validate role
              const roleRepository = new RoleRepository();
              //This is for do validations
@@ -330,7 +330,7 @@ export default  class GenericController implements IGenericController{
 
                 //call the get by id, if the user ID of the entity is different  to user ID of JWT
                 //the user request dont have this authorization
-                const entity = await repository.findByCode(this.entityType, code, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findByCode(code, reqHandler.getNeedLogicalRemove());
 
                 if(entity != undefined && entity != null){
                     if(userId != null && entity.userId != userId){
@@ -343,7 +343,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                const entity = await repository.findByCode(this.entityType, code, reqHandler.getNeedLogicalRemove());
+                const entity = await repository.findByCode(code, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
@@ -360,7 +360,7 @@ export default  class GenericController implements IGenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
 
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(this.entityType);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
@@ -385,7 +385,7 @@ export default  class GenericController implements IGenericController{
                             config.HTTP_REQUEST.PAGE_SIZE;
 
                 //Execute Action DB
-                const entities = await repository.findAll(this.entityType, reqHandler.getNeedLogicalRemove(), page, size);
+                const entities = await repository.findAll(reqHandler.getNeedLogicalRemove(), page, size);
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
             }catch(error : any){
                 return await httpExec.databaseError(error);
@@ -401,7 +401,7 @@ export default  class GenericController implements IGenericController{
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
 
         try{
-            const repository = new GenericRepository();
+            const repository = new GenericRepository(this.entityType);
             const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
            
@@ -428,7 +428,7 @@ export default  class GenericController implements IGenericController{
                                       parseInt(reqHandler.getRequest().query.size as string) : 
                                       config.HTTP_REQUEST.PAGE_SIZE;
                 //Execute Action DB
-                const entities = await repository.findByFilters(this.entityType, reqHandler.getFilters()!,
+                const entities = await repository.findByFilters(reqHandler.getFilters()!,
                                                                 reqHandler.getNeedLogicalRemove(), page, size);
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
 
@@ -439,5 +439,4 @@ export default  class GenericController implements IGenericController{
             return await httpExec.generalError(error);
         }
     }
-
 }
