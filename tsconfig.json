@@ -33,6 +33,7 @@
         "@entity/*": ["entity/*"],
         "@data/*": ["data/json/*"],
         "@config/*": ["config/*"],
+        "@filestorage/*": ["fileStorage/*"],
 
         "@user/*": ["modules/user/*"],
         "@udc/*": ["modules/udc/*"],

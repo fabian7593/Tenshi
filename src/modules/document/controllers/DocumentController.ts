@@ -5,13 +5,14 @@ import { GenericController, RequestHandler,
          JWTObject, RoleRepository,
          GenericRepository } from "@modules/index";
 
-import { Document, setNameDocument, uploadFile } from '@document/index'
+import { Document, setNameDocument, FileStorageAWS } from '@document/index'
 
 export default  class DocumentController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "INSERT_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const filestorage = new FileStorageAWS();
     
         try{
             const repository = new GenericRepository(Document);
@@ -47,7 +48,7 @@ export default  class DocumentController extends GenericController{
 
             //set name and upload file
             documentBody =  setNameDocument(reqHandler.getRequest().file!, documentBody);
-            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
+            documentBody.url = await filestorage.uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
         
             try{
                 //Execute Action DB
@@ -67,6 +68,7 @@ export default  class DocumentController extends GenericController{
     async update(reqHandler: RequestHandler): Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const filestorage = new FileStorageAWS();
 
         try{
             const repository = new GenericRepository(Document);
@@ -116,7 +118,7 @@ export default  class DocumentController extends GenericController{
             let documentBody : Document = reqHandler.getAdapter().entityFromPostBodyWithParams!(body);
 
             documentBody =  setNameDocument(reqHandler.getRequest().file!, documentBody);
-            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
+            documentBody.url = await filestorage.uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
 
             try{
                 //Execute Action DB

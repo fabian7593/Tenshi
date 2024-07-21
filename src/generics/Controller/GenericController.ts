@@ -16,8 +16,8 @@ import ControllerObject from '@objects/ControllerObject';
 */
 
 export default  class GenericController implements IGenericController{
-    controllerObj: ControllerObject;
-    entityType : EntityTarget<any>;
+    protected controllerObj: ControllerObject;
+    private entityType : EntityTarget<any>;
 
     //We need the type of the entity of ORM, and the controller Obj as well
     constructor( entityType: EntityTarget<any>, controllerObj: ControllerObject) {
