@@ -1,5 +1,5 @@
 //Generic
-export { Router, Request, Response, container } from "@index/index";
+export { Router, Request, Response } from "@index/index";
 export * as fs from 'fs';
 export {default as path} from 'path';
 export { FindOneOptions, FindManyOptions, Repository } from "typeorm";

@@ -4,9 +4,7 @@ import { Request, Response, GenericRoutes,
     RequestHandler, RequestHandlerBuilder, 
     FindManyOptions } from "@modules/index";
 import { User, EmailController } from '@email/index';
-import { injectable } from 'inversify';
 
-@injectable()
 class EmailRoutes extends GenericRoutes {
     constructor() {
         super(new EmailController(User));

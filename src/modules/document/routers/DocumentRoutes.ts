@@ -4,7 +4,6 @@ import { Request, Response, GenericRoutes,
 
 import { Document, DocumentController, DocumentDTO, multer } from '@document/index';
 import { getUrlParam } from "@utils/generalUtils";
-import { injectable } from 'inversify';
 import {default as config} from "@root/unbreakable-config";
 
 const storage = multer.memoryStorage(); // Almacenamiento en memoria
@@ -15,7 +14,6 @@ const upload = multer({
       }
 });
 
-@injectable()
 class DocumentRoutes extends GenericRoutes {
     constructor() {
         super(new DocumentController(Document));

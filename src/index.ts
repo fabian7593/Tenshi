@@ -4,7 +4,6 @@
 //Import libraries 
 import 'module-alias/register';
 import 'reflect-metadata';
-import { container } from './inversify.config';
 import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
@@ -42,7 +41,7 @@ export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
 
-export { debuggingMessage, insertLog, executeQuery, container, config };
+export { debuggingMessage, insertLog, executeQuery, config };
 
 //*************************************** */
 //              VARIABLES
@@ -89,24 +88,6 @@ app.use(logRoutes.getRouter());
 app.use(emailRoutes.getRouter());
 app.use(documentRoutes.getRouter());
 
-
-//dependency injections
-/*const userRoutes = container.get(UserRoutes);
-const udcRoutes = container.get(UdcRoutes);
-const notificationRoutes = container.get(NotificationRoutes);
-const userNotificationRoutes = container.get(UserNotificationRoutes);
-const logRoutes = container.get(LogRoutes);
-const emailRoutes = container.get(EmailRoutes);
-const documentRoutes = container.get(DocumentRoutes);
-
-app.use(userRoutes.getRouter());
-app.use(udcRoutes.getRouter());
-app.use(notificationRoutes.getRouter());
-app.use(userNotificationRoutes.getRouter());
-app.use(logRoutes.getRouter());
-app.use(emailRoutes.getRouter());
-app.use(documentRoutes.getRouter());
-*/
 
 
 //*************************************** */

@@ -3,9 +3,7 @@ import { Request, Response, GenericRoutes,
         GenericController } from "@modules/index";
 
 import { NotificationDTO, Notification } from '@notification/index';
-import { injectable } from 'inversify';
 
-@injectable()
 class NotificationRoutes extends GenericRoutes {
     constructor() {
         super(new GenericController(Notification));

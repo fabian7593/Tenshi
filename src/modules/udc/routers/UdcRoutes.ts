@@ -2,9 +2,7 @@ import { Request, Response,
          RequestHandler, RequestHandlerBuilder, 
          GenericController, GenericRoutes} from "@modules/index";
 import { UnitDynamicCentral, UdcDTO } from '@udc/index';
-import { injectable } from 'inversify';
 
-@injectable()
 class UdcRoutes extends GenericRoutes{
     constructor() {
         super(new GenericController(UnitDynamicCentral));

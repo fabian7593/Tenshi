@@ -25,7 +25,7 @@ const jwt = require('jsonwebtoken');
 
 
 export default class UserController extends GenericController{
-
+    
     async update(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
@@ -237,9 +237,7 @@ export default class UserController extends GenericController{
                 if(isSuccess){
                     const roleRepositoy = new RoleRepository();
                     const screens = await roleRepositoy.getScreensByRole(user!.role_code);
-
-                    console.log(screens);
-    
+                    
                     const jwtObj : JWTObject = {
                         id: user!.id,
                         email: user!.email,

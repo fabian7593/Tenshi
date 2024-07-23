@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { default as GenericController} from "@generics/Controller/GenericController";
-import { injectable } from "inversify";
 
-@injectable()
 abstract class GenericRoutes {
     protected router: Router;
     protected controller: GenericController;

@@ -2,9 +2,7 @@
 import { Request, Response, GenericRoutes,
     RequestHandler, RequestHandlerBuilder } from "@modules/index";
 import { Log, LogDTO, LogController } from '@log/index';
-import { injectable } from 'inversify';
 
-@injectable()
 class LogRoutes extends GenericRoutes {
     constructor() {
         super(new LogController(Log));

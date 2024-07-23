@@ -8,7 +8,7 @@ import IGenericController from '@generics/Controller/IGenericController';
 import { RoleFunctionallity } from '@entity/RoleFunctionallity';
 import ControllerObject from '@objects/ControllerObject';
 
-import { createControllerObject } from '@helpers/ControllerObjectFactory';
+import { createControllerObject } from '@patterns/ControllerObjectFactory';
 import {default as config} from "@root/unbreakable-config";
 
 /*

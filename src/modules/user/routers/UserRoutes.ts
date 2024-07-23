@@ -1,11 +1,10 @@
 import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
           GenericRoutes } from "@modules/index";
-import { UserController, UserDTO, User } from "@user/index";
-import { injectable } from "inversify";
+import {  UserDTO, UserController, User } from "@user/index";
 
-@injectable()
 class UserRoutes extends GenericRoutes {
+
     constructor() {
         super(new UserController(User));
     }
@@ -20,7 +19,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-            this.controller.getById(requestHandler);
+                this.controller.getById(requestHandler);
         });
 
         this.router.get(`${this.routerName}/get_all`, async (req: Request, res: Response) => {
@@ -32,7 +31,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-            this.controller.getAll(requestHandler);
+                this.controller.getAll(requestHandler);
         });
 
         /*
@@ -58,7 +57,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-            this.controller.insert(requestHandler);
+                this.controller.insert(requestHandler);
         });
 
         this.router.post(`${this.routerName}/register`, async (req: Request, res: Response) => {
@@ -80,7 +79,7 @@ class UserRoutes extends GenericRoutes {
                 .setRequiredFiles(requiredBodyList)
                 .build();
 
-            (this.controller as UserController).register(requestHandler);
+              (this.controller as UserController).register(requestHandler);
         });
 
         this.router.post(`${this.routerName}/login`, async (req: Request, res: Response) => {
@@ -116,7 +115,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-            this.controller.update(requestHandler);
+                this.controller.update(requestHandler);
         });
 
         this.router.delete(`${this.routerName}/delete`, async (req: Request, res: Response) => {
@@ -128,7 +127,7 @@ class UserRoutes extends GenericRoutes {
                 .isLogicalRemove()
                 .build();
 
-            this.controller.delete(requestHandler);
+                this.controller.delete(requestHandler);
         });
 
         /*
