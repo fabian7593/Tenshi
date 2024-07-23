@@ -5,7 +5,7 @@ import { Validations, HttpAction,
 import { GenericRepository, 
          GenericController, RequestHandler,
          RoleFunctionallity,
-         JWTObject, fs, RoleRepository } from "@modules/index";
+         JWTObject, fs } from "@modules/index";
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@notification/index";
@@ -18,7 +18,7 @@ export default  class UserNotificationController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "INSERT_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
     
         try{
             const repositoryUser = new GenericRepository(User);
@@ -26,12 +26,11 @@ export default  class UserNotificationController extends GenericController{
             const repositoryUserNotification = new GenericRepository(UserNotification);
 
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
             //validate if the role have permission to do this request
             if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.create);
+                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.create);
                 if (roleFunc == null) {
                     return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
                 }
@@ -85,7 +84,7 @@ export default  class UserNotificationController extends GenericController{
 
     async update(reqHandler: RequestHandler): Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
 
         try{
              //This is for use the basic CRUD
@@ -93,8 +92,6 @@ export default  class UserNotificationController extends GenericController{
 
              const repositoryNotification = new GenericRepository(Notification);
 
-             //This is for validate role
-             const roleRepository = new RoleRepository();
              //This is for do validations
              const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
              //This calls the jwt data into JWTObject
@@ -107,7 +104,7 @@ export default  class UserNotificationController extends GenericController{
 
             //If you need to validate the role
             if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.update);
+                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.update);
                 if (roleFunc == null) {
                     return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
                 }
@@ -160,15 +157,14 @@ export default  class UserNotificationController extends GenericController{
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
 
         try{
-            const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
             if(reqHandler.getNeedValidateRole()){
                 const roleFunc : RoleFunctionallity | null = 
-                                    await roleRepository.getPermissionByFuncAndRole(
+                                    await this.roleRepository.getPermissionByFuncAndRole(
                                     jwtData.role, this.controllerObj.getAll);
 
                 if (roleFunc == null) {

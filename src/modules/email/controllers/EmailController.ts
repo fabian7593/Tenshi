@@ -2,9 +2,10 @@ import { HttpAction, Validations } from "@index/index";
 
 import { GenericController, RequestHandler,
          RoleFunctionallity, fs,
-         JWTObject, RoleRepository } from "@modules/index";
+         JWTObject } from "@modules/index";
 
 import { User, UserRepository, sendMail, replaceCompanyInfoEmails } from '@email/index';
+import { default as GenericRepository } from '@generics/Repository/GenericRepository';
 
 const htmlGenericTemplate : string = fs.readFileSync('src/templates/generic_template_email.html', 'utf-8');
 
@@ -14,16 +15,14 @@ export default  class EmailController extends GenericController{
 
     async sendMail(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "SEND_MAIL_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
     
         try{
-            const repository = new UserRepository();
-            const roleRepository = new RoleRepository();
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
             if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
+                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
                 if (roleFunc == null) {
                     return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
                 }
@@ -52,7 +51,7 @@ export default  class EmailController extends GenericController{
     
             try{
 
-                const user = await repository.getUserByEmailParam(emailStructure.email);
+                const user = await (this.repository as UserRepository).getUserByEmailParam(emailStructure.email);
 
                 if(user != undefined && user != null){
                     let htmlBody = replaceCompanyInfoEmails(htmlGenericTemplate);
@@ -78,17 +77,15 @@ export default  class EmailController extends GenericController{
 
     async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "SEND_MAIL_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
 
         try{
-            const repository = new UserRepository();
-            const roleRepository = new RoleRepository();
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
            
 
             if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
+                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
                 if (roleFunc == null) {
                     return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
                 }
@@ -114,7 +111,7 @@ export default  class EmailController extends GenericController{
 
             try{
                 //Execute Action DB
-                const users : User[] = await repository.findByFilters(reqHandler.getFilters()!,
+                const users : User[] = await (this.repository as GenericRepository).findByFilters(reqHandler.getFilters()!,
                                                                 reqHandler.getNeedLogicalRemove());
 
                 if(users != undefined && users != null){

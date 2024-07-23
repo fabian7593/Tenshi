@@ -1,12 +1,12 @@
 import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
           GenericRoutes } from "@modules/index";
-import {  UserDTO, UserController, User } from "@user/index";
+import {  UserDTO, UserController, User, UserRepository } from "@user/index";
 
 class UserRoutes extends GenericRoutes {
 
     constructor() {
-        super(new UserController(User));
+        super(new UserController(User, new UserRepository));
     }
 
     protected initializeRoutes() {

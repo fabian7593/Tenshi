@@ -8,7 +8,7 @@ import {default as config} from "@root/unbreakable-config";
     You can validate the autorization rest in some paths of the appliation rest
 */
 function StartMiddleware(req : Request, res: Response, next: NextFunction) {
-    const httpExec = new HttpAction(res, "StartMiddleware");
+    const httpExec = new HttpAction(res);
     const validation = new Validations(req, res, httpExec);
     let jwtData : JWTObject | null = null;
     let nextMethod = false;
