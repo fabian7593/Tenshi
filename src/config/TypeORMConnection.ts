@@ -1,6 +1,7 @@
 // src/utils/Database.ts
 import { DataSource } from "typeorm";
-import { config, debuggingMessage } from "@index/index";
+import {default as config} from "@root/unbreakable-config";
+import { debuggingMessage } from "@index/index";
 import { User } from "@entity/User";
 import { Role } from "@entity/Role";
 import { RoleFunctionallity } from "@entity/RoleFunctionallity";

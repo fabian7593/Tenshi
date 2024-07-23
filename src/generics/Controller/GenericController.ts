@@ -1,4 +1,4 @@
-import { JWTObject, Validations, HttpAction, config } from "@index/index"
+import { JWTObject, Validations, HttpAction } from "@index/index"
 import { EntityTarget, RequestHandler } from '@generics/index';
 
 import RoleRepository from "@user/repositories/RoleRepository"
@@ -7,6 +7,9 @@ import GenericRepository from '@generics/Repository/GenericRepository';
 import IGenericController from '@generics/Controller/IGenericController';
 import { RoleFunctionallity } from '@entity/RoleFunctionallity';
 import ControllerObject from '@objects/ControllerObject';
+
+import { createControllerObject } from '@helpers/ControllerObjectFactory';
+import {default as config} from "@root/unbreakable-config";
 
 /*
     This class have the necessary methods (CRUDS) to send into the routing
@@ -20,12 +23,11 @@ export default  class GenericController implements IGenericController{
     entityType : EntityTarget<any>;
 
     //We need the type of the entity of ORM, and the controller Obj as well
-    constructor( entityType: EntityTarget<any>, controllerObj: ControllerObject) {
-        this.controllerObj = controllerObj;
+    constructor(entityType: EntityTarget<any>) {
+        this.controllerObj = createControllerObject(entityType);
         this.entityType = entityType;
     }
 
-   
     //This function is for insert
     async insert(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "INSERT_SUCCESS";

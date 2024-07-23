@@ -4,6 +4,7 @@
 //Import libraries 
 import 'module-alias/register';
 import 'reflect-metadata';
+import { container } from './inversify.config';
 import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
@@ -11,13 +12,13 @@ import { default as bodyParser } from 'body-parser';
 import config from '../unbreakable-config';
 
 //Import classes
-import UserRouter from '@user/routers/UserRouter';
-import UdcRouter from '@udc/routers/UdcRouter';
-import NotificationRouter from '@notification/routers/NotificationRouter';
-import UserNotificationRouter from '@notification/routers/UserNotificationRouter';
-import LogRouter from '@log/routers/LogRouter';
-import EmailRouter from '@email/routers/EmailRouter';
-import DocumentRouter from '@document/routers/DocumentRouter';
+import UserRoutes from '@user/routers/UserRoutes';
+import UdcRoutes from '@udc/routers/UdcRoutes';
+import NotificationRoutes from '@index/modules/notification/routers/NotificationRoutes';
+import UserNotificationRoutes from '@index/modules/notification/routers/UserNotificationRoutes';
+import LogRoutes from '@index/modules/log/routers/LogRoutes';
+import EmailRoutes from '@email/routers/EmailRoutes';
+import DocumentRoutes from '@document/routers/DocumentRoutes';
 
 import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLog } from '@utils/logsUtils';
@@ -41,7 +42,7 @@ export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
 
-export { debuggingMessage, insertLog, executeQuery, config };
+export { debuggingMessage, insertLog, executeQuery, container, config };
 
 //*************************************** */
 //              VARIABLES
@@ -71,13 +72,42 @@ app.use(StartMiddleware);
 //              ROUTES
 //*************************************** */
 //Add Routers
-app.use(UserRouter);
-app.use(UdcRouter);
-app.use(NotificationRouter);
-app.use(UserNotificationRouter);
-app.use(LogRouter);
-app.use(EmailRouter);
-app.use(DocumentRouter);
+
+const userRoutes = new UserRoutes();
+const udcRoutes = new UdcRoutes();
+const notificationRoutes = new NotificationRoutes(); 
+const userNotificationRoutes = new UserNotificationRoutes();
+const logRoutes = new LogRoutes();
+const emailRoutes = new EmailRoutes();
+const documentRoutes = new DocumentRoutes();
+
+app.use(userRoutes.getRouter());
+app.use(udcRoutes.getRouter());
+app.use(notificationRoutes.getRouter());
+app.use(userNotificationRoutes.getRouter());
+app.use(logRoutes.getRouter());
+app.use(emailRoutes.getRouter());
+app.use(documentRoutes.getRouter());
+
+
+//dependency injections
+/*const userRoutes = container.get(UserRoutes);
+const udcRoutes = container.get(UdcRoutes);
+const notificationRoutes = container.get(NotificationRoutes);
+const userNotificationRoutes = container.get(UserNotificationRoutes);
+const logRoutes = container.get(LogRoutes);
+const emailRoutes = container.get(EmailRoutes);
+const documentRoutes = container.get(DocumentRoutes);
+
+app.use(userRoutes.getRouter());
+app.use(udcRoutes.getRouter());
+app.use(notificationRoutes.getRouter());
+app.use(userNotificationRoutes.getRouter());
+app.use(logRoutes.getRouter());
+app.use(emailRoutes.getRouter());
+app.use(documentRoutes.getRouter());
+*/
+
 
 //*************************************** */
 //              LISTENER

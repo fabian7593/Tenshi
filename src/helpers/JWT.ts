@@ -1,5 +1,6 @@
-import { JWTObject, config } from '@index/index';
+import { JWTObject } from '@index/index';
 const jwt = require('jsonwebtoken');
+import {default as config} from "@root/unbreakable-config";
 
 /*
  JWT Class is a class for generate access token, refresh token and any type of tokens &&

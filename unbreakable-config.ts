@@ -49,12 +49,21 @@ interface JwtConfig {
     REGISTER_TOKEN: JwtTokenConfig;
 }
 
+interface GeneralFileConfig {
+    MAX_FILE_SIZE: number;
+}
+
 interface AwsConfig {
     BUCKET_NAME: string;
     REGION: string;
     ACCESS_KEY: string;
     SECRET_ACCESS_KEY: string;
     PUBLIC_FOLDER: string;
+}
+
+interface FileConfig {
+    GENERAL: GeneralFileConfig;
+    AWS: AwsConfig;
 }
 
 interface EmailContent {
@@ -77,7 +86,7 @@ interface AppConfig {
     SERVER: ServerConfig;
     DB: DbConfig;
     JWT: JwtConfig;
-    AWS: AwsConfig;
+    FILE: FileConfig;
     EMAIL: EmailConfig;
 }
 

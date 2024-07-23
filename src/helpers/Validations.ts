@@ -1,5 +1,6 @@
-import { Request, Response, HttpAction, JWTObject, config } from '@index/index';
+import { Request, Response, HttpAction, JWTObject } from '@index/index';
 import { getRegex } from "@utils/jsonUtils";
+import {default as config} from "@root/unbreakable-config";
 
 const jwt = require('jsonwebtoken');
 

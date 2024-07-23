@@ -5,6 +5,7 @@ interface ControllerObject {
     getAll: string;
     getById: string;
     controller: string;
+    route: string;
 }
 
 export default ControllerObject;

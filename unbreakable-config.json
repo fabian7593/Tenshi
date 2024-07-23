@@ -48,12 +48,17 @@
             "SECRET_KEY": "44fr2167-1oi8-55ht-3ew1-630184b443f6"
         }
     },
-    "AWS": {
-        "BUCKET_NAME": "bucket-name-777",
-        "REGION": "us-east-2",
-        "ACCESS_KEY": "AKIAZQ3DRSPRNUX52EUI",
-        "SECRET_ACCESS_KEY": "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",
-        "PUBLIC_FOLDER" : ""
+    "FILE":{
+        "GENERAL":{
+            "MAX_FILE_SIZE" : 50
+        },
+        "AWS": {
+            "BUCKET_NAME": "bucket-name-777",
+            "REGION": "us-east-2",
+            "ACCESS_KEY": "AKIAZQ3DRSPRNUX52EUI",
+            "SECRET_ACCESS_KEY": "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",
+            "PUBLIC_FOLDER" : ""
+        }
     },
     "EMAIL" : {
         "SERVICE" : "gmail",

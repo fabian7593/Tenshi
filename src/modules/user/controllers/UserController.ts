@@ -1,6 +1,5 @@
 import { Validations, HttpAction, 
-        sendMail, replaceCompanyInfoEmails, 
-        config } from "@index/index";
+        sendMail, replaceCompanyInfoEmails} from "@index/index";
 
 import { GenericRepository, 
         GenericController, RequestHandler,
@@ -13,6 +12,8 @@ import { UserRepository, encryptPassword,
         generateToken, generateRefreshToken, 
         generateRegisterToken, generateForgotPasswordToken,
         User, UserDTO } from "@user/index";
+        
+import {default as config} from "@root/unbreakable-config";
 
 const templatesDir = path.join(__dirname, '../../../templates');
 
@@ -24,7 +25,7 @@ const jwt = require('jsonwebtoken');
 
 
 export default class UserController extends GenericController{
-  
+
     async update(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
@@ -185,7 +186,7 @@ export default class UserController extends GenericController{
 
 
     //Logic to login user
-    async loginUser(reqHandler: RequestHandler, validateRequiredBodyJsonName : string){
+    async loginUser(reqHandler: RequestHandler){
         const successMessage : string = "LOGIN_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
     

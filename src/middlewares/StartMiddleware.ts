@@ -1,8 +1,7 @@
 
 import { Request, Response, NextFunction,
-        Validations, HttpAction, JWTObject,
-        config } from "@index/index";
-
+        Validations, HttpAction, JWTObject } from "@index/index";
+import {default as config} from "@root/unbreakable-config";
 
 /*
     Start Middleware class has the function to start the rest before the next function

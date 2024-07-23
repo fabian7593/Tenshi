@@ -1,6 +1,6 @@
 import { Validations, HttpAction, 
          sendMail, replaceCompanyInfoEmails,
-         executeQuery, config } from "@index/index";
+         executeQuery } from "@index/index";
 
 import { GenericRepository, 
          GenericController, RequestHandler,
@@ -9,6 +9,8 @@ import { GenericRepository,
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@notification/index";
+
+import {default as config} from "@root/unbreakable-config";
 
 const htmlGenericTemplate : string = fs.readFileSync('src/templates/generic_template_email.html', 'utf-8');
 

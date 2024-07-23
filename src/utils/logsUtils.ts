@@ -1,7 +1,7 @@
 
 import { Log } from '@entity/Log'
 import GenericRepository from '@generics/Repository/GenericRepository';
-import {config} from "@index/index"
+import {default as config} from "@root/unbreakable-config";
 
 /*
     Logs Utils class is for logs in console for debbuging &
