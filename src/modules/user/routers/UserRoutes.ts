@@ -5,7 +5,15 @@ import {  UserDTO, UserController, User, UserRepository } from "@user/index";
 
 class UserRoutes extends GenericRoutes {
 
+    /**
+     * Constructor for the UserRoutes class.
+     * This class is responsible for initializing the routes for the User module.
+     * It creates a new instance of the UserController class, passing in the User entity and
+     * UserRepository as parameters.
+     */
     constructor() {
+        // Call the parent class constructor and pass in a new instance of the UserController
+        // class, along with the User entity and UserRepository as parameters.
         super(new UserController(User, new UserRepository));
     }
 
