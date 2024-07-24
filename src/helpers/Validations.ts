@@ -24,7 +24,7 @@ export default class Validations{
     public validateRequiredFields(listRequiredFields:  string[] | null): Boolean{
        
         let haveAllRequiredFields = true;
-
+        console.log(listRequiredFields);
         if(listRequiredFields != null){
             listRequiredFields.forEach((requireField) => {
                 if (requireField == undefined) {

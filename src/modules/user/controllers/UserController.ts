@@ -26,28 +26,18 @@ export default class UserController extends GenericController{
     async update(reqHandler: RequestHandler) : Promise<any>{
 
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = dependencyContainer.resolve<HttpAction>('HttpAction', reqHandler.getResponse());
+        const httpExec = new HttpAction(reqHandler.getResponse());
     
         try{
-            const validation = dependencyContainer.resolve<Validations>('Validations', reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
             const id = validation.validateIdFromQueryUsers(jwtData);
 
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.update);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            if(!this.validateRegex(reqHandler, validation)){ return; };
     
             //Get data From Body
             const userBody = reqHandler.getAdapter().entityFromPutBody();
-    
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
     
             try{
 
@@ -77,27 +67,12 @@ export default class UserController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.create);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+            if(!this.validateRegex(reqHandler, validation)){ return; };
 
             //Get data From Body
             const userBody = reqHandler.getAdapter().entityFromPostBody();
-    
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
     
             try{
                 //Password encryption
@@ -128,18 +103,8 @@ export default class UserController extends GenericController{
 
             //Get data From Body
             const userBody = reqHandler.getAdapter().entityFromPostBody();
-
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
-    
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; }
+            if(!this.validateRegex(reqHandler, validation)){ return; }
     
             try{
                 //Password encryption
@@ -187,21 +152,11 @@ export default class UserController extends GenericController{
             const userDTO = new UserDTO(reqHandler.getRequest());
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             
-            //validate required fields of body json
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+            if(!this.validateRegex(reqHandler, validation)){ return; };
     
             //Get data From Body
             const userBody = userDTO.userFromBodyLogin();
-    
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
     
             let user;
             try{
@@ -332,8 +287,6 @@ export default class UserController extends GenericController{
             const user = await (this.repository as UserRepository).getUserByEmailParam(email);
 
             if(user != undefined && user != null){
-
-                console.log(email);
                 const forgotUserPasswordToken = generateForgotPasswordToken(email); 
                 user.forgot_password_token = forgotUserPasswordToken!;
     
@@ -353,7 +306,6 @@ export default class UserController extends GenericController{
             }
             
         } catch(error : any){
-            console.log(error);
             return await httpExec.generalError(error);
         }
     }

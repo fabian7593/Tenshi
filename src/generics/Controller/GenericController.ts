@@ -48,36 +48,13 @@ export default  class GenericController implements IGenericController{
             //This calls the jwt data into JWTObject
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.create);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-            //validate required fields of body json
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
-
-            //validate the regex of any fields
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
-
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            this.validateRequiredFields(reqHandler, validation);
+            this.validateRegex(reqHandler, validation);
+           
             //Get data From Body
-            const body = reqHandler.getAdapter().entityFromPostBody();
-
-            //if the entity have user Id and the user sends from adapter to null
-            //take the information of jwt id, and set into userId field.
-            if('userId' in body){
-                body.userId = jwtData.id;
-            }
+            let body = reqHandler.getAdapter().entityFromPostBody();
+            body = this.setUserId(body, jwtData.id);
 
             try{
                 //Execute Action DB
@@ -104,47 +81,15 @@ export default  class GenericController implements IGenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
              //get the id from URL params
-            const id = validation.validateIdFromQuery();
-            if(id == null){
-                return httpExec.paramsError();
-            }
+            const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.update);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-            //validate the regex of any fields
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
+            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+            this.validateRegex(reqHandler, validation);
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
-            let userId : number | null= null;
-            if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != "ADMIN"){
-                    userId = jwtData.id;
-                }
-
-                //call the get by id, if the user ID of the entity is different  to user ID of JWT
-                //the user request dont have this authorization
-                const entity = await this.repository.findById(id, reqHandler.getNeedLogicalRemove());
-
-                if(entity != undefined && entity != null){
-                    if(userId != null && entity.userId != userId){
-                        return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                    }
-                }else{
-                    return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
-                }
-            }
-
+            await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
+            
             //Get data From Body
             const body = reqHandler.getAdapter().entityFromPutBody();
 
@@ -173,40 +118,10 @@ export default  class GenericController implements IGenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
              //get the id from URL params
-            const id = validation.validateIdFromQuery();
-            
-            if(id == null){
-                return httpExec.paramsError();
-            }
+             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.delete);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-             //If you need to validate if the user id of the table 
-            //should be the user id of the user request (JWT)
-            let userId : number | null= null;
-            if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != "ADMIN"){
-                    userId = jwtData.id;
-                }
-
-                //call the get by id, if the user ID of the entity is different  to user ID of JWT
-                //the user request dont have this authorization
-                const entity = await this.repository.findById(id, reqHandler.getNeedLogicalRemove());
-
-                if(entity != undefined && entity != null){
-                    if(userId != null && entity.userId != userId){
-                        return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                    }
-                }else{
-                    return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
-                }
-            }
+             await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
 
 
             try{
@@ -238,41 +153,10 @@ export default  class GenericController implements IGenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
              //get the id from URL params
-            const id = validation.validateIdFromQuery();
-            if(id == null){
-                return httpExec.paramsError();
-            }
+             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-           
-            //If you need to validate if the user id of the table 
-            //should be the user id of the user request (JWT)
-            let userId : number | null= null;
-            if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != "ADMIN"){
-                    userId = jwtData.id;
-                }
-
-                //call the get by id, if the user ID of the entity is different  to user ID of JWT
-                //the user request dont have this authorization
-                const entity = await this.repository.findById(id, reqHandler.getNeedLogicalRemove());
-
-                if(entity != undefined && entity != null){
-                    if(userId != null && entity.userId != userId){
-                        return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                    }
-                }else{
-                    return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
-                }
-            }
-
+             await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
 
             try{
                 //Execute Action DB
@@ -297,39 +181,11 @@ export default  class GenericController implements IGenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
              //get the code for Url Params
-            const code = validation.validateCodeFromQuery();
-            if(code == null){
-                return httpExec.paramsError();
-            }
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            const code = this.getCodeFromQuery(validation, httpExec) as string;
 
-            //If you need to validate if the user id of the table 
-            //should be the user id of the user request (JWT)
-            let userId : number | null= null;
-            if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != "ADMIN"){
-                    userId = jwtData.id;
-                }
-
-                //call the get by id, if the user ID of the entity is different  to user ID of JWT
-                //the user request dont have this authorization
-                const entity = await this.repository.findByCode(code, reqHandler.getNeedLogicalRemove());
-
-                if(entity != undefined && entity != null){
-                    if(userId != null && entity.userId != userId){
-                        return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                    }
-                }else{
-                    return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
-                }
-            }
+            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+            await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, code);
 
             try{
                 //Execute Action DB
@@ -351,16 +207,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = 
-                                    await this.roleRepository.getPermissionByFuncAndRole(
-                                    jwtData.role, this.controllerObj.getAll);
-
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
 
             try{
                 //get by url params the page and the size of the response
@@ -390,14 +237,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-           
-
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
 
             if(reqHandler.getFilters() == null){
                 return httpExec.paramsError();
@@ -424,5 +264,111 @@ export default  class GenericController implements IGenericController{
         }catch(error : any){
             return await httpExec.generalError(error);
         }
+    }
+
+
+
+
+
+
+
+     /**
+      * This function validates the role of the user.
+      * 
+      * @param {RequestHandler} reqHandler - The request handler object.
+      * @param {string} role - The role of the user.
+      * @param {string} action - The action to be performed.
+      * @param {HttpAction} httpAction - The HTTP action object.
+      * @return {Promise<any>} - A promise that resolves to the result of the validation.
+      */
+     protected async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
+        /**
+         * Validates the role of the user.
+         * If the user's role is required to be validated, it checks if the user has the permission for the specified action.
+         * If the user does not have the permission, it returns an unauthorized error.
+         * 
+         * @returns {Promise<any>} A promise that resolves to the result of the validation.
+         */
+        if(reqHandler.getNeedValidateRole()){
+            // Get the permission for the specified action and role from the role repository.
+            const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(role, action);
+            // If the user does not have the permission, return an unauthorized error.
+            if (roleFunc == null) {
+                return httpAction.unauthorizedError("ROLE_AUTH_ERROR");
+            }
+        }
+    }
+
+    protected validateRequiredFields(reqHandler: RequestHandler, validation: Validations){
+        //validate required fields of body json
+        if(reqHandler.getRequiredFieldsList() != null){
+            if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected validateRegex(reqHandler: RequestHandler, validation: Validations){
+        //validate the regex of any fields
+        if(reqHandler.getRegexValidatorList() != null){
+            if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected setUserId(body: any, id: number): any{
+        //if the entity have user Id and the user sends from adapter to null
+        //take the information of jwt id, and set into userId field.
+        if(!('userId' in body)){
+            body.userId = id;
+        }
+        return body;
+    }
+
+    protected async  validateUserIdByIdOrCodeEntity(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
+        let userId : number | null= null;
+        if(reqHandler.getRequireValidWhereByUserId()){
+            if(jwtData.role != "ADMIN"){
+                userId = jwtData.id;
+            }
+
+            //call the get by id, if the user ID of the entity is different  to user ID of JWT
+            //the user request dont have this authorization
+            let entity = null;
+            if (typeof idOrCode === 'number'){
+                entity = await this.repository.findById(idOrCode, reqHandler.getNeedLogicalRemove());
+            }else{
+                entity = await this.repository.findByCode(idOrCode, reqHandler.getNeedLogicalRemove());
+            }
+            
+            if(entity != undefined && entity != null){
+                if(userId != null && entity.userId != userId){
+                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
+                }
+            }else{
+                return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
+            }
+        }
+    }
+
+    protected getIdFromQuery(validation: Validations, httpExec: HttpAction){
+        const id = validation.validateIdFromQuery();
+        if(id == null){
+            return httpExec.paramsError();
+        }
+        return id;
+    }
+
+    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction){
+        const code = validation.validateCodeFromQuery();
+        if(code == null){
+            return httpExec.paramsError();
+        }
+        return code;
     }
 }

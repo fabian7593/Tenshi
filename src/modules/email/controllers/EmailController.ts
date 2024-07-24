@@ -21,19 +21,9 @@ export default  class EmailController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-              //validate required fields of body json
-              if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            this.validateRequiredFields(reqHandler, validation);
+            this.validateRegex(reqHandler, validation);
 
             //Get data From Body
             const emailStructure  = {
@@ -42,13 +32,6 @@ export default  class EmailController extends GenericController{
                 body: reqHandler.getRequest().body.body_message
             }
             
-    
-            if(reqHandler.getRegexValidatorList() != null){
-                if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
-                    return;
-                }
-            }
-    
             try{
 
                 const user = await (this.repository as UserRepository).getUserByEmailParam(emailStructure.email);
@@ -82,26 +65,14 @@ export default  class EmailController extends GenericController{
         try{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-           
 
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.getById);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
 
             if(reqHandler.getFilters() == null){
                 return httpExec.paramsError();
             }
 
-            //validate required fields of body json
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
-
+            this.validateRequiredFields(reqHandler, validation);
 
             const emailStructure  = {
                 subject: reqHandler.getRequest().body.subject,

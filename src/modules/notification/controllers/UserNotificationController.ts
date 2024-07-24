@@ -28,20 +28,8 @@ export default  class UserNotificationController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            //validate if the role have permission to do this request
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.create);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
-
-            //validate required fields of body json
-            if(reqHandler.getRequiredFieldsList() != null){
-                if(!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())){
-                    return;
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            this.validateRequiredFields(reqHandler, validation);
 
              //Get data From some tables
              const userNotifications : UserNotification = reqHandler.getAdapter().entityFromPostBody();
@@ -97,18 +85,9 @@ export default  class UserNotificationController extends GenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
              //get the id from URL params
-            const id = validation.validateIdFromQuery();
-            if(id == null){
-                return httpExec.paramsError();
-            }
+             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            //If you need to validate the role
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(jwtData.role, this.controllerObj.update);
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
@@ -162,15 +141,7 @@ export default  class UserNotificationController extends GenericController{
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = 
-                                    await this.roleRepository.getPermissionByFuncAndRole(
-                                    jwtData.role, this.controllerObj.getAll);
-
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
 
             let userReceive : string | null = null;
             if(reqHandler.getRequest().query['user_receive'] != undefined){

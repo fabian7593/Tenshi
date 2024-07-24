@@ -12,18 +12,8 @@ export default  class LogController extends GenericController{
         const httpExec = new HttpAction(reqHandler.getResponse());
 
         try{
-            const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = 
-                                    await roleRepository.getPermissionByFuncAndRole(
-                                    jwtData.role, this.controllerObj.getAll);
-
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
 
             let appGuid : string | null = null;
             if(reqHandler.getRequest().query['app_guid'] != undefined){
