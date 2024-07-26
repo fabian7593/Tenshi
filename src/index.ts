@@ -81,21 +81,13 @@ app.use(StartMiddleware);
 //*************************************** */
 //Add Routers
 
-const userRoutes = new UserRoutes();
-const udcRoutes = new UdcRoutes();
-const notificationRoutes = new NotificationRoutes(); 
-const userNotificationRoutes = new UserNotificationRoutes();
-const logRoutes = new LogRoutes();
-const emailRoutes = new EmailRoutes();
-const documentRoutes = new DocumentRoutes();
-
-app.use(userRoutes.getRouter());
-app.use(udcRoutes.getRouter());
-app.use(notificationRoutes.getRouter());
-app.use(userNotificationRoutes.getRouter());
-app.use(logRoutes.getRouter());
-app.use(emailRoutes.getRouter());
-app.use(documentRoutes.getRouter());
+app.use(new UserRoutes().getRouter());
+app.use(new UdcRoutes().getRouter());
+app.use(new NotificationRoutes().getRouter());
+app.use(new UserNotificationRoutes().getRouter());
+app.use(new LogRoutes().getRouter());
+app.use(new EmailRoutes().getRouter());
+app.use(new DocumentRoutes().getRouter());
 
 
 

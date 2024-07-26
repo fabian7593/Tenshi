@@ -1,8 +1,6 @@
 import { HttpAction, Validations } from "@index/index";
 
-import { GenericController, RequestHandler,
-         RoleFunctionallity, fs,
-         JWTObject } from "@modules/index";
+import { GenericController, RequestHandler, fs,JWTObject, getCurrentFunctionName } from "@modules/index";
 
 import { User, UserRepository, sendMail, replaceCompanyInfoEmails } from '@email/index';
 import { default as GenericRepository } from '@generics/Repository/GenericRepository';
@@ -21,9 +19,9 @@ export default  class EmailController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
-            this.validateRequiredFields(reqHandler, validation);
-            this.validateRegex(reqHandler, validation);
+            if(await this.validateRole(reqHandler,  jwtData.role, "SEND_MAIL", httpExec) !== true){ return; }
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+            if(!this.validateRegex(reqHandler, validation)){ return; };
 
             //Get data From Body
             const emailStructure  = {
@@ -49,16 +47,16 @@ export default  class EmailController extends GenericController{
                     return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
                 }
             }catch(error : any){
-                return await httpExec.dynamicError("ERROR",error);
+                return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
 
 
-    async getByFilters(reqHandler: RequestHandler): Promise<any> {
+    async sendMailByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "SEND_MAIL_SUCCESS";
         const httpExec = new HttpAction(reqHandler.getResponse());
 
@@ -66,14 +64,13 @@ export default  class EmailController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
-
             if(reqHandler.getFilters() == null){
                 return httpExec.paramsError();
             }
 
-            this.validateRequiredFields(reqHandler, validation);
-
+            if(await this.validateRole(reqHandler,  jwtData.role, "SEND_MAIL", httpExec) !== true){ return; }
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+          
             const emailStructure  = {
                 subject: reqHandler.getRequest().body.subject,
                 body: reqHandler.getRequest().body.body_message
@@ -82,7 +79,7 @@ export default  class EmailController extends GenericController{
 
             try{
                 //Execute Action DB
-                const users : User[] = await (this.repository as GenericRepository).findByFilters(reqHandler.getFilters()!,
+                const users : User[] = await (this.repository as UserRepository).findByFilters(reqHandler.getFilters()!,
                                                                 reqHandler.getNeedLogicalRemove());
 
                 if(users != undefined && users != null){
@@ -102,10 +99,10 @@ export default  class EmailController extends GenericController{
                 return httpExec.successAction(null, successMessage);
 
             }catch(error : any){
-                return await httpExec.dynamicError("ERROR",error);
+                return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 }

@@ -9,7 +9,7 @@
         "LANDING_PAGE": "https://www.example.com"
     },
     "GENERAL":{
-        "IS_DEBUGGING": true,
+        "IS_DEBUGGING": false,
         "FAIL_LOGIN_MAX_NUMBER": 3
     },
     "HTTP_REQUEST":{
@@ -19,7 +19,7 @@
     "SERVER" : {
         "PORT": 3000,
         "SECRET_API_KEY": "8170fcb2-ef45-4173-9a1b-f682d38ddae9",
-        "VALIDATE_API_KEY" : false,
+        "VALIDATE_API_KEY" : true,
         "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000"
     },
     "DB": {
@@ -47,27 +47,27 @@
             "EXPIRE": null,
             "SECRET_KEY": "44fr2167-1oi8-55ht-3ew1-630184b443f6"
         }
-    },
-    "FILE":{
+    },"FILE":{
         "GENERAL":{
             "MAX_FILE_SIZE" : 50
         },
         "AWS": {
-            "BUCKET_NAME": "bu",
+            "BUCKET_NAME": "b",
             "REGION": "us-east-2",
             "ACCESS_KEY": "",
-            "SECRET_ACCESS_KEY": "4F+C",
+            "SECRET_ACCESS_KEY": "4FFP+5e+1nWmWK6B+C",
             "PUBLIC_FOLDER" : ""
         }
     },
     "EMAIL" : {
         "SERVICE" : "gmail",
-        "AUTH_USER": "test@gmail.com",
+        "AUTH_USER": "",
         "AUTH_PASSWORD": "",
-        "EMAIL_FROM": "test@gmail.com",
+        "EMAIL_FROM": "@gmail.com",
         "CONTENT": {
             "REGISTER_SUBJECT" : "Account Verification",
             "FORGOT_PASS_SUBJECT" : "Forgot Password"
         }
     }
 }
+

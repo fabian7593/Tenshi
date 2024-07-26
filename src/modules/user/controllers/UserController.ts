@@ -1,13 +1,10 @@
-import { dependencyContainer, HttpAction, Validations,
+import { HttpAction, Validations,
         sendMail, replaceCompanyInfoEmails} from "@index/index";
 
-import { GenericController, RequestHandler,
-        RoleFunctionallity,
-        JWTObject, fs, path } from "@modules/index";
+import { GenericController, RequestHandler,JWTObject, fs, path } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
-        decryptPassword,
-        generateToken, generateRefreshToken, 
+        decryptPassword, generateToken, generateRefreshToken, 
         generateRegisterToken, generateForgotPasswordToken,
         UserDTO } from "@user/index";
         
@@ -33,7 +30,7 @@ export default class UserController extends GenericController{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
             const id = validation.validateIdFromQueryUsers(jwtData);
 
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
             if(!this.validateRegex(reqHandler, validation)){ return; };
     
             //Get data From Body
@@ -51,10 +48,11 @@ export default class UserController extends GenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -67,7 +65,7 @@ export default class UserController extends GenericController{
             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
             if(!this.validateRegex(reqHandler, validation)){ return; };
 
@@ -84,10 +82,11 @@ export default class UserController extends GenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -133,12 +132,11 @@ export default class UserController extends GenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, null, 
+                    reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-
-            console.log(error.message);
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -199,10 +197,11 @@ export default class UserController extends GenericController{
                 }
     
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, null, 
+                    reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -233,7 +232,7 @@ export default class UserController extends GenericController{
             const accessToken = generateToken(jwtObj);   
             return httpExec.successAction(userDTO.refreshToResponse(accessToken), successMessage);
         } catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -270,7 +269,7 @@ export default class UserController extends GenericController{
             
             
         } catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -306,7 +305,7 @@ export default class UserController extends GenericController{
             }
             
         } catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -324,9 +323,9 @@ export default class UserController extends GenericController{
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
 
-            return reqHandler.getResponse().redirect( config.COMPANY.FRONT_END_HOST + forgotPassToken);
+            return reqHandler.getResponse().redirect( config.COMPANY.FRONT_END_HOST + config.COMPANY.RESET_PASSWORD_URL+ forgotPassToken);
         } catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -346,19 +345,24 @@ export default class UserController extends GenericController{
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
 
-            const user = await (this.repository as UserRepository).getUserByEmailParam(verify.email!);
+            try{
+                const user = await (this.repository as UserRepository).getUserByEmailParam(verify.email!);
 
-            if(user != undefined && user != null){
+                if(user != undefined && user != null){
 
-                user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
-                await (this.repository as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
-                return httpExec.successAction(user.email, "RESET_PASSWORD");
-            }else{
-                return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                    user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
+                    await (this.repository as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
+                    return httpExec.successAction(user.email, "RESET_PASSWORD");
+                }else{
+                    return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                }
+            }catch(error : any){
+                return await httpExec.databaseError(error, null, 
+                    reqHandler.getMethod(), this.controllerObj.controller);
             }
             
         } catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 }

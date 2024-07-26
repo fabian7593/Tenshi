@@ -13,7 +13,7 @@ export { default as IAdapterFromBody } from "@generics/Adapter/IAdapterFromBody"
 //Objects and utils
 export { default as JWTObject } from "@objects/JWTObject";
 export { default as ControllerObject } from "@objects/ControllerObject";
-export { getUrlParam, toSnakeCase } from "@utils/generalUtils";
+export { getUrlParam, toSnakeCase, getCurrentFunctionName } from "@utils/generalUtils";
 
 //Entity
 //role

@@ -64,7 +64,7 @@ class EmailRoutes extends GenericRoutes {
                                     .setFilters(options)
                                     .build();
 
-            (this.controller as EmailController).getByFilters(requestHandler);
+            (this.controller as EmailController).sendMailByFilters(requestHandler);
         });
     }
 }

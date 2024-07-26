@@ -59,7 +59,7 @@ export default class HttpAction{
     async databaseError(error : any, id: string | null = null, method : string = "", controller : string = "") {
         const status = getStatus("ERROR");
         await insertLog(method, controller, error.message, 
-                        status.httpStatus, "ERROR", id, 
+                        status.httpStatus, "DATABASE_ERROR", id, 
                         getMessage("DATA_BASE_ERROR"));
 
         const errorJson =  getErrorDBbySqlState(error.message);

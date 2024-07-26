@@ -22,32 +22,28 @@ INSERT INTO role_functionallity (role_code, func_type, function_code, screen_cod
 ('ADMIN', 'D', 'CREATE_NEW_PROJECT_DELETE', 'CREATE_NEW_PROJECT', 'Delete new project');
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
-('ADMIN', 'R', 'USER_LOGIN', null, null),
 ('ADMIN', 'R', 'USER_GET_BY_ID', null, null),
-('ADMIN', 'C', 'USERS_CREATE', null, 'Create user'),
-('ADMIN', 'R', 'USERS_READ', null, 'Read user'),
-('ADMIN', 'U', 'USERS_UPDATE', null, 'Update user'),
-('ADMIN', 'D', 'USERS_DELETE', null, 'Delete user'),
-('ADMIN', 'C', 'UDC_CREATE', null, null),
-('ADMIN', 'U', 'UDC_UPDATE', null, null),
-('ADMIN', 'D', 'UDC_DELETE', null, null),
-('ADMIN', 'R', 'UDC_READ', null, null), -- works for everything
-('ADMIN', 'R', 'UDC_GET_BY_ID', null, null),-- WORKS FOR EVERYTHING
-('ADMIN', 'R', 'UDC_GET_BY_CODE', null, null); -- WORKS FOR EVERYTHING
+('ADMIN', 'C', 'USER_CREATE', null, 'Create user'),
+('ADMIN', 'R', 'USER_GET_ALL', null, 'Read user'),
+('ADMIN', 'U', 'USER_UPDATE', null, 'Update user'),
+('ADMIN', 'D', 'USER_DELETE', null, 'Delete user'),
+-- udc
+('ADMIN', 'C', 'UNIT_DYNAMIC_CENTRAL_CREATE', null, null),
+('ADMIN', 'U', 'UNIT_DYNAMIC_CENTRAL_UPDATE', null, null),
+('ADMIN', 'D', 'UNIT_DYNAMIC_CENTRAL_DELETE', null, null),
+('ADMIN', 'R', 'UNIT_DYNAMIC_CENTRAL_GET_ALL', null, null), -- works for everything
+('ADMIN', 'R', 'UNIT_DYNAMIC_CENTRAL_GET_BY_ID', null, null); -- WORKS FOR EVERYTHING
 
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
-('ADMIN', 'R', 'DOCUMENT_GET_BY_NAME',  null, null),
+('ADMIN', 'R', 'DOCUMENT_GET_BY_ID',  null, null),
 ('ADMIN', 'C', 'DOCUMENT_CREATE',  null, null),
 ('ADMIN', 'U', 'DOCUMENT_UPDATE',  null, null),
 ('ADMIN', 'D', 'DOCUMENT_DELETE',  null, null),
-('ADMIN', 'R', 'DOCUMENT_READ', null, null);
-
+('ADMIN', 'R', 'DOCUMENT_GET_ALL', null, null);
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
-('ADMIN', 'C', 'EMAIL_SEND_BY_USER',  null, null),
-('ADMIN', 'C', 'EMAIL_SEND_BY_ALL_USERS',  null, null);
-
+('ADMIN', 'C', 'SEND_MAIL',  null, null);
 
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
@@ -55,18 +51,21 @@ INSERT INTO role_functionallity (role_code, func_type, function_code, screen_cod
 ('ADMIN', 'C', 'NOTIFICATION_CREATE',  null, null),
 ('ADMIN', 'U', 'NOTIFICATION_UPDATE',  null, null),
 ('ADMIN', 'D', 'NOTIFICATION_DELETE',  null, null),
-('ADMIN', 'R', 'NOTIFICATION_READ', null, null);
+('ADMIN', 'R', 'NOTIFICATION_GET_ALL', null, null);
 
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
-('ADMIN', 'C', 'USER_NOTIFICATION_CREATE',  null, null);
+('ADMIN', 'C', 'USER_NOTIFICATION_CREATE',  null, null),
+('ADMIN', 'U', 'USER_NOTIFICATION_UPDATE',  null, null),
+('ADMIN', 'D', 'USER_NOTIFICATION_DELETE',  null, null),
+('ADMIN', 'R', 'USER_NOTIFICATION_GET_BY_ID', null, null);
 
 INSERT INTO role_functionallity (role_code, func_type, function_code, screen_code, description) VALUES 
 ('ADMIN', 'R', 'LOG_GET_BY_ID',  null, null),
 ('ADMIN', 'C', 'LOG_CREATE',  null, null),
 ('ADMIN', 'U', 'LOG_UPDATE',  null, null),
 ('ADMIN', 'D', 'LOG_DELETE',  null, null),
-('ADMIN', 'R', 'LOG_READ', null, null);
+('ADMIN', 'R', 'LOG_GET_ALL', null, null);
 
 
 

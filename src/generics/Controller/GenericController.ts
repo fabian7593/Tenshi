@@ -27,6 +27,8 @@ export default  class GenericController implements IGenericController{
     //We need the type of the entity of ORM, and the controller Obj as well
     constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null) {
         this.controllerObj = createControllerObject(entityType);
+
+        console.log( this.controllerObj);
         this.entityType = entityType;
         this.roleRepository = new RoleRepository();
         if(repositoryClass == null){
@@ -48,9 +50,9 @@ export default  class GenericController implements IGenericController{
             //This calls the jwt data into JWTObject
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
 
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
-            this.validateRequiredFields(reqHandler, validation);
-            this.validateRegex(reqHandler, validation);
+            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+            if(!this.validateRegex(reqHandler, validation)){ return; };
            
             //Get data From Body
             let body = reqHandler.getAdapter().entityFromPostBody();
@@ -63,10 +65,11 @@ export default  class GenericController implements IGenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(createdEntity), successMessage);
 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 
@@ -83,8 +86,8 @@ export default  class GenericController implements IGenericController{
              //get the id from URL params
             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
-            this.validateRegex(reqHandler, validation);
+            if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
+            if(!this.validateRegex(reqHandler, validation)){ return; };
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
@@ -100,10 +103,11 @@ export default  class GenericController implements IGenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 
@@ -120,7 +124,7 @@ export default  class GenericController implements IGenericController{
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-             await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.delete, httpExec) !== true){ return; }
              await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
 
 
@@ -135,10 +139,11 @@ export default  class GenericController implements IGenericController{
                 }
                 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 
@@ -155,7 +160,7 @@ export default  class GenericController implements IGenericController{
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-             await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
              await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
 
             try{
@@ -164,10 +169,11 @@ export default  class GenericController implements IGenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 
@@ -184,7 +190,7 @@ export default  class GenericController implements IGenericController{
 
             const code = this.getCodeFromQuery(validation, httpExec) as string;
 
-            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+            if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, code);
 
             try{
@@ -193,10 +199,11 @@ export default  class GenericController implements IGenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -207,7 +214,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+            if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getAll, httpExec) !== true){ return; }
 
             try{
                 //get by url params the page and the size of the response
@@ -223,10 +230,11 @@ export default  class GenericController implements IGenericController{
                 const entities = await this.repository.findAll(reqHandler.getNeedLogicalRemove(), page, size);
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 
@@ -237,7 +245,7 @@ export default  class GenericController implements IGenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.create, httpExec);
+            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec);
 
             if(reqHandler.getFilters() == null){
                 return httpExec.paramsError();
@@ -259,10 +267,11 @@ export default  class GenericController implements IGenericController{
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
 
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
 
@@ -297,6 +306,8 @@ export default  class GenericController implements IGenericController{
                 return httpAction.unauthorizedError("ROLE_AUTH_ERROR");
             }
         }
+
+        return true;
     }
 
     protected validateRequiredFields(reqHandler: RequestHandler, validation: Validations){
@@ -313,7 +324,7 @@ export default  class GenericController implements IGenericController{
     protected validateRegex(reqHandler: RequestHandler, validation: Validations){
         //validate the regex of any fields
         if(reqHandler.getRegexValidatorList() != null){
-            if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
+            if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != (null && undefined)){
                 return false;
             }
         }

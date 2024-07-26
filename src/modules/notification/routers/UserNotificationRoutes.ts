@@ -1,14 +1,13 @@
 import { Request, Response, GenericRoutes,
-         RequestHandler, RequestHandlerBuilder,
-         GenericController} from "@modules/index";
-
+         RequestHandler, RequestHandlerBuilder} from "@modules/index";
+import { default as UserNotificationController } from '@notification/controllers/UserNotificationController';
 import { UserNotification, UserNotificationDTO } from '@notification/index';
 import { injectable } from 'inversify';
 
 @injectable()
 class UserNotificationRoutes extends GenericRoutes {
     constructor() {
-        super(new GenericController(UserNotification));
+        super(new UserNotificationController(UserNotification));
     }
 
     protected initializeRoutes() {

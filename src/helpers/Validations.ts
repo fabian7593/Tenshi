@@ -24,7 +24,6 @@ export default class Validations{
     public validateRequiredFields(listRequiredFields:  string[] | null): Boolean{
        
         let haveAllRequiredFields = true;
-        console.log(listRequiredFields);
         if(listRequiredFields != null){
             listRequiredFields.forEach((requireField) => {
                 if (requireField == undefined) {
@@ -42,7 +41,7 @@ export default class Validations{
         return haveAllRequiredFields;
     }
 
-    //This function validate multiple Regex
+//This function validate multiple Regex
     public validateMultipleRegex (listRegex: [string, string][] | null)
     {
         //Validate just in production
@@ -50,23 +49,20 @@ export default class Validations{
 
             if(listRegex != null){
                 for (const [listKey, value] of listRegex) {
-                
                     const regexObject = getRegex(listKey);
                     let regexResult = null;
     
-                    if(value != null){
+                    if(value != null && value != undefined){
                         //validate the word, if has an error, validate Regex return a error validation
                         regexResult = this.validateRegex(value, regexObject.regex, regexObject.message);
                     }
                      
-                    //return the error validatiokn
-                    if(regexResult != null){
+                    if(regexResult != null && regexResult != undefined){
                         return regexResult;
                     }
                 }
             }
             
-        //anyway return null
             return null;
         }else{
             return null;
@@ -81,7 +77,7 @@ export default class Validations{
             // Valid format
             return null;
         } else {
-            this.httpAction.dynamicError("REGEX", message);
+            return this.httpAction.dynamicError("REGEX", message);
         }
     }
  
@@ -114,7 +110,7 @@ export default class Validations{
                 }
             }
         }catch(error : any){
-            this.httpAction.generalError(error);
+            this.httpAction.generalError(error, "validateRequireJWT", "Validations");
         }
     
         return returnJwt;
@@ -153,7 +149,7 @@ export default class Validations{
                 }
             }
         }catch(error : any){
-            this.httpAction.generalError(error);
+            this.httpAction.generalError(error, "validateRequireSecretApiKey", "Validations");
         }
     
         return varReturn;

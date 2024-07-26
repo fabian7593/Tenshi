@@ -1,8 +1,6 @@
 import { HttpAction, executeQuery } from "@index/index";
 
-import { GenericController, RequestHandler,
-         RoleFunctionallity,
-         JWTObject, RoleRepository } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject, getCurrentFunctionName } from "@modules/index";
 import {default as config} from "@root/unbreakable-config";
 
 export default  class LogController extends GenericController{
@@ -13,7 +11,7 @@ export default  class LogController extends GenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-            await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec);
+            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
 
             let appGuid : string | null = null;
             if(reqHandler.getRequest().query['app_guid'] != undefined){
@@ -54,10 +52,11 @@ export default  class LogController extends GenericController{
                 //const entities = await this.getAllUserNotifications();
                 return httpExec.successAction(data, successMessage);
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 

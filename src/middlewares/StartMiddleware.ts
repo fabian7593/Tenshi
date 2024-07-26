@@ -12,15 +12,15 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     const validation = new Validations(req, res, httpExec);
     let jwtData : JWTObject | null = null;
     let nextMethod = false;
+
     
     //The endpoints that doesnt needs JWT
     if (req.path != '/user/login' && 
-        req.path != '/user/add' &&
         !req.path.includes('refresh_token') &&
         !req.path.includes('register') &&
         !req.path.includes('confirmation_register') &&
         !req.path.includes('forgot_password') &&
-        !req.path.includes('verify_forgot_pass') &&
+        !req.path.includes('verify_forgot_password') &&
         !req.path.includes('reset_password') 
     ){
         //TODO just for testing
@@ -45,11 +45,18 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     }
 
     if(config.SERVER.VALIDATE_API_KEY){
-        if(validation.validateRequireSecretApiKey() === true){
-            nextMethod = true;
-        }else{
-            nextMethod = false;
-            return; 
+        if (
+            !req.path.includes('confirmation_register') &&
+            !req.path.includes('forgot_password') &&
+            !req.path.includes('verify_forgot_password') &&
+            !req.path.includes('reset_password') 
+        ){
+            if(validation.validateRequireSecretApiKey() === true){
+                nextMethod = true;
+            }else{
+                nextMethod = false;
+                return; 
+            }
         }
     }
 
