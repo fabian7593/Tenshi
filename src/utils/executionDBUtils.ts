@@ -16,8 +16,6 @@ export async function executeQuery<T>(
 
     try {
         conn = await pool.getConnection();
-
-       // console.log(await executeAction(conn));
         return await executeAction(conn);
 
     } catch (error : any) {

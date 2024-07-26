@@ -22,6 +22,7 @@
      "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
      "baseUrl": "./src",
       "paths": {
+        "@root/*": ["../*"],
         "@index/*": ["./*"],
         "@templates/*": ["templates/*"],
         "@modules/*": ["modules/*"],
@@ -33,6 +34,7 @@
         "@entity/*": ["entity/*"],
         "@data/*": ["data/json/*"],
         "@config/*": ["config/*"],
+        "@patterns/*": ["designPatterns/*"],
 
         "@user/*": ["modules/user/*"],
         "@udc/*": ["modules/udc/*"],

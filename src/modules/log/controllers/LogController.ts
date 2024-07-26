@@ -1,28 +1,17 @@
-import { HttpAction, executeQuery, config } from "@index/index";
+import { HttpAction, executeQuery } from "@index/index";
 
-import { GenericController, RequestHandler,
-         RoleFunctionallity,
-         JWTObject, RoleRepository } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject, getCurrentFunctionName } from "@modules/index";
+import {default as config} from "@root/unbreakable-config";
 
 export default  class LogController extends GenericController{
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse(), this.controllerObj.controller, reqHandler.getMethod());
+        const httpExec = new HttpAction(reqHandler.getResponse());
 
         try{
-            const roleRepository = new RoleRepository();
             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
-
-            if(reqHandler.getNeedValidateRole()){
-                const roleFunc : RoleFunctionallity | null = 
-                                    await roleRepository.getPermissionByFuncAndRole(
-                                    jwtData.role, this.controllerObj.getAll);
-
-                if (roleFunc == null) {
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
-                }
-            }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
 
             let appGuid : string | null = null;
             if(reqHandler.getRequest().query['app_guid'] != undefined){
@@ -63,10 +52,11 @@ export default  class LogController extends GenericController{
                 //const entities = await this.getAllUserNotifications();
                 return httpExec.successAction(data, successMessage);
             }catch(error : any){
-                return await httpExec.databaseError(error);
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.controllerObj.controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
      }
 

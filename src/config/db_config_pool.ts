@@ -1,5 +1,5 @@
 import mariadb from 'mariadb';
-import {config} from "@index/index";
+import {default as config} from "@root/unbreakable-config";
 
 const pool = mariadb.createPool({
   host: config.DB.HOST,

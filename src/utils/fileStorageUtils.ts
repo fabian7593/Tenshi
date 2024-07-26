@@ -1,11 +1,12 @@
 
 import s3 from '@config/awsS3Config';
 import { Document } from '@entity/Document';
-import { config } from '@index/index';
+import {default as config} from "@root/unbreakable-config";
+
 
 export async function uploadFile(file : Express.Multer.File, filename: string) : Promise<any>{
     const params = {
-        Bucket: config.AWS.BUCKET_NAME,
+        Bucket: config.FILE.AWS.BUCKET_NAME,
         Key: filename,
         Body: file.buffer,
         ContentType: file.mimetype, 

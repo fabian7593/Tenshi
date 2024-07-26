@@ -6,13 +6,14 @@ export { FindOneOptions, FindManyOptions, Repository } from "typeorm";
 export { default as RequestHandler } from "@generics/RequestHandler/RequestHandler";
 export { default as RequestHandlerBuilder } from "@generics/RequestHandler/RequestHandlerBuilder";
 export { default as GenericController } from "@generics/Controller/GenericController";
-export { default as ControllerObject } from "@objects/ControllerObject";
 export { default as GenericRepository } from "@generics/Repository/GenericRepository";
+export { default as GenericRoutes } from "@generics/Route/GenericRoutes";
 export { default as IAdapterFromBody } from "@generics/Adapter/IAdapterFromBody";
 
-//Objects
+//Objects and utils
 export { default as JWTObject } from "@objects/JWTObject";
-
+export { default as ControllerObject } from "@objects/ControllerObject";
+export { getUrlParam, toSnakeCase, getCurrentFunctionName } from "@utils/generalUtils";
 
 //Entity
 //role

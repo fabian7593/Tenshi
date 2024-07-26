@@ -10,17 +10,9 @@ import { getErrorDBbySqlState, getStatus, getMessage } from '@utils/jsonUtils';
 */
 export default class HttpAction{
     res: Response;
-    controllerName: string;
-    methodName: string;
 
-    constructor(res: Response, controllerName: string, methodName: string = "") {
+    constructor(res: Response) {
         this.res = res;
-        this.controllerName = controllerName;
-        this.methodName = methodName;
-
-        if(methodName == ""){
-            methodName = controllerName;
-        }
     }
 
     getHtml(htmlContent : string){
@@ -52,10 +44,10 @@ export default class HttpAction{
         );
     }
 
-    async generalError(error : any) {
+    async generalError(error : any, method : string = "", controller : string = "") {
         // Get the message
         const status = getStatus("ERROR");
-        await insertLog(this.methodName, this.controllerName, error.message, 
+        await insertLog(method, controller, error.message, 
                             status.httpStatus, "ERROR", null, 
                             getMessage("ERROR_GENERAL"));
 
@@ -64,10 +56,10 @@ export default class HttpAction{
         ); 
     }
 
-    async databaseError(error : any, id: string | null = null){
+    async databaseError(error : any, id: string | null = null, method : string = "", controller : string = "") {
         const status = getStatus("ERROR");
-        await insertLog(this.methodName, this.controllerName, error.message, 
-                        status.httpStatus, "ERROR", id, 
+        await insertLog(method, controller, error.message, 
+                        status.httpStatus, "DATABASE_ERROR", id, 
                         getMessage("DATA_BASE_ERROR"));
 
         const errorJson =  getErrorDBbySqlState(error.message);
@@ -85,7 +77,6 @@ export default class HttpAction{
     }
 
     validationError(errorName:string){
-        console.log("validation");
         const status = getStatus("VALIDATIONS");
         const message = getMessage(errorName);
         return this.res.status(status.httpStatus).json(
