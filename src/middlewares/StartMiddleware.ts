@@ -39,11 +39,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         nextMethod = true;
     }
     
-    //Set in local variables the JWT
-    req.app.locals = {
-        jwtData
-    }
-
+    //The endpoints that needs SECRET API KEY Validation
     if(config.SERVER.VALIDATE_API_KEY){
         if (
             !req.path.includes('confirmation_register') &&
@@ -59,6 +55,11 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
             }
         }
     }
+
+     //Set in local variables to use in all request
+     res.locals.jwtData = jwtData;
+     res.locals.httpExec = httpExec;
+     res.locals.validation = validation;
 
     if(nextMethod){
         next();

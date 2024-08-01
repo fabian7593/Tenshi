@@ -1,9 +1,6 @@
 import { HttpAction, Validations } from "@index/index";
-
-import { GenericController, RequestHandler, fs,JWTObject, getCurrentFunctionName } from "@modules/index";
-
+import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index";
 import { User, UserRepository, sendMail, replaceCompanyInfoEmails } from '@email/index';
-import { default as GenericRepository } from '@generics/Repository/GenericRepository';
 
 const htmlGenericTemplate : string = fs.readFileSync('src/templates/generic_template_email.html', 'utf-8');
 
@@ -13,11 +10,11 @@ export default  class EmailController extends GenericController{
 
     async sendMail(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "SEND_MAIL_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, "SEND_MAIL", httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
@@ -58,11 +55,11 @@ export default  class EmailController extends GenericController{
 
     async sendMailByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "SEND_MAIL_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(reqHandler.getFilters() == null){
                 return httpExec.paramsError();

@@ -1,16 +1,16 @@
 import { HttpAction, executeQuery } from "@index/index";
 
-import { GenericController, RequestHandler, JWTObject, getCurrentFunctionName } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import {default as config} from "@root/unbreakable-config";
 
 export default  class LogController extends GenericController{
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
 
             let appGuid : string | null = null;

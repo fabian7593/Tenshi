@@ -28,7 +28,6 @@ export default  class GenericController implements IGenericController{
     constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null) {
         this.controllerObj = createControllerObject(entityType);
 
-        console.log( this.controllerObj);
         this.entityType = entityType;
         this.roleRepository = new RoleRepository();
         if(repositoryClass == null){
@@ -43,12 +42,12 @@ export default  class GenericController implements IGenericController{
         const successMessage : string = "INSERT_SUCCESS";
 
         //This is for execute the returns structure
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
         try{
             //This is for do validations
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+            const validation : Validations = reqHandler.getResponse().locals.validation;
             //This calls the jwt data into JWTObject
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
@@ -76,13 +75,13 @@ export default  class GenericController implements IGenericController{
 
      async update(reqHandler: RequestHandler): Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
              //This is for do validations
-             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+             const validation : Validations = reqHandler.getResponse().locals.validation;
              //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the id from URL params
             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
@@ -114,13 +113,13 @@ export default  class GenericController implements IGenericController{
 
      async delete(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "DELETE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
              //This is for do validations
-             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+             const validation : Validations = reqHandler.getResponse().locals.validation;
              //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
@@ -150,13 +149,13 @@ export default  class GenericController implements IGenericController{
 
      async getById(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_BY_ID_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
              //This is for do validations
-             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+             const validation : Validations = reqHandler.getResponse().locals.validation;
              //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
@@ -179,13 +178,13 @@ export default  class GenericController implements IGenericController{
 
      async getByCode(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_BY_ID_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
              //This is for do validations
-             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+             const validation : Validations = reqHandler.getResponse().locals.validation;
              //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the code for Url Params
 
             const code = this.getCodeFromQuery(validation, httpExec) as string;
@@ -210,10 +209,10 @@ export default  class GenericController implements IGenericController{
 
     async getAll(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getAll, httpExec) !== true){ return; }
 
             try{
@@ -241,10 +240,10 @@ export default  class GenericController implements IGenericController{
 
     async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec);
 
             if(reqHandler.getFilters() == null){
@@ -324,7 +323,7 @@ export default  class GenericController implements IGenericController{
     protected validateRegex(reqHandler: RequestHandler, validation: Validations){
         //validate the regex of any fields
         if(reqHandler.getRegexValidatorList() != null){
-            if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != (null && undefined)){
+            if(validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null){
                 return false;
             }
         }

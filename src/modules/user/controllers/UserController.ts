@@ -23,11 +23,11 @@ export default class UserController extends GenericController{
     async update(reqHandler: RequestHandler) : Promise<any>{
 
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             const id = validation.validateIdFromQueryUsers(jwtData);
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
@@ -59,11 +59,11 @@ export default class UserController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "INSERT_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
@@ -95,10 +95,10 @@ export default class UserController extends GenericController{
     async register(reqHandler: RequestHandler) : Promise<any>{
 
         const successMessage : string = "INSERT_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+            const validation : Validations = reqHandler.getResponse().locals.validation;
 
             //Get data From Body
             const userBody = reqHandler.getAdapter().entityFromPostBody();
@@ -116,7 +116,7 @@ export default class UserController extends GenericController{
                 }
                 
                 const registerToken = generateRegisterToken(jwtObj); 
-                userBody.activeRegisterToken = registerToken;
+                userBody.active_register_token = registerToken;
     
                 //Execute Action DB
                 const user = await this.repository.add(userBody);
@@ -144,11 +144,11 @@ export default class UserController extends GenericController{
     //Logic to login user
     async loginUser(reqHandler: RequestHandler){
         const successMessage : string = "LOGIN_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
             const userDTO = new UserDTO(reqHandler.getRequest());
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+            const validation : Validations = reqHandler.getResponse().locals.validation;
             
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
             if(!this.validateRegex(reqHandler, validation)){ return; };
@@ -210,7 +210,7 @@ export default class UserController extends GenericController{
     //Logic to refresh token
     async refreshToken(reqHandler: RequestHandler){
         const successMessage : string = "REFRESH_TOKEN_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
             const userDTO = new UserDTO(reqHandler.getRequest());
@@ -240,7 +240,7 @@ export default class UserController extends GenericController{
 
     //Logic to refresh token
     async activeRegisterUser(reqHandler: RequestHandler){
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
             
@@ -279,7 +279,7 @@ export default class UserController extends GenericController{
 
     //Sen the email for forgot password
     async forgotPassword(reqHandler: RequestHandler){
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
             const email = reqHandler.getRequest().body.email;
@@ -313,7 +313,7 @@ export default class UserController extends GenericController{
 
     //Logic to verify the forgot password token
     async verifyForgotPassToken(reqHandler: RequestHandler){
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
             const forgotPassToken = reqHandler.getRequest().params.forgotPassToken;
@@ -332,7 +332,7 @@ export default class UserController extends GenericController{
 
 
     async resetPassword(reqHandler: RequestHandler){
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
             const forgotPassToken = reqHandler.getRequest().params.forgotPassToken;

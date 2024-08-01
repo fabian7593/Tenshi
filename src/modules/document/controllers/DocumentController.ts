@@ -6,11 +6,11 @@ export default  class DocumentController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "INSERT_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
 
@@ -49,11 +49,11 @@ export default  class DocumentController extends GenericController{
 
     async update(reqHandler: RequestHandler): Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             const id = validation.validateIdFromQuery();
             if(id == null){
                 return httpExec.paramsError();

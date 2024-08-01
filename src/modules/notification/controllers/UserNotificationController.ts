@@ -4,7 +4,7 @@ import { Validations, HttpAction,
 
 import { GenericRepository, 
          GenericController, RequestHandler,
-         JWTObject, fs, getCurrentFunctionName } from "@modules/index";
+         JWTObject, fs } from "@modules/index";
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@notification/index";
@@ -17,15 +17,15 @@ export default  class UserNotificationController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
         const successMessage : string = "INSERT_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
             const repositoryUser = new GenericRepository(User);
             const repositoryNotification = new GenericRepository(Notification);
             const repositoryUserNotification = new GenericRepository(UserNotification);
 
-            const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
@@ -72,7 +72,7 @@ export default  class UserNotificationController extends GenericController{
 
     async update(reqHandler: RequestHandler): Promise<any>{
         const successMessage : string = "UPDATE_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
              //This is for use the basic CRUD
@@ -81,9 +81,9 @@ export default  class UserNotificationController extends GenericController{
              const repositoryNotification = new GenericRepository(Notification);
 
              //This is for do validations
-             const validation = new Validations(reqHandler.getRequest(), reqHandler.getResponse(), httpExec);
+             const validation : Validations = reqHandler.getResponse().locals.validation;
              //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
@@ -137,10 +137,10 @@ export default  class UserNotificationController extends GenericController{
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
         const successMessage : string = "GET_SUCCESS";
-        const httpExec = new HttpAction(reqHandler.getResponse());
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const jwtData : JWTObject = reqHandler.getRequest().app.locals.jwtData;
+            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
 
