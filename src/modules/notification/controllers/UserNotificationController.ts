@@ -27,7 +27,7 @@ export default  class UserNotificationController extends GenericController{
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
 
              //Get data From some tables
@@ -60,10 +60,10 @@ export default  class UserNotificationController extends GenericController{
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -87,7 +87,7 @@ export default  class UserNotificationController extends GenericController{
              //get the id from URL params
              const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
@@ -127,10 +127,10 @@ export default  class UserNotificationController extends GenericController{
 
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
      }
 
@@ -142,7 +142,7 @@ export default  class UserNotificationController extends GenericController{
         try{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
 
             let userReceive : string | null = null;
             if(reqHandler.getRequest().query['user_receive'] != undefined){
@@ -174,10 +174,10 @@ export default  class UserNotificationController extends GenericController{
                 return httpExec.successAction(data, successMessage);
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
      }
 

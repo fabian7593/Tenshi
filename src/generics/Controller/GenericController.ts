@@ -19,10 +19,10 @@ import {default as config} from "@root/unbreakable-config";
     PD: IF YOU NEED TO OVERRIDE OR ADDED MORE METHODS, YOU NEED TO CREATE ANOTHER CONTROLLER AND EXTEND THIS
 */7
 export default  class GenericController implements IGenericController{
-    public controllerObj: ControllerObject;
-    protected entityType : EntityTarget<any>;
-    protected roleRepository : RoleRepository;
-    protected repository : IGenericRepository;
+    private controllerObj: ControllerObject;
+    private entityType : EntityTarget<any>;
+    private roleRepository : RoleRepository;
+    private repository : IGenericRepository;
 
     //We need the type of the entity of ORM, and the controller Obj as well
     constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null) {
@@ -36,6 +36,22 @@ export default  class GenericController implements IGenericController{
             this.repository = repositoryClass;
         }
     }
+
+    /**
+     * Getter and Setters
+     */
+    public getControllerObj(): ControllerObject {
+        return this.controllerObj;
+    }
+
+    public getRoleRepository(): RoleRepository {
+        return this.roleRepository;
+    }
+
+    public getRepository(): IGenericRepository {
+        return this.repository;
+    }
+
 
     //This function is for insert
     async insert(reqHandler: RequestHandler): Promise<any> {
@@ -276,10 +292,6 @@ export default  class GenericController implements IGenericController{
 
 
 
-
-
-
-
      /**
       * This function validates the role of the user.
       * 
@@ -381,4 +393,6 @@ export default  class GenericController implements IGenericController{
         }
         return code;
     }
+
+
 }

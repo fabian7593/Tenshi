@@ -30,7 +30,7 @@ export default class UserController extends GenericController{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             const id = validation.validateIdFromQueryUsers(jwtData);
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
             if(!this.validateRegex(reqHandler, validation)){ return; };
     
             //Get data From Body
@@ -44,15 +44,15 @@ export default class UserController extends GenericController{
                 }
                 
                 //Execute Action DB
-                const user = await this.repository.update(id, userBody, reqHandler.getNeedLogicalRemove());
+                const user = await this.getRepository().update(id, userBody, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -65,7 +65,7 @@ export default class UserController extends GenericController{
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().create, httpExec) !== true){ return; }
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
             if(!this.validateRegex(reqHandler, validation)){ return; };
 
@@ -78,15 +78,15 @@ export default class UserController extends GenericController{
                 userBody.isActive = 1;
     
                 //Execute Action DB
-                const user = await this.repository.add(userBody);
+                const user = await this.getRepository().add(userBody);
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -119,7 +119,7 @@ export default class UserController extends GenericController{
                 userBody.active_register_token = registerToken;
     
                 //Execute Action DB
-                const user = await this.repository.add(userBody);
+                const user = await this.getRepository().add(userBody);
 
                 let htmlBody = replaceCompanyInfoEmails(htmlRegisterTemplate);
 
@@ -133,10 +133,10 @@ export default class UserController extends GenericController{
             
             }catch(error : any){
                 return await httpExec.databaseError(error, null, 
-                    reqHandler.getMethod(), this.controllerObj.controller);
+                    reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -159,7 +159,7 @@ export default class UserController extends GenericController{
             let user;
             try{
                 //Execute Action DB
-                user = await (this.repository as UserRepository).getUserByEmail(userBody);
+                user = await (this.getRepository() as UserRepository).getUserByEmail(userBody);
                 let isSuccess = false;
     
                 if(user != null){
@@ -180,7 +180,7 @@ export default class UserController extends GenericController{
                 }
     
                 if(isSuccess){
-                    const screens = await this.roleRepository.getScreensByRole(user!.role_code);
+                    const screens = await this.getRoleRepository().getScreensByRole(user!.role_code);
 
                     const jwtObj : JWTObject = {
                         id: user!.id,
@@ -198,10 +198,10 @@ export default class UserController extends GenericController{
     
             }catch(error : any){
                 return await httpExec.databaseError(error, null, 
-                    reqHandler.getMethod(), this.controllerObj.controller);
+                    reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -232,7 +232,7 @@ export default class UserController extends GenericController{
             const accessToken = generateToken(jwtObj);   
             return httpExec.successAction(userDTO.refreshToResponse(accessToken), successMessage);
         } catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -252,12 +252,12 @@ export default class UserController extends GenericController{
                 return httpExec.unauthorizedError("INVALID_TOKEN");
             }
 
-            const user = await (this.repository as UserRepository).getUserByEmailParam(verify!.email);
+            const user = await (this.getRepository() as UserRepository).getUserByEmailParam(verify!.email);
 
             if(user != undefined && user != null){
 
                 user!.is_active = true;
-                await (this.repository as UserRepository).update(user!.id, user!, reqHandler.getNeedLogicalRemove());
+                await (this.getRepository() as UserRepository).update(user!.id, user!, reqHandler.getNeedLogicalRemove());
                 
                 let htmlBody = replaceCompanyInfoEmails(htmlActiveAccountTemplate);
                 htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
@@ -269,7 +269,7 @@ export default class UserController extends GenericController{
             
             
         } catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -283,13 +283,13 @@ export default class UserController extends GenericController{
 
         try{
             const email = reqHandler.getRequest().body.email;
-            const user = await (this.repository as UserRepository).getUserByEmailParam(email);
+            const user = await (this.getRepository() as UserRepository).getUserByEmailParam(email);
 
             if(user != undefined && user != null){
                 const forgotUserPasswordToken = generateForgotPasswordToken(email); 
                 user.forgot_password_token = forgotUserPasswordToken!;
     
-                await (this.repository as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
+                await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
 
                 let htmlBody = replaceCompanyInfoEmails(htmlforgotPassTemplate);
 
@@ -305,7 +305,7 @@ export default class UserController extends GenericController{
             }
             
         } catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -325,7 +325,7 @@ export default class UserController extends GenericController{
 
             return reqHandler.getResponse().redirect( config.COMPANY.FRONT_END_HOST + config.COMPANY.RESET_PASSWORD_URL+ forgotPassToken);
         } catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -346,23 +346,23 @@ export default class UserController extends GenericController{
             }
 
             try{
-                const user = await (this.repository as UserRepository).getUserByEmailParam(verify.email!);
+                const user = await (this.getRepository() as UserRepository).getUserByEmailParam(verify.email!);
 
                 if(user != undefined && user != null){
 
                     user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
-                    await (this.repository as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
+                    await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
                     return httpExec.successAction(user.email, "RESET_PASSWORD");
                 }else{
                     return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
                 }
             }catch(error : any){
                 return await httpExec.databaseError(error, null, 
-                    reqHandler.getMethod(), this.controllerObj.controller);
+                    reqHandler.getMethod(), this.getControllerObj().controller);
             }
             
         } catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 }

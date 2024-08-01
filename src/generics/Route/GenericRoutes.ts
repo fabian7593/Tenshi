@@ -13,7 +13,7 @@ abstract class GenericRoutes {
         // Assign the controller
         this.controller = controller;
 
-        this.routerName = this.controller.controllerObj.route;
+        this.routerName = this.controller.getControllerObj().route;
 
         // Init Routes method
         this.initializeRoutes();

@@ -12,7 +12,7 @@ export default  class DocumentController extends GenericController{
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().create, httpExec) !== true){ return; }
 
             //Validate if the user have attached files
             if (!reqHandler.getRequest().file) {
@@ -33,15 +33,15 @@ export default  class DocumentController extends GenericController{
         
             try{
                 //Execute Action DB
-                const document: Document = await this.repository.add(documentBody);
+                const document: Document = await this.getRepository().add(documentBody);
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(document), successMessage);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
 
@@ -59,7 +59,7 @@ export default  class DocumentController extends GenericController{
                 return httpExec.paramsError();
             }
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.update, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
 
              //Validate if the user have attached files
              if (!reqHandler.getRequest().file) {
@@ -79,15 +79,15 @@ export default  class DocumentController extends GenericController{
 
             try{
                 //Execute Action DB
-                const updateEntity = await this.repository.update(id, documentBody, reqHandler.getNeedLogicalRemove());
+                const updateEntity = await this.getRepository().update(id, documentBody, reqHandler.getNeedLogicalRemove());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
      }
 }

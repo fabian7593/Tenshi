@@ -11,7 +11,7 @@ export default  class LogController extends GenericController{
 
         try{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
+            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
 
             let appGuid : string | null = null;
             if(reqHandler.getRequest().query['app_guid'] != undefined){
@@ -53,10 +53,10 @@ export default  class LogController extends GenericController{
                 return httpExec.successAction(data, successMessage);
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.getControllerObj().controller);
             }
         }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
      }
 
