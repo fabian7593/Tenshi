@@ -95,4 +95,11 @@ export default  class UserDTO implements IAdapterFromBody{
     
         return userLogin;
     }
+
+    userFromBodyRecoverUserByEmail(): User{
+        const userLogin = new User();
+        userLogin.email = this.req.body.email;
+    
+        return userLogin;
+    }
 }

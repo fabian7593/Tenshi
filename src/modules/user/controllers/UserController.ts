@@ -15,7 +15,7 @@ const templatesDir = path.join(__dirname, '../../../templates');
 const htmlRegisterTemplate : string = fs.readFileSync(path.join(templatesDir, 'register_email.html'), 'utf8');
 const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDir, 'active_account_page.html'), 'utf8');
 const htmlforgotPassTemplate: string = fs.readFileSync(path.join(templatesDir, 'forgot_password_email.html'), 'utf8');
-
+const htmlRecoverUserByEmailTemplate: string = fs.readFileSync(path.join(templatesDir, 'recover_user_by_email.html'), 'utf8');
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
@@ -251,7 +251,7 @@ export default class UserController extends GenericController{
 
 
 
-    //Logic to refresh token
+    //Logic active register user
     async activeRegisterUser(reqHandler: RequestHandler){
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
@@ -269,8 +269,9 @@ export default class UserController extends GenericController{
 
             if(user != undefined && user != null){
 
-                user!.is_active = true;
-                await (this.getRepository() as UserRepository).update(user!.id, user!, reqHandler.getLogicalDelete());
+                user.is_active = true;
+                user.fail_login_number = 0;
+                await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
                 
                 let htmlBody = replaceCompanyInfoEmails(htmlActiveAccountTemplate);
                 htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
@@ -286,7 +287,48 @@ export default class UserController extends GenericController{
         }
     }
 
+    //TODO
+    //send an email to recover user and active, after blocked by fail login
+    async recoverUserByEmail(reqHandler: RequestHandler){
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
+        try{
+            const userDTO = new UserDTO(reqHandler.getRequest());
+            const validation : Validations = reqHandler.getResponse().locals.validation;
+            
+            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
+            if(!this.validateRegex(reqHandler, validation)){ return; };
+    
+            //Get data From Body
+            const userBody = userDTO.userFromBodyRecoverUserByEmail();
+            const user = await (this.getRepository() as UserRepository).getUserByEmailParam(userBody.email);
+
+            if(user != undefined && user != null){
+
+                const jwtObj : JWTObject = {
+                    id: 0,
+                    email: user.email,
+                    role: user.role_code
+                }
+                
+                const recoverEmailToken = generateRegisterToken(jwtObj); 
+
+                let htmlBody = replaceCompanyInfoEmails(htmlRecoverUserByEmailTemplate);
+                htmlBody = htmlBody
+                .replace(/\{\{ userName \}\}/g, user.first_name + " " + user.last_name)
+                .replace(/\{\{ recoverLink \}\}/g,  config.COMPANY.BACKEND_HOST + 'active_user/'+ recoverEmailToken);
+
+
+                await sendMail(user.email, config.EMAIL.CONTENT.ACTIVE_USER, htmlBody);
+
+                return httpExec.successAction(null, "SEND_MAIL_SUCCESS");
+            }else{
+                return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+            }
+        } catch(error : any){
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+        }
+    }
 
 
 

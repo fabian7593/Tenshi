@@ -21,7 +21,9 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         !req.path.includes('confirmation_register') &&
         !req.path.includes('forgot_password') &&
         !req.path.includes('verify_forgot_password') &&
-        !req.path.includes('reset_password') 
+        !req.path.includes('reset_password') &&
+        !req.path.includes('recover_user')  &&
+        !req.path.includes('active_user')
     ){
         //TODO just for testing
        // if(parseInt(process.env.IS_DEBUGGING || '0', 10) == 0){
@@ -45,7 +47,8 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
             !req.path.includes('confirmation_register') &&
             !req.path.includes('forgot_password') &&
             !req.path.includes('verify_forgot_password') &&
-            !req.path.includes('reset_password') 
+            !req.path.includes('reset_password') &&
+            !req.path.includes('active_user')
         ){
             if(validation.validateRequireSecretApiKey() === true){
                 nextMethod = true;

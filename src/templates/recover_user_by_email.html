@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Email</title>
+    <style>
+        /* Estilos para el cuerpo del correo */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Encabezado */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Título */
+        h1 {
+            color: #6666FF;
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        /* Enlace */
+        a {
+            color: #6666FF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 150px; /* Tamaño máximo de la imagen */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="{{ companyDomain }}">
+                <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
+            </a>
+        </header>
+        <h1>Recover User</h1>
+        <p>Hello {{ userName }},</p>
+        <p>We received a request to recover your user for {{ companyName }}. If you did not make this request, you can ignore this email.</p>
+        <p>To recover your user, please click the following link:</p>
+        <a href="{{ recoverLink }}">Recover User</a>
+        <p>If you encounter any issues or need further assistance, feel free to contact us.</p>
+        <p>Best regards,</p>
+        <p>{{ companyName }} Support Team</p>
+    </div>
+</body>
+</html>

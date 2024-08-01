@@ -69,6 +69,7 @@ interface FileConfig {
 interface EmailContent {
     REGISTER_SUBJECT: string;
     FORGOT_PASS_SUBJECT: string;
+    ACTIVE_USER: string;
 }
 
 interface EmailConfig {

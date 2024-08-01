@@ -138,6 +138,41 @@ class UserRoutes extends GenericRoutes {
                 this.getController().delete(requestHandler);
         });
 
+
+        /* RECOVER USER */
+         // Send email to recover the user in case of inactive account
+         this.router.post(`${this.getRouterName()}/recover_user`, async (req: Request, res: Response) => {
+
+            const regexValidationList: [string, string][] = [
+                ['EMAIL_REGEX', req.body.email as string]
+            ];
+
+            const requiredBodyList: string[] = 
+                                [req.body.email];
+
+            const requestHandler: RequestHandler = 
+            new RequestHandlerBuilder(res, req)
+                .setAdapter(new UserDTO(req))
+                .setMethod("recoverUser")
+                .setRegexValidation(regexValidationList)
+                .setRequiredFiles(requiredBodyList)
+                .build();
+
+            (this.getController() as UserController).recoverUserByEmail(requestHandler);
+        });
+
+
+        this.router.get(`/active_user/:registerToken`, async (req: Request, res: Response) => {
+            const requestHandler: RequestHandler = 
+            new RequestHandlerBuilder(res, req)
+                .setAdapter(new UserDTO(req))
+                .setMethod("ActiveRegisterUser")
+                .build();
+
+            (this.getController() as UserController).activeRegisterUser(requestHandler);
+        });
+
+
         /*
             Correct Functionality Login
         */
