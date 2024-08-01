@@ -7,7 +7,7 @@ export default interface IRequestHandlerBuilder {
     setRequiredFiles(requiredFieldsList: Array<string> ): IRequestHandlerBuilder;
     setFilters(filters: FindManyOptions): IRequestHandlerBuilder;
     isValidateRole(): IRequestHandlerBuilder;
-    isLogicalRemove(): IRequestHandlerBuilder;
+    isLogicalDelete(): IRequestHandlerBuilder;
     isValidateWhereByUserId(): IRequestHandlerBuilder;
     build(): RequestHandler;
 }

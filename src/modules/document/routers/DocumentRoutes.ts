@@ -60,7 +60,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setMethod("getDocumentBySomeParams")
                                     .setFilters(options)
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getByFilters(requestHandler);
@@ -78,7 +78,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setMethod("getDocumentByName")
                                     .setFilters(options)
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getByFilters(requestHandler);
@@ -91,7 +91,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("getDocuments")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getAll(requestHandler);
@@ -134,7 +134,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("deleteDocument")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .isValidateWhereByUserId()
                                     .build();
         

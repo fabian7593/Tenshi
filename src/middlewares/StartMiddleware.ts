@@ -9,7 +9,7 @@ import {default as config} from "@root/unbreakable-config";
 */
 function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     const httpExec = new HttpAction(res);
-    const validation = new Validations(req, res, httpExec);
+    const validation = new Validations(req, httpExec);
     let jwtData : JWTObject | null = null;
     let nextMethod = false;
 

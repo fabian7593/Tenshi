@@ -35,7 +35,7 @@ export default  class UserNotificationController extends GenericController{
              const notification : Notification =
                  await repositoryNotification.findByCode(
                     userNotifications.notification_code, 
-                    reqHandler.getNeedLogicalRemove());
+                    reqHandler.getLogicalDelete());
              
              if(notification != undefined && notification != null){
                 if(notification.required_send_email){
@@ -93,7 +93,7 @@ export default  class UserNotificationController extends GenericController{
             //should be the user id of the user request (JWT)
             let userId : number | null= null;
             let userNotification : UserNotification;
-            userNotification = await repository.findById(id, reqHandler.getNeedLogicalRemove());
+            userNotification = await repository.findById(id, reqHandler.getLogicalDelete());
 
             if(userNotification != undefined && userNotification != null){}
             else{
@@ -119,7 +119,7 @@ export default  class UserNotificationController extends GenericController{
             try{
                 //Execute Action DB
                 const updateEntity = await repositoryNotification.update(id, userNotification,  
-                                                             reqHandler.getNeedLogicalRemove());
+                                                             reqHandler.getLogicalDelete());
                 const notification : Notification = await repositoryNotification.findByCode(updateEntity.notificationCode, false);
 
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(updateEntity, notification);

@@ -77,7 +77,7 @@ export default  class EmailController extends GenericController{
             try{
                 //Execute Action DB
                 const users : User[] = await (this.getRepository() as UserRepository).findByFilters(reqHandler.getFilters()!,
-                                                                reqHandler.getNeedLogicalRemove());
+                                                                reqHandler.getLogicalDelete());
 
                 if(users != undefined && users != null){
                     users.forEach(async user => {

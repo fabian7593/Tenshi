@@ -15,7 +15,7 @@ class UdcRoutes extends GenericRoutes{
                                     .setAdapter(new UdcDTO(req))
                                     .setMethod("getUdcById")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getById(requestHandler);
@@ -27,7 +27,7 @@ class UdcRoutes extends GenericRoutes{
                                     .setAdapter(new UdcDTO(req))
                                     .setMethod("getUdcByCode")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getByCode(requestHandler);
@@ -40,7 +40,7 @@ class UdcRoutes extends GenericRoutes{
                                     .setAdapter(new UdcDTO(req))
                                     .setMethod("getUdcs")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getAll(requestHandler);
@@ -80,7 +80,7 @@ class UdcRoutes extends GenericRoutes{
                                     .setAdapter(new UdcDTO(req))
                                     .setMethod("deleteUdc")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .isValidateWhereByUserId()
                                     .build();
         

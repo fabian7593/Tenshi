@@ -8,7 +8,6 @@ export default  class UserDTO implements IAdapterFromBody{
         this.req = req;
     }
 
-
     //POST
     entityFromPostBody() : User{
         const entity = new User();
@@ -59,8 +58,6 @@ export default  class UserDTO implements IAdapterFromBody{
         return response;
     }
     
-
-
     //PUT
     entityFromPutBody() : User{
         const entity = new User();
@@ -75,8 +72,6 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.birth_date = this.req.body.birth_date || null;
         return entity;
     }
-
-
 
     //Login
     tokenToResponse(accessToken: string, refreshToken: string, screens : string[] | null) : any{

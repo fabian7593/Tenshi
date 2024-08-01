@@ -23,7 +23,7 @@ class UserRoutes extends GenericRoutes {
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("getUserById")
-                .isLogicalRemove()
+                .isLogicalDelete()
                 .isValidateRole()
                 .build();
 
@@ -35,7 +35,7 @@ class UserRoutes extends GenericRoutes {
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("get_all")
-                .isLogicalRemove()
+                .isLogicalDelete()
                 .isValidateRole()
                 .build();
 
@@ -132,7 +132,7 @@ class UserRoutes extends GenericRoutes {
                 .setAdapter(new UserDTO(req))
                 .setMethod("deleteUser")
                 .isValidateRole()
-                .isLogicalRemove()
+                .isLogicalDelete()
                 .build();
 
                 this.getController().delete(requestHandler);

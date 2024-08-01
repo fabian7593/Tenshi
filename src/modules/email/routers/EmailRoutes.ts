@@ -60,7 +60,7 @@ class EmailRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setMethod("sendEmail")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .setFilters(options)
                                     .build();
 

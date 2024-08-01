@@ -114,7 +114,7 @@ export default  class GenericController implements IGenericController{
             try{
                 //Execute Action DB
                 const updateEntity = await this.repository.update(id, body,  
-                                                             reqHandler.getNeedLogicalRemove());
+                                                             reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
             }catch(error : any){
@@ -145,7 +145,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                if(reqHandler.getNeedLogicalRemove()){
+                if(reqHandler.getLogicalDelete()){
                     const deletedEntity = await this.repository.logicalRemove(id);
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), successMessage);
                 }else{
@@ -180,7 +180,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                const entity = await this.repository.findById(id, reqHandler.getNeedLogicalRemove());
+                const entity = await this.repository.findById(id, reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
@@ -210,7 +210,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 //Execute Action DB
-                const entity = await this.repository.findByCode(code, reqHandler.getNeedLogicalRemove());
+                const entity = await this.repository.findByCode(code, reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), successMessage);
 
             }catch(error : any){
@@ -242,7 +242,7 @@ export default  class GenericController implements IGenericController{
                             config.HTTP_REQUEST.PAGE_SIZE;
 
                 //Execute Action DB
-                const entities = await this.repository.findAll(reqHandler.getNeedLogicalRemove(), page, size);
+                const entities = await this.repository.findAll(reqHandler.getLogicalDelete(), page, size);
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -278,7 +278,7 @@ export default  class GenericController implements IGenericController{
                                       config.HTTP_REQUEST.PAGE_SIZE;
                 //Execute Action DB
                 const entities = await this.repository.findByFilters(reqHandler.getFilters()!,
-                                                                reqHandler.getNeedLogicalRemove(), page, size);
+                                                                reqHandler.getLogicalDelete(), page, size);
                 return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), successMessage);
 
             }catch(error : any){
@@ -309,7 +309,7 @@ export default  class GenericController implements IGenericController{
          * 
          * @returns {Promise<any>} A promise that resolves to the result of the validation.
          */
-        if(reqHandler.getNeedValidateRole()){
+        if(reqHandler.getRoleValidation()){
             // Get the permission for the specified action and role from the role repository.
             const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(role, action);
             // If the user does not have the permission, return an unauthorized error.
@@ -363,9 +363,9 @@ export default  class GenericController implements IGenericController{
             //the user request dont have this authorization
             let entity = null;
             if (typeof idOrCode === 'number'){
-                entity = await this.repository.findById(idOrCode, reqHandler.getNeedLogicalRemove());
+                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete());
             }else{
-                entity = await this.repository.findByCode(idOrCode, reqHandler.getNeedLogicalRemove());
+                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete());
             }
             
             if(entity != undefined && entity != null){

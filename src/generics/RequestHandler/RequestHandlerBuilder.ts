@@ -69,7 +69,7 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
     }
 
     //if is a remove or get, add this to set this functions as a logical remove
-    isLogicalRemove(): IRequestHandlerBuilder {
+    isLogicalDelete(): IRequestHandlerBuilder {
         this.requireLogicalRemove = true;
         return this;
     }

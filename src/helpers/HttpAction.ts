@@ -9,7 +9,7 @@ import { getErrorDBbySqlState, getStatus, getMessage } from '@utils/jsonUtils';
     Some of those methods are aync
 */
 export default class HttpAction{
-    res: Response;
+    private res: Response;
 
     constructor(res: Response) {
         this.res = res;

@@ -9,13 +9,11 @@ const jwt = require('jsonwebtoken');
 */
 
 export default class Validations{
-    req: Request;
-    res: Response;
-    httpAction: HttpAction;
+    private req: Request;
+    private httpAction: HttpAction;
 
-    constructor(req: Request, res: Response, httpAction: HttpAction) {
+    constructor(req: Request, httpAction: HttpAction) {
         this.req = req;
-        this.res = res;
         this.httpAction = httpAction;
     }
 

@@ -55,11 +55,11 @@ export default class RequestHandler {
         return this.adapter;
     }
 
-    getNeedValidateRole(): boolean {
+    getRoleValidation(): boolean {
         return this.requireValidateRole;
     }
 
-    getNeedLogicalRemove(): boolean {
+    getLogicalDelete(): boolean {
         return this.requireLogicalRemove;
     }
 

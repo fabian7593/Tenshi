@@ -79,7 +79,7 @@ export default  class DocumentController extends GenericController{
 
             try{
                 //Execute Action DB
-                const updateEntity = await this.getRepository().update(id, documentBody, reqHandler.getNeedLogicalRemove());
+                const updateEntity = await this.getRepository().update(id, documentBody, reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), successMessage);
 
             }catch(error : any){

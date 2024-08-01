@@ -44,7 +44,7 @@ export default class UserController extends GenericController{
                 }
                 
                 //Execute Action DB
-                const user = await this.getRepository().update(id, userBody, reqHandler.getNeedLogicalRemove());
+                const user = await this.getRepository().update(id, userBody, reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
@@ -161,16 +161,25 @@ export default class UserController extends GenericController{
                 //Execute Action DB
                 user = await (this.getRepository() as UserRepository).getUserByEmail(userBody);
                 let isSuccess = false;
-    
+
                 if(user != null){
-    
+
+                    //fail login validation
+                    if(config.GENERAL.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active == false){
+                        return httpExec.dynamicError("UNAUTHORIZED","USER_FAIL_LOGIN_ERROR");
+                    }
+                    
+                    //decrypt password with server salt
                     const decryptedPass = decryptPassword(user.password, config.SERVER.PASSWORD_SALT);
                     
                     //validate the decrypted pass to the pass in the body json
                     if(decryptedPass == userBody.password){
-                        user.password = "";
                         isSuccess = true;
                     }else{
+
+                        user.fail_login_number += 1;
+                        user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
+
                         //incorrect user or password
                         return httpExec.dynamicError("UNAUTHORIZED","USER_PASS_ERROR");
                     }
@@ -180,13 +189,17 @@ export default class UserController extends GenericController{
                 }
     
                 if(isSuccess){
-                    const screens = await this.getRoleRepository().getScreensByRole(user!.role_code);
+                    const screens = await this.getRoleRepository().getScreensByRole(user.role_code);
 
                     const jwtObj : JWTObject = {
-                        id: user!.id,
-                        email: user!.email,
-                        role: user!.role_code
+                        id: user.id,
+                        email: user.email,
+                        role: user.role_code
                     }
+
+                    user.fail_login_number = 0;
+                    user.is_active = true;
+                    user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
                     
                     const token = generateToken(jwtObj); 
                     const refreshToken = generateRefreshToken(jwtObj); 
@@ -257,7 +270,7 @@ export default class UserController extends GenericController{
             if(user != undefined && user != null){
 
                 user!.is_active = true;
-                await (this.getRepository() as UserRepository).update(user!.id, user!, reqHandler.getNeedLogicalRemove());
+                await (this.getRepository() as UserRepository).update(user!.id, user!, reqHandler.getLogicalDelete());
                 
                 let htmlBody = replaceCompanyInfoEmails(htmlActiveAccountTemplate);
                 htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
@@ -289,7 +302,7 @@ export default class UserController extends GenericController{
                 const forgotUserPasswordToken = generateForgotPasswordToken(email); 
                 user.forgot_password_token = forgotUserPasswordToken!;
     
-                await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
+                await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
 
                 let htmlBody = replaceCompanyInfoEmails(htmlforgotPassTemplate);
 
@@ -351,7 +364,7 @@ export default class UserController extends GenericController{
                 if(user != undefined && user != null){
 
                     user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
-                    await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getNeedLogicalRemove());
+                    await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
                     return httpExec.successAction(user.email, "RESET_PASSWORD");
                 }else{
                     return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");

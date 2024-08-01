@@ -18,7 +18,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .setAdapter(new UserNotificationDTO(req))
                                     .setMethod("getUserNotificationById")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getById(requestHandler);
@@ -33,7 +33,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .setAdapter(new UserNotificationDTO(req))
                                     .setMethod("getUserNotification")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().getByFilters(requestHandler);
@@ -62,7 +62,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .setAdapter(new UserNotificationDTO(req))
                                     .setMethod("updateUserNotification")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .isValidateWhereByUserId()
                                     .build();
         
@@ -76,7 +76,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .setAdapter(new UserNotificationDTO(req))
                                     .setMethod("deleteUserNotification")
                                     .isValidateRole()
-                                    .isLogicalRemove()
+                                    .isLogicalDelete()
                                     .build();
         
             this.getController().delete(requestHandler);

@@ -26,8 +26,8 @@ class SingletonDependencyContainer {
                                                     new HttpAction(res));
 
       // Validations is a class that handles validations
-      SingletonDependencyContainer.instance.register('Validations', (req: Request, res: Response, httpAction: HttpAction) => 
-                                                    new Validations(req, res, httpAction));
+      SingletonDependencyContainer.instance.register('Validations', (req: Request, httpAction: HttpAction) => 
+                                                    new Validations(req, httpAction));
     }
     // Return the instance
     return SingletonDependencyContainer.instance;
