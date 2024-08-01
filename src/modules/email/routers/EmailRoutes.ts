@@ -11,7 +11,7 @@ class EmailRoutes extends GenericRoutes {
     }
 
     protected initializeRoutes() {
-        this.router.post(`${this.routerName}/send_email`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/send_email`, async (req: Request, res: Response) => {
 
             const requiredBodyList:  Array<string> = 
             [req.body.email, req.body.subject, 
@@ -24,11 +24,11 @@ class EmailRoutes extends GenericRoutes {
                                     .isValidateRole()
                                     .build();
 
-            (this.controller as EmailController).sendMail(requestHandler);
+            (this.getController() as EmailController).sendMail(requestHandler);
         });
 
 
-        this.router.post(`${this.routerName}/send_email_all_users`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/send_email_all_users`, async (req: Request, res: Response) => {
             const gender : string | null = getUrlParam("gender", req) || null;
             const country : string | null = getUrlParam("country_code", req) || null;
             const role : string | null = getUrlParam("role", req) || null;
@@ -64,7 +64,7 @@ class EmailRoutes extends GenericRoutes {
                                     .setFilters(options)
                                     .build();
 
-            (this.controller as EmailController).sendMailByFilters(requestHandler);
+            (this.getController() as EmailController).sendMailByFilters(requestHandler);
         });
     }
 }

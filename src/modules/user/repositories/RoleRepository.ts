@@ -10,8 +10,8 @@ export default class RoleRepository extends GenericRepository{
 
     constructor() {
         super(Role);
-        this.repositoryRoleFunctionallity = this.dataSource.getRepository(RoleFunctionallity);
-        this.repositoryRoleScreen = this.dataSource.getRepository(RoleScreen);
+        this.repositoryRoleFunctionallity = this.getDataSource().getRepository(RoleFunctionallity);
+        this.repositoryRoleScreen = this.getDataSource().getRepository(RoleScreen);
     }
 
     //search by code role and function codes

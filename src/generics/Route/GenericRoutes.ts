@@ -3,8 +3,8 @@ import { default as GenericController} from "@generics/Controller/GenericControl
 
 abstract class GenericRoutes {
     protected router: Router;
-    protected controller: GenericController;
-    protected routerName: string;
+    private controller: GenericController;
+    private routerName: string;
 
     constructor(controller: GenericController) {
         // Init Router
@@ -24,6 +24,14 @@ abstract class GenericRoutes {
 
     public getRouter(): Router {
         return this.router;
+    }
+
+    public getController(): GenericController {
+        return this.controller;
+    }
+
+    public getRouterName(): string {
+        return this.routerName;
     }
 }
 

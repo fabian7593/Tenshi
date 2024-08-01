@@ -16,7 +16,7 @@ export default class UserRepository extends GenericRepository{
 
             //find by user and password
             let options: FindOneOptions = { where: { email: email, "is_deleted" : 0, "is_active": 1} }; 
-            const getEntity = await this.repository.findOne(options); 
+            const getEntity = await this.getRepository().findOne(options); 
             return getEntity ; 
 
         } catch (error : any) {
@@ -28,7 +28,7 @@ export default class UserRepository extends GenericRepository{
 
         try {
             let options: FindOneOptions = { where: { email: email, "is_deleted" : 0} }; 
-            const getEntity = await this.repository.findOne(options); 
+            const getEntity = await this.getRepository().findOne(options); 
             return getEntity ; 
 
         } catch (error : any) {

@@ -18,7 +18,7 @@ class UserRoutes extends GenericRoutes {
     }
 
     protected initializeRoutes() {
-        this.router.get(`${this.routerName}/get`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get`, async (req: Request, res: Response) => {
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
@@ -27,10 +27,10 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-                this.controller.getById(requestHandler);
+                this.getController().getById(requestHandler);
         });
 
-        this.router.get(`${this.routerName}/get_all`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_all`, async (req: Request, res: Response) => {
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
@@ -39,13 +39,13 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-                this.controller.getAll(requestHandler);
+                this.getController().getAll(requestHandler);
         });
 
         /*
             POST METHODS
         */
-        this.router.post(`${this.routerName}/add`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
             const regexValidationList: [string, string][] = [
                 ['EMAIL_REGEX', req.body.email as string],
                 ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
@@ -65,10 +65,10 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-                this.controller.insert(requestHandler);
+                this.getController().insert(requestHandler);
         });
 
-        this.router.post(`${this.routerName}/register`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/register`, async (req: Request, res: Response) => {
             const regexValidationList: [string, string][] = [
                 ['EMAIL_REGEX', req.body.email as string],
                 ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
@@ -87,10 +87,10 @@ class UserRoutes extends GenericRoutes {
                 .setRequiredFiles(requiredBodyList)
                 .build();
 
-              (this.controller as UserController).register(requestHandler);
+              (this.getController() as UserController).register(requestHandler);
         });
 
-        this.router.post(`${this.routerName}/login`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/login`, async (req: Request, res: Response) => {
             const regexValidationList: [string, string][] = [
                 ['EMAIL_REGEX', req.body.email],
                 ['PASSWORD_REQUIRED_REGEX', req.body.password]
@@ -103,13 +103,13 @@ class UserRoutes extends GenericRoutes {
                     .setRegexValidation(regexValidationList)
                     .build();
 
-            (this.controller as UserController).loginUser(requestHandler);
+            (this.getController() as UserController).loginUser(requestHandler);
         });
 
         /*
             ANOTHER METHODS
         */
-        this.router.put(`${this.routerName}/edit`, async (req: Request, res: Response) => {
+        this.router.put(`${this.getRouterName()}/edit`, async (req: Request, res: Response) => {
             const regexValidationList: [string, string][] = [
                 ['EMAIL_REGEX', req.body.email as string],
                 ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
@@ -123,10 +123,10 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-                this.controller.update(requestHandler);
+                this.getController().update(requestHandler);
         });
 
-        this.router.delete(`${this.routerName}/delete`, async (req: Request, res: Response) => {
+        this.router.delete(`${this.getRouterName()}/delete`, async (req: Request, res: Response) => {
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
@@ -135,7 +135,7 @@ class UserRoutes extends GenericRoutes {
                 .isLogicalRemove()
                 .build();
 
-                this.controller.delete(requestHandler);
+                this.getController().delete(requestHandler);
         });
 
         /*
@@ -148,7 +148,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("refreshToken")
                 .build();
 
-            (this.controller as UserController).refreshToken(requestHandler);
+            (this.getController() as UserController).refreshToken(requestHandler);
         });
 
         this.router.get(`/confirmation_register/:registerToken`, async (req: Request, res: Response) => {
@@ -158,7 +158,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("confirmationRegister")
                 .build();
 
-            (this.controller as UserController).activeRegisterUser(requestHandler);
+            (this.getController() as UserController).activeRegisterUser(requestHandler);
         });
 
         /*
@@ -171,7 +171,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("forgotPassword")
                 .build();
 
-            (this.controller as UserController).forgotPassword(requestHandler);
+            (this.getController() as UserController).forgotPassword(requestHandler);
         });
 
         // Verify the forgot password token and redirect to reset password URL front end
@@ -182,7 +182,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("VerifyForgotPassword")
                 .build();
 
-            (this.controller as UserController).verifyForgotPassToken(requestHandler);
+            (this.getController() as UserController).verifyForgotPassToken(requestHandler);
         });
 
         // Reset the password with the pass on the body
@@ -193,7 +193,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("resetPassword")
                 .build();
 
-            (this.controller as UserController).resetPassword(requestHandler);
+            (this.getController() as UserController).resetPassword(requestHandler);
         });
     }
 }

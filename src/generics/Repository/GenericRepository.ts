@@ -11,17 +11,17 @@ import { DataSource } from 'typeorm';
 export default  class GenericRepository implements IGenericRepository{
 
     //the ds to get it on hereby
-    protected dataSource: DataSource;
+    private dataSource: DataSource;
 
     //This is the dynamic object for entitie DB
     private entityTarget: EntityTarget<any>;
 
     //this variable is for do dynamic crud, sending the specific entity target
-    protected entityManager: EntityManager;
+    private entityManager: EntityManager;
     
     //this variable is protected, because we need to use it on hereby classes
     //to do specific CRUDS, to specifics repositories
-    protected repository: Repository<any>;
+    private repository: Repository<any>;
    
     //the constructor method init the Singleton of DB connection and send it the entity target
     constructor(entityTarget : EntityTarget<any>) {
@@ -29,6 +29,17 @@ export default  class GenericRepository implements IGenericRepository{
         this.repository = this.dataSource.getRepository(entityTarget);
         this.entityManager = this.dataSource.manager;
         this.entityTarget = entityTarget;
+    }
+
+     /**
+     * Getter and Setters
+     */
+     public getRepository(): Repository<any> {
+        return this.repository;
+    }
+
+    public getDataSource(): DataSource {
+        return this.dataSource;
     }
     
     async add(entity: any): Promise<any> {

@@ -9,7 +9,7 @@ class LogRoutes extends GenericRoutes {
     }
 
     protected initializeRoutes() {
-        this.router.get(`${this.routerName}/get_by_filters`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_by_filters`, async (req: Request, res: Response) => {
 
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
@@ -18,10 +18,10 @@ class LogRoutes extends GenericRoutes {
                                     .isValidateRole()
                                     .build();
         
-            this.controller.getByFilters(requestHandler);
+            this.getController().getByFilters(requestHandler);
         });
         
-        this.router.post(`${this.routerName}/add`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
         
             const requiredBodyList:  Array<string> = 
                                         [req.body.method, req.body.class, 
@@ -35,7 +35,7 @@ class LogRoutes extends GenericRoutes {
                                     .isValidateRole()
                                     .build();
         
-            this.controller.insert(requestHandler);
+            this.getController().insert(requestHandler);
         });
     }
 }

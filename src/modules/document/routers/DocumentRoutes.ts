@@ -21,7 +21,7 @@ class DocumentRoutes extends GenericRoutes {
 
     protected initializeRoutes() {
 
-        this.router.get(`${this.routerName}/get_by_some_params`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_by_some_params`, async (req: Request, res: Response) => {
             const nameParam : string | null = getUrlParam("name", req) || null;
             const extensionParam : string | null = getUrlParam("ext", req) || null;
             const actionTypeParam : string | null = getUrlParam("action_type", req) || null;
@@ -63,10 +63,10 @@ class DocumentRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.getByFilters(requestHandler);
+            this.getController().getByFilters(requestHandler);
         });
         
-        this.router.get(`${this.routerName}/get_by_name`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_by_name`, async (req: Request, res: Response) => {
             const nameParam : string = getUrlParam("name", req);
         
             let options : FindManyOptions;
@@ -81,10 +81,10 @@ class DocumentRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.getByFilters(requestHandler);
+            this.getController().getByFilters(requestHandler);
         });
         
-        this.router.get(`${this.routerName}/get_all`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_all`, async (req: Request, res: Response) => {
         
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
@@ -94,10 +94,10 @@ class DocumentRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.getAll(requestHandler);
+            this.getController().getAll(requestHandler);
         });
         
-        this.router.post(`${this.routerName}/add`,  upload.single('file'), async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/add`,  upload.single('file'), async (req: Request, res: Response) => {
         
             const requiredBodyList:  Array<string> = 
                 [req.body.type, req.body.table, 
@@ -112,10 +112,10 @@ class DocumentRoutes extends GenericRoutes {
                                     .isValidateRole()
                                     .build();
         
-            this.controller.insert(requestHandler);
+            this.getController().insert(requestHandler);
         });
         
-        this.router.put(`${this.routerName}/edit`,  upload.single('file'), async (req: Request, res: Response) => {
+        this.router.put(`${this.getRouterName()}/edit`,  upload.single('file'), async (req: Request, res: Response) => {
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
@@ -124,11 +124,11 @@ class DocumentRoutes extends GenericRoutes {
                                     .isValidateWhereByUserId()
                                     .build();
         
-            this.controller.update(requestHandler);
+            this.getController().update(requestHandler);
         });
         
         
-        this.router.delete(`${this.routerName}/delete`, async (req: Request, res: Response) => {
+        this.router.delete(`${this.getRouterName()}/delete`, async (req: Request, res: Response) => {
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
@@ -138,7 +138,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .isValidateWhereByUserId()
                                     .build();
         
-            this.controller.delete(requestHandler);
+            this.getController().delete(requestHandler);
         });
     }
 

@@ -11,7 +11,7 @@ class UserNotificationRoutes extends GenericRoutes {
     }
 
     protected initializeRoutes() {
-        this.router.get(`${this.routerName}/get`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get`, async (req: Request, res: Response) => {
   
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
@@ -21,12 +21,12 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.getById(requestHandler);
+            this.getController().getById(requestHandler);
         });
         
         
         
-        this.router.get(`${this.routerName}/get_by_filters`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_by_filters`, async (req: Request, res: Response) => {
         
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
@@ -36,10 +36,10 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.getByFilters(requestHandler);
+            this.getController().getByFilters(requestHandler);
         });
         
-        this.router.post(`${this.routerName}/add`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
         
             const requiredBodyList:  Array<string> = 
                     [req.body.id_user_receive, req.body.notification_code];
@@ -52,11 +52,11 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isValidateRole()
                                     .build();
         
-            this.controller.insert(requestHandler);
+            this.getController().insert(requestHandler);
         });
         
         
-        this.router.put(`${this.routerName}/is_read`, async (req: Request, res: Response) => {
+        this.router.put(`${this.getRouterName()}/is_read`, async (req: Request, res: Response) => {
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new UserNotificationDTO(req))
@@ -66,11 +66,11 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isValidateWhereByUserId()
                                     .build();
         
-            this.controller.update(requestHandler);
+            this.getController().update(requestHandler);
         });
         
         
-        this.router.delete(`${this.routerName}/delete`, async (req: Request, res: Response) => {
+        this.router.delete(`${this.getRouterName()}/delete`, async (req: Request, res: Response) => {
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new UserNotificationDTO(req))
@@ -79,7 +79,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isLogicalRemove()
                                     .build();
         
-            this.controller.delete(requestHandler);
+            this.getController().delete(requestHandler);
         });
     }
 }
