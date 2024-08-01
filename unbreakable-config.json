@@ -52,18 +52,18 @@
             "MAX_FILE_SIZE" : 50
         },
         "AWS": {
-            "BUCKET_NAME": "bucket-name-777",
+            "BUCKET_NAME": "b",
             "REGION": "us-east-2",
-            "ACCESS_KEY": "AKIAZQ3DRSPRNUX52EUI",
-            "SECRET_ACCESS_KEY": "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",
+            "ACCESS_KEY": "",
+            "SECRET_ACCESS_KEY": "4FFP+5e+1nWmWK6B+C",
             "PUBLIC_FOLDER" : ""
         }
     },
     "EMAIL" : {
         "SERVICE" : "gmail",
-        "AUTH_USER": "fabian7593@gmail.com",
-        "AUTH_PASSWORD": "feywuxkinvouisfg",
-        "EMAIL_FROM": "fabian7593@gmail.com",
+        "AUTH_USER": "",
+        "AUTH_PASSWORD": "",
+        "EMAIL_FROM": "@gmail.com",
         "CONTENT": {
             "REGISTER_SUBJECT" : "Account Verification",
             "FORGOT_PASS_SUBJECT" : "Forgot Password"
