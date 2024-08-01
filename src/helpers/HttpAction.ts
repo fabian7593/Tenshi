@@ -1,4 +1,4 @@
-import { Response, insertLog } from '@index/index';
+import { Response, insertLogBackend } from '@index/index';
 import { responseStruct } from '@objects/BodyResObject'
 import { getErrorDBbySqlState, getStatus, getMessage } from '@utils/jsonUtils';
 
@@ -44,11 +44,11 @@ export default class HttpAction{
         );
     }
 
-    async generalError(error : any, method : string = "", controller : string = "") {
+    async generalError(error : any, method : string = "", controller : string = "", id : string | null = null) {
         // Get the message
         const status = getStatus("ERROR");
-        await insertLog(method, controller, error.message, 
-                            status.httpStatus, "ERROR", null, 
+        await insertLogBackend(method, controller, error.message, 
+                            status.httpStatus, "ERROR", id, 
                             getMessage("ERROR_GENERAL"));
 
         return this.res.status(status.httpStatus).json(
@@ -58,7 +58,7 @@ export default class HttpAction{
 
     async databaseError(error : any, id: string | null = null, method : string = "", controller : string = "") {
         const status = getStatus("ERROR");
-        await insertLog(method, controller, error.message, 
+        await insertLogBackend(method, controller, error.message, 
                         status.httpStatus, "DATABASE_ERROR", id, 
                         getMessage("DATA_BASE_ERROR"));
 

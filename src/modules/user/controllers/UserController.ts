@@ -1,7 +1,7 @@
 import { HttpAction, Validations,
         sendMail, replaceCompanyInfoEmails} from "@index/index";
 
-import { GenericController, RequestHandler,JWTObject, fs, path } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject, fs, path, GenericRepository } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword, generateToken, generateRefreshToken, 
@@ -9,6 +9,7 @@ import { UserRepository, encryptPassword,
         UserDTO } from "@user/index";
         
 import {default as config} from "@root/unbreakable-config";
+import { insertLogTracking } from "@utils/logsUtils";
 
 const templatesDir = path.join(__dirname, '../../../templates');
 
@@ -105,7 +106,7 @@ export default class UserController extends GenericController{
             if(!this.validateRequiredFields(reqHandler, validation)){ return; }
             if(!this.validateRegex(reqHandler, validation)){ return; }
     
-            try{
+            
                 //Password encryption
                 userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
 
@@ -117,9 +118,13 @@ export default class UserController extends GenericController{
                 
                 const registerToken = generateRegisterToken(jwtObj); 
                 userBody.active_register_token = registerToken;
-    
+
+            try{
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
+
+                await insertLogTracking(reqHandler, `Register User ${user.email}`, "SUCCESS",
+                    JSON.stringify(user), user.id, "LoginTracking");
 
                 let htmlBody = replaceCompanyInfoEmails(htmlRegisterTemplate);
 
@@ -180,10 +185,14 @@ export default class UserController extends GenericController{
                         user.fail_login_number += 1;
                         user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
 
+                        await insertLogTracking(reqHandler, `Incorrect Password Login ${userBody.email}`, "UNAUTHORIZED",
+                            null, user.id, "LoginTracking");
                         //incorrect user or password
                         return httpExec.dynamicError("UNAUTHORIZED","USER_PASS_ERROR");
                     }
                 }else{
+                    await insertLogTracking(reqHandler, `Email ${userBody.email} not found`, "NOT_FOUND", null,
+                                      null, "LoginTracking");
                     //email not exist
                     return httpExec.dynamicError("NOT_FOUND","EMAIL_NOT_EXISTS_ERROR");
                 }
@@ -200,9 +209,13 @@ export default class UserController extends GenericController{
                     user.fail_login_number = 0;
                     user.is_active = true;
                     user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
-                    
+
                     const token = generateToken(jwtObj); 
                     const refreshToken = generateRefreshToken(jwtObj); 
+
+                    await insertLogTracking(reqHandler, `Last Login ${userBody.email}`, "SUCCESS",
+                        token, user.id, "LoginTracking");
+
                     return httpExec.successAction(userDTO.tokenToResponse(token, refreshToken, screens), successMessage);
     
                 }else{
@@ -321,6 +334,9 @@ export default class UserController extends GenericController{
 
                 await sendMail(user.email, config.EMAIL.CONTENT.ACTIVE_USER, htmlBody);
 
+                await insertLogTracking(reqHandler, `Recover User ${user.email}`, "SUCCESS",
+                    null, user.id.toString(), "LoginTracking");
+
                 return httpExec.successAction(null, "SEND_MAIL_SUCCESS");
             }else{
                 return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
@@ -353,6 +369,9 @@ export default class UserController extends GenericController{
                 .replace(/\{\{ resetLink \}\}/g, config.COMPANY.FRONT_END_HOST + 'verify_forgot_password/' + forgotUserPasswordToken);
             
                 await sendMail(user!.email, config.EMAIL.CONTENT.FORGOT_PASS_SUBJECT, htmlBody);
+
+                await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",
+                    null, user.id.toString(), "LoginTracking");
 
                 return httpExec.successAction(null, "EMAIL_SENT_SUCCESS");
             }else{

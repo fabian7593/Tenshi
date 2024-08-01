@@ -1,7 +1,8 @@
 
 import { Request, Response, NextFunction,
-        Validations, HttpAction, JWTObject } from "@index/index";
+        Validations, HttpAction, JWTObject, debuggingMessage } from "@index/index";
 import {default as config} from "@root/unbreakable-config";
+import DeviceInfo from '../objects/DeviceInfo';
 
 /*
     Start Middleware class has the function to start the rest before the next function
@@ -45,9 +46,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     if(config.SERVER.VALIDATE_API_KEY){
         if (
             !req.path.includes('confirmation_register') &&
-            !req.path.includes('forgot_password') &&
             !req.path.includes('verify_forgot_password') &&
-            !req.path.includes('reset_password') &&
             !req.path.includes('active_user')
         ){
             if(validation.validateRequireSecretApiKey() === true){
@@ -59,13 +58,46 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         }
     }
 
-     //Set in local variables to use in all request
-     res.locals.jwtData = jwtData;
-     res.locals.httpExec = httpExec;
-     res.locals.validation = validation;
+    //get the ip address
+    const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    //get App GUID
+    const appGuid = req.headers['app_guid'] || config.GENERAL.APP_GUID;
+
+    const deviceInfo : DeviceInfo | null = getDeviceInfo(req);
+
+    //Set in local variables to use in all request
+    res.locals.jwtData = jwtData;
+    res.locals.httpExec = httpExec;
+    res.locals.validation = validation;
+    res.locals.ipAddress = ipAddress;
+    res.locals.appGuid = appGuid;
+    res.locals.deviceInfo = deviceInfo;
 
     if(nextMethod){
         next();
+    }
+}
+
+
+function getDeviceInfo(req: Request): DeviceInfo | null {
+    const deviceInfoHeader = req.headers['device-info'];
+
+    if (typeof deviceInfoHeader === 'string') {
+        try {
+            // Parse the device-info header
+            const deviceInfo: DeviceInfo = JSON.parse(deviceInfoHeader);
+            
+            // Return the object if parsing was successful
+            return deviceInfo;
+        } catch (error) {
+            //return null if error parsing
+            debuggingMessage("Error parsing device-info:" + error);
+            return null;
+        }
+    } else {
+        // Return null if header is not a string
+        return null;
     }
 }
     

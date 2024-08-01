@@ -21,7 +21,7 @@ import DocumentRoutes from '@document/routers/DocumentRoutes';
 
 //Import internal classes and functions
 import StartMiddleware from '@middlewares/StartMiddleware';
-import { debuggingMessage, insertLog } from '@utils/logsUtils';
+import { debuggingMessage, insertLogBackend, insertLogTracking } from '@utils/logsUtils';
 import { executeQuery } from '@utils/executionDBUtils';
 import { Database } from "@config/TypeORMConnection";
 
@@ -43,7 +43,7 @@ export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
 
-export { debuggingMessage, insertLog, executeQuery, config, dependencyContainer };
+export { debuggingMessage, insertLogBackend, insertLogTracking, executeQuery, config, dependencyContainer };
 
 
 

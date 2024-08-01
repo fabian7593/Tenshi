@@ -10,7 +10,8 @@
     },
     "GENERAL":{
         "IS_DEBUGGING": false,
-        "FAIL_LOGIN_MAX_NUMBER": 3
+        "FAIL_LOGIN_MAX_NUMBER": 3,
+        "APP_GUID" : "302f7b2d-d2f4-429c-9454-0fc2cccea0e2"
     },
     "HTTP_REQUEST":{
         "PAGE_SIZE": 3000,

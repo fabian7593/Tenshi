@@ -14,6 +14,7 @@ interface CompanyConfig {
 interface GeneralConfig {
     IS_DEBUGGING: boolean;
     FAIL_LOGIN_MAX_NUMBER: number;
+    APP_GUID: string;
 }
 
 interface HttpRequestConfig {
