@@ -26,18 +26,15 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         !req.path.includes('recover_user')  &&
         !req.path.includes('active_user')
     ){
-        //TODO just for testing
-       // if(parseInt(process.env.IS_DEBUGGING || '0', 10) == 0){
-            //JWT validation
-            jwtData = validation.validateRequireJWT();
-            if (jwtData == null) { 
-                //send the response res, of the validateRequireJWT function.
-                nextMethod = false;
-                return; 
-            }else{
-                nextMethod = true;
-            }
-        //}
+        //JWT validation
+        jwtData = validation.validateRequireJWT();
+        if (jwtData == null) { 
+            //send the response res, of the validateRequireJWT function.
+            nextMethod = false;
+            return; 
+        }else{
+            nextMethod = true;
+        }
     }else{
         nextMethod = true;
     }

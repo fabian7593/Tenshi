@@ -30,7 +30,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole()
                 .build();
 
-                this.getController().getById(requestHandler);
+            this.getController().getById(requestHandler);
         });
 
         this.router.get(`${this.getRouterName()}/get_all`, async (req: Request, res: Response) => {

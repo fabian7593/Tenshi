@@ -4,9 +4,7 @@ import { HttpAction, Validations,
 import { GenericController, RequestHandler, JWTObject, fs, path, GenericRepository } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
-        decryptPassword, generateToken, generateRefreshToken, 
-        generateRegisterToken, generateForgotPasswordToken,
-        UserDTO } from "@user/index";
+        decryptPassword, JWTService, UserDTO } from "@user/index";
         
 import {default as config} from "@root/unbreakable-config";
 import { insertLogTracking } from "@utils/logsUtils";
@@ -116,7 +114,7 @@ export default class UserController extends GenericController{
                     role: userBody!.role_code
                 }
                 
-                const registerToken = generateRegisterToken(jwtObj); 
+                const registerToken = JWTService.generateRegisterToken(jwtObj); 
                 userBody.active_register_token = registerToken;
 
             try{
@@ -210,8 +208,8 @@ export default class UserController extends GenericController{
                     user.is_active = true;
                     user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
 
-                    const token = generateToken(jwtObj); 
-                    const refreshToken = generateRefreshToken(jwtObj); 
+                    const token = JWTService.generateToken(jwtObj); 
+                    const refreshToken = JWTService.generateRefreshToken(jwtObj); 
 
                     await insertLogTracking(reqHandler, `Last Login ${userBody.email}`, "SUCCESS",
                         token, user.id, "LoginTracking");
@@ -255,7 +253,7 @@ export default class UserController extends GenericController{
                 role: verify!.role_code
             }
         
-            const accessToken = generateToken(jwtObj);   
+            const accessToken = JWTService.generateToken(jwtObj);   
             return httpExec.successAction(userDTO.refreshToResponse(accessToken), successMessage);
         } catch(error : any){
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
@@ -324,7 +322,7 @@ export default class UserController extends GenericController{
                     role: user.role_code
                 }
                 
-                const recoverEmailToken = generateRegisterToken(jwtObj); 
+                const recoverEmailToken = JWTService.generateRegisterToken(jwtObj); 
 
                 let htmlBody = replaceCompanyInfoEmails(htmlRecoverUserByEmailTemplate);
                 htmlBody = htmlBody
@@ -357,7 +355,7 @@ export default class UserController extends GenericController{
             const user = await (this.getRepository() as UserRepository).getUserByEmailParam(email);
 
             if(user != undefined && user != null){
-                const forgotUserPasswordToken = generateForgotPasswordToken(email); 
+                const forgotUserPasswordToken = JWTService.generateForgotPasswordToken(email); 
                 user.forgot_password_token = forgotUserPasswordToken!;
     
                 await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());

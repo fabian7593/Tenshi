@@ -1,36 +1,46 @@
 import { JWTObject } from '@index/index';
-const jwt = require('jsonwebtoken');
-import {default as config} from "@root/unbreakable-config";
+import jwt from 'jsonwebtoken';
+import { default as config } from '@root/unbreakable-config';
 
-/*
- JWT Class is a class for generate access token, refresh token and any type of tokens &&
-  verify if the current token 
-  
-*/
+class JWTService {
+    private static instance: JWTService;
 
-export function generateToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject, config.JWT.MAIN_TOKEN.SECRET_KEY, { expiresIn: config.JWT.MAIN_TOKEN.EXPIRE });
+    private constructor() {}
+
+    public static getInstance(): JWTService {
+        if (!JWTService.instance) {
+            JWTService.instance = new JWTService();
+        }
+        return JWTService.instance;
+    }
+
+    private generateTokenWithConfig(payload: object, secretKey: string, expiresIn?: string): string {
+        return jwt.sign(payload, secretKey, expiresIn ? { expiresIn } : undefined);
+    }
+
+    public generateToken(JWTObject: JWTObject): string {
+        return this.generateTokenWithConfig(JWTObject, config.JWT.MAIN_TOKEN.SECRET_KEY, config.JWT.MAIN_TOKEN.EXPIRE!);
+    }
+
+    public generateRefreshToken(JWTObject: JWTObject): string {
+        return this.generateTokenWithConfig(JWTObject, config.JWT.REFRESH_TOKEN.SECRET_KEY, config.JWT.REFRESH_TOKEN.EXPIRE!);
+    }
+
+    public generateForgotPasswordToken(email: string): string {
+        return this.generateTokenWithConfig({ email }, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY, config.JWT.FORGOT_PASS_TOKEN.EXPIRE!);
+    }
+
+    public generateRegisterToken(JWTObject: JWTObject): string {
+        return this.generateTokenWithConfig(JWTObject, config.JWT.REGISTER_TOKEN.SECRET_KEY);
+    }
+
+    public verifyRefreshToken(token: string): JWTObject | null {
+        try {
+            return jwt.verify(token, config.JWT.REFRESH_TOKEN.SECRET_KEY) as JWTObject;
+        } catch (error) {
+            return null;
+        }
+    }
 }
 
-export function generateRefreshToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject, config.JWT.REFRESH_TOKEN.SECRET_KEY, { expiresIn: config.JWT.REFRESH_TOKEN.EXPIRE });
-}
-
-export function generateForgotPasswordToken(email: string) {
-    return jwt.sign({email}, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY, { expiresIn: config.JWT.FORGOT_PASS_TOKEN.EXPIRE });
-}
-
-export function generateRegisterToken(JWTObject: JWTObject) {
-  return jwt.sign(JWTObject, config.JWT.REGISTER_TOKEN.SECRET_KEY);
-}
-
-
-//Verify the refresh token
-export function verifyRefreshToken(token:string) {
-  try {
-      return jwt.verify(token, config.JWT.REFRESH_TOKEN.SECRET_KEY);
-  } catch (error) {
-      return null;
-  }
-}
-
+export default JWTService.getInstance();
