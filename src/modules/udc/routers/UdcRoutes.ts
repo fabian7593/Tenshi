@@ -1,7 +1,7 @@
 import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
          GenericController, GenericRoutes} from "@modules/index";
-import { UnitDynamicCentral, UdcDTO } from '@udc/index';
+import { UnitDynamicCentral, UdcDTO, requiredBodyList } from '@udc/index';
 
 class UdcRoutes extends GenericRoutes{
     constructor() {
@@ -48,15 +48,11 @@ class UdcRoutes extends GenericRoutes{
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
         
-            const requiredBodyList:  Array<string> = 
-                                    [req.body.code, req.body.name, 
-                                    req.body.value1];
-        
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new UdcDTO(req))
                                     .setMethod("insertUdc")
-                                    .setRequiredFiles(requiredBodyList)
+                                    .setRequiredFiles(requiredBodyList(req))
                                     .isValidateRole()
                                     .build();
         

@@ -99,16 +99,10 @@ class DocumentRoutes extends GenericRoutes {
         
         this.router.post(`${this.getRouterName()}/add`,  upload.single('file'), async (req: Request, res: Response) => {
         
-            const requiredBodyList:  Array<string> = 
-                [req.body.type, req.body.table, 
-                req.body.user_id, req.body.id_for_table];
-            
-        
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("insertDocument")
-                                    //.setRequiredFiles(requiredBodyList)
                                     .isValidateRole()
                                     .build();
         

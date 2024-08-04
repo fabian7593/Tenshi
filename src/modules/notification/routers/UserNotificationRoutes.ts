@@ -1,10 +1,8 @@
 import { Request, Response, GenericRoutes,
          RequestHandler, RequestHandlerBuilder} from "@modules/index";
 import { default as UserNotificationController } from '@notification/controllers/UserNotificationController';
-import { UserNotification, UserNotificationDTO } from '@notification/index';
-import { injectable } from 'inversify';
+import { UserNotification, UserNotificationDTO, requiredBodyListUserNotifications } from '@notification/index';
 
-@injectable()
 class UserNotificationRoutes extends GenericRoutes {
     constructor() {
         super(new UserNotificationController(UserNotification));
@@ -41,14 +39,11 @@ class UserNotificationRoutes extends GenericRoutes {
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
         
-            const requiredBodyList:  Array<string> = 
-                    [req.body.id_user_receive, req.body.notification_code];
-        
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new UserNotificationDTO(req))
                                     .setMethod("insertUserNotification")
-                                    .setRequiredFiles(requiredBodyList)
+                                    .setRequiredFiles(requiredBodyListUserNotifications(req))
                                     .isValidateRole()
                                     .build();
         

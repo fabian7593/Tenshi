@@ -2,7 +2,7 @@ import { Request, Response, GenericRoutes,
         RequestHandler, RequestHandlerBuilder, 
         GenericController } from "@modules/index";
 
-import { NotificationDTO, Notification } from '@notification/index';
+import { NotificationDTO, Notification, requiredBodyListNotifications } from '@notification/index';
 
 class NotificationRoutes extends GenericRoutes {
     constructor() {
@@ -48,16 +48,11 @@ class NotificationRoutes extends GenericRoutes {
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
         
-        
-            const requiredBodyList:  Array<string> = 
-                                        [req.body.code, req.body.subject, 
-                                        req.body.message];
-        
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("insertNotification")
-                                    .setRequiredFiles(requiredBodyList)
+                                    .setRequiredFiles(requiredBodyListNotifications(req))
                                     .isValidateRole()
                                     .build();
         

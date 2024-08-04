@@ -1,7 +1,10 @@
 import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
           GenericRoutes } from "@modules/index";
-import {  UserDTO, UserController, User, UserRepository } from "@user/index";
+import {  UserDTO, UserController, User, UserRepository,
+          regexValidationList, requiredBodyList, 
+          regexValidationRecoverUserAndPassList, requiredBodyRecoverUserAndPassList
+        } from "@user/index";
 
 class UserRoutes extends GenericRoutes {
 
@@ -46,22 +49,12 @@ class UserRoutes extends GenericRoutes {
             POST METHODS
         */
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {
-            const regexValidationList: [string, string][] = [
-                ['EMAIL_REGEX', req.body.email as string],
-                ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
-            ];
-
-            const requiredBodyList: string[] = 
-                                [req.body.first_name, req.body.last_name, 
-                                req.body.email, req.body.password, 
-                                req.body.role_code];
-
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("insertUser")
-                .setRegexValidation(regexValidationList)
-                .setRequiredFiles(requiredBodyList)
+                .setRegexValidation(regexValidationList(req))
+                .setRequiredFiles(requiredBodyList(req))
                 .isValidateRole()
                 .build();
 
@@ -69,38 +62,23 @@ class UserRoutes extends GenericRoutes {
         });
 
         this.router.post(`${this.getRouterName()}/register`, async (req: Request, res: Response) => {
-            const regexValidationList: [string, string][] = [
-                ['EMAIL_REGEX', req.body.email as string],
-                ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
-            ];
-
-            const requiredBodyList: string[] = 
-                                [req.body.first_name, req.body.last_name, 
-                                req.body.email, req.body.password, 
-                                req.body.role_code];
-
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("registerUser")
-                .setRegexValidation(regexValidationList)
-                .setRequiredFiles(requiredBodyList)
+                .setRegexValidation(regexValidationList(req))
+                .setRequiredFiles(requiredBodyList(req))
                 .build();
 
               (this.getController() as UserController).register(requestHandler);
         });
 
         this.router.post(`${this.getRouterName()}/login`, async (req: Request, res: Response) => {
-            const regexValidationList: [string, string][] = [
-                ['EMAIL_REGEX', req.body.email],
-                ['PASSWORD_REQUIRED_REGEX', req.body.password]
-            ];
-
             const requestHandler: RequestHandler = 
                 new RequestHandlerBuilder(res, req)
                     .setAdapter(new UserDTO(req))
                     .setMethod("loginUser")
-                    .setRegexValidation(regexValidationList)
+                    .setRegexValidation(regexValidationList(req))
                     .build();
 
             (this.getController() as UserController).loginUser(requestHandler);
@@ -110,16 +88,12 @@ class UserRoutes extends GenericRoutes {
             ANOTHER METHODS
         */
         this.router.put(`${this.getRouterName()}/edit`, async (req: Request, res: Response) => {
-            const regexValidationList: [string, string][] = [
-                ['EMAIL_REGEX', req.body.email as string],
-                ['PASSWORD_REQUIRED_REGEX', req.body.password as string]
-            ];
-
+           
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("updateUser")
-                .setRegexValidation(regexValidationList)
+                .setRegexValidation(regexValidationList(req))
                 .isValidateRole()
                 .build();
 
@@ -142,20 +116,12 @@ class UserRoutes extends GenericRoutes {
         /* RECOVER USER */
          // Send email to recover the user in case of inactive account
          this.router.post(`${this.getRouterName()}/recover_user`, async (req: Request, res: Response) => {
-
-            const regexValidationList: [string, string][] = [
-                ['EMAIL_REGEX', req.body.email as string]
-            ];
-
-            const requiredBodyList: string[] = 
-                                [req.body.email];
-
             const requestHandler: RequestHandler = 
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("recoverUser")
-                .setRegexValidation(regexValidationList)
-                .setRequiredFiles(requiredBodyList)
+                .setRegexValidation(regexValidationRecoverUserAndPassList(req))
+                .setRequiredFiles(requiredBodyRecoverUserAndPassList(req))
                 .build();
 
             (this.getController() as UserController).recoverUserByEmail(requestHandler);
@@ -204,6 +170,8 @@ class UserRoutes extends GenericRoutes {
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("forgotPassword")
+                .setRegexValidation(regexValidationRecoverUserAndPassList(req))
+                .setRequiredFiles(requiredBodyRecoverUserAndPassList(req))
                 .build();
 
             (this.getController() as UserController).forgotPassword(requestHandler);
