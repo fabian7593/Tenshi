@@ -43,7 +43,7 @@ export default class Validations{
     public validateMultipleRegex (listRegex: [string, string][] | null)
     {
         //Validate just in production
-        if(!config.GENERAL.IS_DEBUGGING){
+        if(!config.SERVER.IS_DEBUGGING){
 
             if(listRegex != null){
                 for (const [listKey, value] of listRegex) {

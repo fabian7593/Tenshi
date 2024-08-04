@@ -8,20 +8,20 @@
         "MAIN_COLOR": "#6666FF",
         "LANDING_PAGE": "https://www.example.com"
     },
-    "GENERAL":{
-        "IS_DEBUGGING": false,
-        "FAIL_LOGIN_MAX_NUMBER": 3,
-        "APP_GUID" : "302f7b2d-d2f4-429c-9454-0fc2cccea0e2"
-    },
-    "HTTP_REQUEST":{
-        "PAGE_SIZE": 3000,
-        "PAGE_OFFSET":1
-    },
     "SERVER" : {
         "PORT": 3000,
         "SECRET_API_KEY": "8170fcb2-ef45-4173-9a1b-f682d38ddae9",
         "VALIDATE_API_KEY" : true,
-        "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000"
+        "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000",
+        "APP_GUID" : "0079b54f-d99e-4b93-851b-0465f16d86e9",
+        "IS_DEBUGGING": false,
+        "FAIL_LOGIN_MAX_NUMBER": 3
+    },
+    "LOG": {
+        "LOG_SERVER":true,
+        "LOG_TRACEABILLITY":true,
+        "LOG_DATABASE":true,
+        "LOG_FILE":true
     },
     "DB": {
         "PORT": 3307,
@@ -30,6 +30,10 @@
         "PASSWORD": "",
         "NAME": "unbreakable",
         "CONNECTION_LIMIT": 150
+    },
+    "HTTP_REQUEST":{
+        "PAGE_SIZE": 3000,
+        "PAGE_OFFSET":1
     },
     "JWT": {
         "MAIN_TOKEN" :{
@@ -53,16 +57,16 @@
             "MAX_FILE_SIZE" : 50
         },
         "AWS": {
-            "BUCKET_NAME": "b",
-            "REGION": "us-east-2",
+            "BUCKET_NAME": "bu-777",
+            "REGION": "us--2",
             "ACCESS_KEY": "",
-            "SECRET_ACCESS_KEY": "4FFP+5e+1nWmWK6B+C",
+            "SECRET_ACCESS_KEY": "4FFP++C",
             "PUBLIC_FOLDER" : ""
         }
     },
     "EMAIL" : {
         "SERVICE" : "gmail",
-        "AUTH_USER": "",
+        "AUTH_USER": "@gmail.com",
         "AUTH_PASSWORD": "",
         "EMAIL_FROM": "@gmail.com",
         "CONTENT": {

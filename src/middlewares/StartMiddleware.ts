@@ -62,7 +62,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     //get App GUID
-    const appGuid = req.headers['app_guid'] || config.GENERAL.APP_GUID;
+    const appGuid = req.headers['app_guid'] || config.SERVER.APP_GUID;
 
     const deviceInfo : DeviceInfo | null = getDeviceInfo(req);
 

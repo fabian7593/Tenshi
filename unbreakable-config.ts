@@ -11,12 +11,6 @@ interface CompanyConfig {
     LANDING_PAGE: string;
 }
 
-interface GeneralConfig {
-    IS_DEBUGGING: boolean;
-    FAIL_LOGIN_MAX_NUMBER: number;
-    APP_GUID: string;
-}
-
 interface HttpRequestConfig {
     PAGE_SIZE: number;
     PAGE_OFFSET: number;
@@ -27,6 +21,9 @@ interface ServerConfig {
     SECRET_API_KEY: string;
     VALIDATE_API_KEY: boolean;
     PASSWORD_SALT: string;
+    IS_DEBUGGING: boolean;
+    FAIL_LOGIN_MAX_NUMBER: number;
+    APP_GUID: string;
 }
 
 interface DbConfig {
@@ -67,6 +64,14 @@ interface FileConfig {
     AWS: AwsConfig;
 }
 
+interface LogConfig {
+    LOG_SERVER: boolean;
+    LOG_TRACEABILLITY: boolean;
+    LOG_DATABASE: boolean;
+    LOG_FILE: boolean;
+}
+
+
 interface EmailContent {
     REGISTER_SUBJECT: string;
     FORGOT_PASS_SUBJECT: string;
@@ -83,10 +88,10 @@ interface EmailConfig {
 
 interface AppConfig {
     COMPANY: CompanyConfig;
-    GENERAL: GeneralConfig;
-    HTTP_REQUEST: HttpRequestConfig;
     SERVER: ServerConfig;
+    LOG: LogConfig;
     DB: DbConfig;
+    HTTP_REQUEST: HttpRequestConfig;
     JWT: JwtConfig;
     FILE: FileConfig;
     EMAIL: EmailConfig;

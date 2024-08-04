@@ -170,7 +170,7 @@ export default class UserController extends GenericController{
                 if(user != null){
 
                     //fail login validation
-                    if(config.GENERAL.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active == false){
+                    if(config.SERVER.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active == false){
                         return httpExec.dynamicError("UNAUTHORIZED","USER_FAIL_LOGIN_ERROR");
                     }
                     
