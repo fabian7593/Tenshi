@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset Email</title>
+    <title>Email Template</title>
     <style>
         /* Estilos para el cuerpo del correo */
         body {
@@ -69,14 +69,12 @@
                 <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
             </a>
         </header>
-        <h1>Recover User</h1>
-        <p>Hello {{ userName }},</p>
-        <p>We received a request to recover your user for {{ companyName }}. If you did not make this request, you can ignore this email.</p>
-        <p>To recover your user, please click the following link:</p>
-        <a href="{{ recoverLink }}">Recover User</a>
-        <p>If you encounter any issues or need further assistance, feel free to contact us.</p>
-        <p>Best regards,</p>
-        <p>{{ companyName }} Support Team</p>
+        <h1>{{ emailSubject }}</h1>
+        <p>{{ generalHello }}</p>
+        <p>{{ emailContent }}</p>
+        <p>{{ generalQuestionContact }}</p>
+        <p>{{ generalRegards }}</p>
+        <p>{{ generalSupport }}</p>
     </div>
 </body>
 </html>

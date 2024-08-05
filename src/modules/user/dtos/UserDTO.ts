@@ -24,6 +24,7 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.birth_date = this.req.body.birth_date || null;
         entity.country_iso_code = this.req.body.country_iso_code || null;
         entity.role_code = this.req.body.role_code;
+        entity.language = this.req.body.language || null;
         return entity;
     }
 
@@ -42,7 +43,8 @@ export default  class UserDTO implements IAdapterFromBody{
             country_iso_code: user.country_iso_code,
             gender: user.gender,
             birth_date: user.birth_date,
-            role: user.role_code
+            role: user.role_code,
+            language: user.language
         };
     }
 
@@ -70,6 +72,7 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.longitude = this.req.body.longitude || null;
         entity.gender = this.req.body.gender || null;
         entity.birth_date = this.req.body.birth_date || null;
+        entity.language = this.req.body.language || null;
         return entity;
     }
 

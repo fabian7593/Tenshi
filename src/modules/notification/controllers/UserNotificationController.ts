@@ -11,7 +11,7 @@ import { UserNotification, Notification, User,
 
 import {default as config} from "@root/unbreakable-config";
 
-const htmlGenericTemplate : string = fs.readFileSync('src/templates/generic_template_email.html', 'utf-8');
+const htmlGenericTemplate : string = fs.readFileSync('src/templates/genericTemplateEmail.html', 'utf-8');
 
 export default  class UserNotificationController extends GenericController{
 

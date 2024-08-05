@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Template</title>
+    <title>Recover User By Email</title>
     <style>
         /* Estilos para el cuerpo del correo */
         body {
@@ -69,12 +69,13 @@
                 <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
             </a>
         </header>
-        <h1>{{ emailSubject }}</h1>
-        <p>Hello {{ userName }},</p>
-        <p>{{ emailContent }}</p>
-        <p>If you have any questions, feel free to contact us.</p>
-        <p>Best regards,</p>
-        <p>{{ companyName }} Support Team</p>
+        <h1>{{ recoverUserByEmailTitle }}</h1>
+        <p>{{ generalHello }}</p>
+        <p>{{ recoverUserByEmailMessage }}</p>
+        <p>{{ recoverUserByEmailLink }}</p>
+        <a href="{{ recoverLink }}">{{ recoverUserByEmailTitle }}</a>
+        <p>{{ generalProblemContact }}</p>
+        <p>{{ generalSupport }}</p>
     </div>
 </body>
 </html>

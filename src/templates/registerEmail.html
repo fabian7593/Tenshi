@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset Email</title>
+    <title>Register Email</title>
     <style>
         /* Estilos para el cuerpo del correo */
         body {
@@ -69,14 +69,14 @@
                 <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
             </a>
         </header>
-        <h1>Password Reset</h1>
-        <p>Hello {{ userName }},</p>
-        <p>We received a request to reset your password for {{ companyName }}. If you did not make this request, you can ignore this email.</p>
-        <p>To reset your password, please click the following link:</p>
-        <a href="{{ resetLink }}">Reset Password</a>
-        <p>If you encounter any issues or need further assistance, feel free to contact us.</p>
-        <p>Best regards,</p>
-        <p>{{ companyName }} Support Team</p>
+        <h1>{{ registerEmailTitle }}</h1>
+        <p>{{ generalHello }}</p>
+        <p>{{ registerEmailMessage }}</p>
+        <p>{{ registerEmailLink }}</p>
+        <a href="{{ confirmationLink }}">{{ registerConfirmation }}</a>
+        <p>{{ generalQuestionContact }}</p>
+        <p>{{ generalRegards }}</p>
+        <p>{{ generalSupport }}</p>
     </div>
 </body>
 </html>

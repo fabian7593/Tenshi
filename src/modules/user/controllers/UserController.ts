@@ -1,20 +1,18 @@
 import { HttpAction, Validations,
         sendMail, replaceCompanyInfoEmails} from "@index/index";
 
-import { GenericController, RequestHandler, JWTObject, fs, path, GenericRepository } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword, JWTService, UserDTO } from "@user/index";
         
 import {default as config} from "@root/unbreakable-config";
 import { insertLogTracking } from "@utils/logsUtils";
+import { getEmailTemplate } from "@utils/htmlTemplateUtils";
 
 const templatesDir = path.join(__dirname, '../../../templates');
 
-const htmlRegisterTemplate : string = fs.readFileSync(path.join(templatesDir, 'register_email.html'), 'utf8');
-const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDir, 'active_account_page.html'), 'utf8');
-const htmlforgotPassTemplate: string = fs.readFileSync(path.join(templatesDir, 'forgot_password_email.html'), 'utf8');
-const htmlRecoverUserByEmailTemplate: string = fs.readFileSync(path.join(templatesDir, 'recover_user_by_email.html'), 'utf8');
+const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDir, 'activeAccountPage.html'), 'utf8');
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
@@ -117,6 +115,9 @@ export default class UserController extends GenericController{
                 const registerToken = JWTService.generateRegisterToken(jwtObj); 
                 userBody.active_register_token = registerToken;
 
+                //set the language
+                userBody.language = userBody.language == null ? reqHandler.getRequest().headers['accept-language'] : userBody.language
+           
             try{
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
@@ -124,13 +125,13 @@ export default class UserController extends GenericController{
                 await insertLogTracking(reqHandler, `Register User ${user.email}`, "SUCCESS",
                     JSON.stringify(user), user.id, "LoginTracking");
 
-                let htmlBody = replaceCompanyInfoEmails(htmlRegisterTemplate);
-
-                htmlBody = htmlBody
-                .replace(/\{\{ userName \}\}/g, userBody!.firstName + " " + userBody!.lastName)
-                .replace(/\{\{ confirmationLink \}\}/g,  config.COMPANY.BACKEND_HOST + 'confirmation_register/'+ registerToken);
-            
-                await sendMail(userBody!.email, config.EMAIL.CONTENT.REGISTER_SUBJECT, htmlBody);
+                const variables = {
+                    userName: user.first_name + " " + user.last_name,
+                    confirmationLink: config.COMPANY.BACKEND_HOST + 'confirmation_register/'+ registerToken
+                };
+                const htmlBody = await getEmailTemplate("registerEmail", user.language, variables);
+                
+                await sendMail(user.email, config.EMAIL.CONTENT.REGISTER_SUBJECT, htmlBody);
 
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
@@ -298,8 +299,7 @@ export default class UserController extends GenericController{
         }
     }
 
-    //TODO
-    //send an email to recover user and active, after blocked by fail login
+   
     async recoverUserByEmail(reqHandler: RequestHandler){
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
@@ -324,11 +324,11 @@ export default class UserController extends GenericController{
                 
                 const recoverEmailToken = JWTService.generateRegisterToken(jwtObj); 
 
-                let htmlBody = replaceCompanyInfoEmails(htmlRecoverUserByEmailTemplate);
-                htmlBody = htmlBody
-                .replace(/\{\{ userName \}\}/g, user.first_name + " " + user.last_name)
-                .replace(/\{\{ recoverLink \}\}/g,  config.COMPANY.BACKEND_HOST + 'active_user/'+ recoverEmailToken);
-
+                const variables = {
+                    userName: user.first_name + " " + user.last_name,
+                    recoverLink: config.COMPANY.BACKEND_HOST + 'active_user/'+ recoverEmailToken
+                };
+                const htmlBody = await getEmailTemplate("recoverUserByEmail", user.language, variables);
 
                 await sendMail(user.email, config.EMAIL.CONTENT.ACTIVE_USER, htmlBody);
 
@@ -360,13 +360,13 @@ export default class UserController extends GenericController{
     
                 await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
 
-                let htmlBody = replaceCompanyInfoEmails(htmlforgotPassTemplate);
+                const variables = {
+                    userName: user.first_name + " " + user.last_name,
+                    resetLink: config.COMPANY.FRONT_END_HOST + 'verify_forgot_password/' + forgotUserPasswordToken
+                };
+                const htmlBody = await getEmailTemplate("forgotPasswordEmail", user.language, variables);
 
-                htmlBody = htmlBody
-                .replace(/\{\{ userName \}\}/g, user!.first_name + " " + user!.last_name)
-                .replace(/\{\{ resetLink \}\}/g, config.COMPANY.FRONT_END_HOST + 'verify_forgot_password/' + forgotUserPasswordToken);
-            
-                await sendMail(user!.email, config.EMAIL.CONTENT.FORGOT_PASS_SUBJECT, htmlBody);
+                await sendMail(user.email, config.EMAIL.CONTENT.FORGOT_PASS_SUBJECT, htmlBody);
 
                 await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",
                     null, user.id.toString(), "LoginTracking");

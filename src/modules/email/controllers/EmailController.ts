@@ -2,7 +2,7 @@ import { HttpAction, Validations } from "@index/index";
 import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index";
 import { User, UserRepository, sendMail, replaceCompanyInfoEmails } from '@email/index';
 
-const htmlGenericTemplate : string = fs.readFileSync('src/templates/generic_template_email.html', 'utf-8');
+const htmlGenericTemplate : string = fs.readFileSync('src/templates/genericTemplateEmail.html', 'utf-8');
 
 
 export default  class EmailController extends GenericController{

@@ -69,12 +69,12 @@
                 <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
             </a>
         </header>
-        <h1>Account Activated Successfully</h1>
-        <p>Hello {{ userName }},</p>
-        <p>Your account has been successfully activated. You can now access all the features of {{ companyName }}.</p>
-        <p>If you have any questions or need assistance, please feel free to contact us.</p>
-        <p>Best regards,</p>
-        <p>{{ companyName }} Support Team</p>
+        <h1>{{ activeAccountPageTitle }}</h1>
+        <p>{{ generalHello }}</p>
+        <p>{{ activeAccountPageMessage }}</p>
+        <p>{{ activeAccountPageContact }}</p>
+        <p>{{ generalRegards }}</p>
+        <p>{{ generalSupport }}</p>
     </div>
 </body>
 </html>
