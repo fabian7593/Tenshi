@@ -1,7 +1,9 @@
 {
+    "activeAccountPageSubject": "Active User",
     "activeAccountPageTitle": "Account Activated Successfully",
     "activeAccountPageMessage": "Your account has been successfully activated. You can now access all the features of {{ companyName }}.",
     
+    "forgotPasswordEmailSubject": "Forgot Password",
     "forgotPasswordEmailTitle": "Password Reset",
     "forgotPasswordEmailMessage": "We received a request to reset your password for {{ companyName }}. If you did not make this request, you can ignore this email.",
     "forgotPasswordEmailLink": "To reset your password, please click the following link:",
@@ -10,16 +12,15 @@
     "recoverUserByEmailMessage": "We received a request to recover your user for {{ companyName }}. If you did not make this request, you can ignore this email.",
     "recoverUserByEmailLink": "To recover your user, please click the following link:",
     
+    "registerEmailSubject": "Account Verification",
     "registerEmailTitle": "Welcome to {{ companyName }}",
     "registerEmailMessage": "Thank you for registering with {{ companyName }}. We're excited to have you with us.",
     "registerEmailLink": "Please click the following link to confirm your registration:",
-    "registerConfirmation": "Confirm Registration",
+    "registerEmailConfirmation": "Confirm Registration",
     
-
     "generalHello":"Hello {{ userName }},",
     "generalQuestionContact":"If you have any questions, feel free to contact us.",
     "generalProblemContact":"If you encounter any issues or need further assistance, feel free to contact us.",
     "generalRegards":"Best regards,",
     "generalSupport":"{{ companyName }} Support Team"
   }
-  

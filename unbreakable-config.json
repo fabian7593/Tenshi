@@ -15,7 +15,8 @@
         "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000",
         "APP_GUID" : "0079b54f-d99e-4b93-851b-0465f16d86e9",
         "IS_DEBUGGING": false,
-        "FAIL_LOGIN_MAX_NUMBER": 3
+        "FAIL_LOGIN_MAX_NUMBER": 3,
+        "DEFAULT_LANGUAGE" : "en"
     },
     "LOG": {
         "LOG_SERVER":true,
@@ -68,12 +69,7 @@
         "SERVICE" : "gmail",
         "AUTH_USER": "fabian7593@gmail.com",
         "AUTH_PASSWORD": "feywuxkinvouisfg",
-        "EMAIL_FROM": "fabian7593@gmail.com",
-        "CONTENT": {
-            "REGISTER_SUBJECT" : "Account Verification",
-            "FORGOT_PASS_SUBJECT" : "Forgot Password",
-            "ACTIVE_USER" : "Active User"
-        }
+        "EMAIL_FROM": "fabian7593@gmail.com"
     }
 }
 

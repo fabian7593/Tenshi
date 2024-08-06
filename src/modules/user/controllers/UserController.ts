@@ -8,7 +8,7 @@ import { UserRepository, encryptPassword,
         
 import {default as config} from "@root/unbreakable-config";
 import { insertLogTracking } from "@utils/logsUtils";
-import { getEmailTemplate } from "@utils/htmlTemplateUtils";
+import { getEmailTemplate, getMessageEmail } from "@utils/htmlTemplateUtils";
 
 const templatesDir = path.join(__dirname, '../../../templates');
 
@@ -131,7 +131,8 @@ export default class UserController extends GenericController{
                 };
                 const htmlBody = await getEmailTemplate("registerEmail", user.language, variables);
                 
-                await sendMail(user.email, config.EMAIL.CONTENT.REGISTER_SUBJECT, htmlBody);
+                const subject = getMessageEmail("registerEmailSubject",user.language);
+                await sendMail(user.email, subject, htmlBody);
 
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
@@ -262,7 +263,6 @@ export default class UserController extends GenericController{
     }
 
 
-
     //Logic active register user
     async activeRegisterUser(reqHandler: RequestHandler){
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
@@ -330,7 +330,8 @@ export default class UserController extends GenericController{
                 };
                 const htmlBody = await getEmailTemplate("recoverUserByEmail", user.language, variables);
 
-                await sendMail(user.email, config.EMAIL.CONTENT.ACTIVE_USER, htmlBody);
+                const subject = getMessageEmail("activeAccountPageSubject",user.language!);
+                await sendMail(user.email, subject, htmlBody);
 
                 await insertLogTracking(reqHandler, `Recover User ${user.email}`, "SUCCESS",
                     null, user.id.toString(), "LoginTracking");
@@ -343,7 +344,6 @@ export default class UserController extends GenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
-
 
 
     //Sen the email for forgot password
@@ -366,7 +366,8 @@ export default class UserController extends GenericController{
                 };
                 const htmlBody = await getEmailTemplate("forgotPasswordEmail", user.language, variables);
 
-                await sendMail(user.email, config.EMAIL.CONTENT.FORGOT_PASS_SUBJECT, htmlBody);
+                const subject = getMessageEmail("forgotPasswordEmailSubject", user.language!);
+                await sendMail(user.email, subject, htmlBody);
 
                 await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",
                     null, user.id.toString(), "LoginTracking");
@@ -380,7 +381,6 @@ export default class UserController extends GenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
-
 
 
     //Logic to verify the forgot password token
@@ -400,7 +400,6 @@ export default class UserController extends GenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
-
 
 
     async resetPassword(reqHandler: RequestHandler){

@@ -6,3 +6,4 @@ export { default as UserNotificationDTO } from "@notification/dtos/UserNotificat
 export { default as UserNotificationController } from "@notification/controllers/UserNotificationController";
 export { requiredBodyList as requiredBodyListNotifications } from "@notification/validations/NotificationValidations";
 export { requiredBodyList as requiredBodyListUserNotifications } from "@notification/validations/UserNotificationValidations";
+export { regexValidationList } from "@notification/validations/NotificationValidations";

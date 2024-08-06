@@ -22,6 +22,13 @@ function loadMessages(language: string): { [key: string]: string } {
     return JSON.parse(fileContents);
 }
 
+
+export function getMessageEmail(key: string, language: string): string {
+ 
+    const messages = loadMessages(language);
+    return messages[key];
+}
+
 /**
  * Replaces the text in the HTML template with the provided messages and variables.
  *
@@ -33,7 +40,6 @@ function loadMessages(language: string): { [key: string]: string } {
 function replaceTemplateText(template: string, messages: { [key: string]: string }, variables: { [key: string]: string }): string {
     let updatedTemplate = template;
 
-  
     // Replace messages placeholders
     for (const [key, value] of Object.entries(messages)) {
         // Replace the message placeholder in the template
@@ -83,7 +89,7 @@ export function getEmailTemplate(templateName: string, language: string | null, 
     const templateContent = fs.readFileSync(templatePath, 'utf8');
 
     // Load the messages for the specified language
-    const messages = loadMessages(language == null ? 'es' : language);
+    const messages = loadMessages(language == null ? config.SERVER.DEFAULT_LANGUAGE : language);
 
     // Replace the placeholders in the template with the provided variables and messages
     return replaceTemplateText(templateContent, messages, variables);

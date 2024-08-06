@@ -1,6 +1,5 @@
 import { Validations, HttpAction, 
-         sendMail, replaceCompanyInfoEmails,
-         executeQuery } from "@index/index";
+         sendMail, executeQuery } from "@index/index";
 
 import { GenericRepository, 
          GenericController, RequestHandler,
@@ -10,8 +9,7 @@ import { UserNotification, Notification, User,
          UserNotificationDTO } from "@notification/index";
 
 import {default as config} from "@root/unbreakable-config";
-
-const htmlGenericTemplate : string = fs.readFileSync('src/templates/genericTemplateEmail.html', 'utf-8');
+import { getEmailTemplate } from "@utils/htmlTemplateUtils";
 
 export default  class UserNotificationController extends GenericController{
 
@@ -40,11 +38,13 @@ export default  class UserNotificationController extends GenericController{
              if(notification != undefined && notification != null){
                 if(notification.required_send_email){
                     const user : User = await repositoryUser.findById(userNotifications.id_user_receive, true);
-                    let htmlBody = replaceCompanyInfoEmails(htmlGenericTemplate);
-                    htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
-                    htmlBody = htmlBody.replace(/\{\{ emailSubject \}\}/g, notification.subject);
-                    htmlBody = htmlBody.replace(/\{\{ emailContent \}\}/g, notification.message);
-                
+                    
+                    const variables = {
+                        userName: user.first_name + " " + user.last_name,
+                        emailSubject: notification.subject,
+                        emailContent: notification.message
+                    };
+                    const htmlBody = await getEmailTemplate("genericTemplateEmail", user.language, variables);
                     await sendMail(user.email, notification.subject, htmlBody);
                  }
              }else{

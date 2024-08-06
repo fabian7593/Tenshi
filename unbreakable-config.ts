@@ -24,6 +24,7 @@ interface ServerConfig {
     IS_DEBUGGING: boolean;
     FAIL_LOGIN_MAX_NUMBER: number;
     APP_GUID: string;
+    DEFAULT_LANGUAGE: string;
 }
 
 interface DbConfig {
@@ -72,18 +73,11 @@ interface LogConfig {
 }
 
 
-interface EmailContent {
-    REGISTER_SUBJECT: string;
-    FORGOT_PASS_SUBJECT: string;
-    ACTIVE_USER: string;
-}
-
 interface EmailConfig {
     SERVICE: string;
     AUTH_USER: string;
     AUTH_PASSWORD: string;
     EMAIL_FROM: string;
-    CONTENT: EmailContent;
 }
 
 interface AppConfig {

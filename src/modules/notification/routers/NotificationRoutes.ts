@@ -2,7 +2,7 @@ import { Request, Response, GenericRoutes,
         RequestHandler, RequestHandlerBuilder, 
         GenericController } from "@modules/index";
 
-import { NotificationDTO, Notification, requiredBodyListNotifications } from '@notification/index';
+import { NotificationDTO, Notification, requiredBodyListNotifications, regexValidationList } from '@notification/index';
 
 class NotificationRoutes extends GenericRoutes {
     constructor() {
@@ -53,6 +53,7 @@ class NotificationRoutes extends GenericRoutes {
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("insertNotification")
                                     .setRequiredFiles(requiredBodyListNotifications(req))
+                                    .setRegexValidation(regexValidationList(req))
                                     .isValidateRole()
                                     .build();
         

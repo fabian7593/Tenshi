@@ -58,7 +58,7 @@ export class User {
   @Column({ type: "decimal", precision: 11, scale: 8, nullable: true, default: null })
   longitude: number | null;
 
-  @Column({ type: "varchar", length: 10, default: "es" })
+  @Column({ type: "varchar", length: 10, default: "en" })
   language: string | null;
 
   @Column({ type: "varchar", length: 200, nullable: true, default: null })

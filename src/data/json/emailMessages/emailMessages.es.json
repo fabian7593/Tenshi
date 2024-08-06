@@ -1,7 +1,9 @@
 {
+    "activeAccountPageSubject": "Activacion de usuario",
     "activeAccountPageTitle": "Cuenta Activada con Éxito",
     "activeAccountPageMessage": "Tu cuenta ha sido activada con éxito. Ahora puedes acceder a todas las funciones de {{ companyName }}.",
     
+    "forgotPasswordEmailSubject": "Restablecimiento de Contraseña",
     "forgotPasswordEmailTitle": "Restablecimiento de Contraseña",
     "forgotPasswordEmailMessage": "Recibimos una solicitud para restablecer tu contraseña para {{ companyName }}. Si no hiciste esta solicitud, puedes ignorar este correo.",
     "forgotPasswordEmailLink": "Para restablecer tu contraseña, por favor haz clic en el siguiente enlace:",
@@ -10,17 +12,15 @@
     "recoverUserByEmailMessage": "Recibimos una solicitud para recuperar tu usuario para {{ companyName }}. Si no hiciste esta solicitud, puedes ignorar este correo.",
     "recoverUserByEmailLink": "Para recuperar tu usuario, por favor haz clic en el siguiente enlace:",
     
+    "registerEmailSubject": "Verificacion de cuenta",
     "registerEmailTitle": "Bienvenido a {{ companyName }}",
     "registerEmailMessage": "Gracias por registrarte en {{ companyName }}. Estamos emocionados de tenerte con nosotros.",
     "registerEmailLink": "Por favor, haz clic en el siguiente enlace para confirmar tu registro:",
-    "registerConfirmation": "Confirmar Registro",
-
+    "registerEmailConfirmation": "Confirmar Registro",
 
     "generalHello":"Hola {{ userName }},",
     "generalQuestionContact":"Si tienes alguna pregunta, no dudes en ponerte en contacto con nosotros.",
     "generalProblemContact":"Si encuentras algún problema o necesitas asistencia, no dudes en contactarnos.",
     "generalRegards":"Saludos cordiales,",
     "generalSupport":"Equipo de Soporte de {{ companyName }}"
-    
   }
-  

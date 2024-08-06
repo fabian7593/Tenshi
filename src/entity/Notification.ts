@@ -28,6 +28,9 @@ export class Notification {
   @Column({ type: "varchar", length: 400, nullable: true, default: null })
   action_url: string | null;
 
+  @Column({ type: "varchar", length: 10, default: "en" })
+  language: string | null;
+
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   created_date: Date;
 

@@ -17,6 +17,7 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.required_send_email = this.req.body.required_send_email || null;
         entity.is_delete_after_read = this.req.body.is_delete_after_read || null;
         entity.action_url = this.req.body.action_url || null;
+        entity.language = this.req.body.language || null;
         entity.created_date = new Date();
         return entity;
     }
@@ -33,6 +34,7 @@ export default  class NotificationDTO implements IAdapterFromBody{
             required_send_email: entity.required_send_email,
             is_delete_after_read: entity.is_delete_after_read,
             action_url: entity.action_url,
+            language: entity.language,
             created_date: entity.created_date
         };
     }
@@ -59,6 +61,7 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.required_send_email = this.req.body.required_send_email || null;
         entity.is_delete_after_read = this.req.body.is_delete_after_read || null;
         entity.action_url = this.req.body.action_url || null;
+        entity.language = this.req.body.language || null;
         return entity;
     }
 }
