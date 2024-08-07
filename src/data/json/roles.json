@@ -1,0 +1,124 @@
+{
+    "roles": [
+      {
+        "id": 1,
+        "code": "ADMIN",
+        "name": "Admin",
+        "description": "Administrator role with full access to all functionalities.",
+        "tables": [
+          {
+            "name": "DOCUMENT",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "PRODUCTS",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "NOTIFICATION",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "USER",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "UNIT_DYNAMIC_CENTRAL",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "LOG",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID",
+              "GET_ALL"
+            ]
+          },
+          {
+            "name": "SEND_MAIL",
+            "function_list": [
+              "CREATE"
+            ]
+          },
+          {
+            "name": "USER_NOTIFICATION",
+            "function_list": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "GET_BY_ID"
+            ]
+          }
+        ],
+        "screens": [
+          {
+            "name": "CREATE_NEW_PROJECT",
+            "function_list": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE"
+            ]
+          },
+          {
+            "name": "PRODUCTS",
+            "function_list": [
+              "CREATE",
+              "READ",
+              "UPDATE",
+              "DELETE"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "code": "ANALYST",
+        "name": "Analyst",
+        "description": "Analyst role with access to analytical tools and reporting functionalities.",
+        "tables": [],
+        "screens": []
+      },
+      {
+        "id": 3,
+        "code": "CUSTOMER",
+        "name": "Customer",
+        "description": "Customer role with access to customer-specific functionalities.",
+        "tables": [],
+        "screens": []
+      }
+    ]
+  }
+  
