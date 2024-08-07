@@ -18,7 +18,6 @@ export default  class LogDTO implements IAdapterFromBody{
         entity.message = this.req.body.message;
         entity.data = this.req.body.data || null;
         entity.created_date = new Date();
-        entity.app_guid = this.req.body.app_guid || null;
         entity.environment = this.req.body.environment || null;
         entity.user_id = this.req.body.user_id || null;
         entity.ip_address = this.req.body.ip_address || null;
@@ -38,7 +37,6 @@ export default  class LogDTO implements IAdapterFromBody{
             message: entity.message,
             data: entity.data,
             created_date: entity.created_date,
-            app_guid: entity.app_guid,
             environment: entity.environment,
             ip_address: entity.ip_address,
             user_id: entity.user_id

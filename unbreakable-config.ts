@@ -23,7 +23,6 @@ interface ServerConfig {
     PASSWORD_SALT: string;
     IS_DEBUGGING: boolean;
     FAIL_LOGIN_MAX_NUMBER: number;
-    APP_GUID: string;
     DEFAULT_LANGUAGE: string;
 }
 

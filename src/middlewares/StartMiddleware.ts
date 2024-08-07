@@ -58,9 +58,6 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     //get the ip address
     const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    //get App GUID
-    const appGuid = req.headers['app_guid'] || config.SERVER.APP_GUID;
-
     const deviceInfo : DeviceInfo | null = getDeviceInfo(req);
 
     //Set in local variables to use in all request
@@ -68,7 +65,6 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     res.locals.httpExec = httpExec;
     res.locals.validation = validation;
     res.locals.ipAddress = ipAddress;
-    res.locals.appGuid = appGuid;
     res.locals.deviceInfo = deviceInfo;
 
     if(nextMethod){

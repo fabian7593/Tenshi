@@ -29,9 +29,6 @@ export class UserNotification {
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   created_date: Date;
 
-  @Column({ type: "varchar", length: 200, nullable: true, default: null })
-  app_guid: string | null;
-
   @ManyToOne(() => Notification, notification => notification.id)
   @JoinColumn({ name: "notification_code", referencedColumnName: "code" })
   notification: Notification;

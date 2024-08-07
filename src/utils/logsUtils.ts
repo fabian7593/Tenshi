@@ -55,7 +55,6 @@ export async function insertLogTracking(reqHandler: RequestHandler,
         log.https = getStatus(statusCode).httpStatus;
         log.message = message;
         log.data = data;
-        log.app_guid = reqHandler.getResponse().locals.appGuid;
         log.ip_address = reqHandler.getResponse().locals.ipAddress;
         log.user_id = userId;
         if(reqHandler.getResponse().locals.deviceInfo != null){

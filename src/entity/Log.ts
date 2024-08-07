@@ -37,9 +37,6 @@ export class Log {
   ip_address: string | null;
 
   @Column({ type: "varchar", length: 200, nullable: true })
-  app_guid: string | null;
-
-  @Column({ type: "varchar", length: 200, nullable: true })
   environment: string | null;
 
   @Column({ type: "varchar", length: 200, nullable: true })

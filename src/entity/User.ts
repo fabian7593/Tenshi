@@ -61,9 +61,6 @@ export class User {
   @Column({ type: "varchar", length: 10, default: "en" })
   language: string | null;
 
-  @Column({ type: "varchar", length: 200, nullable: true, default: null })
-  app_guid: string | null;
-
   @ManyToOne(() => Role, role => role.id)
   @JoinColumn({ name: "role_code", referencedColumnName: "code" })
   role: Role;

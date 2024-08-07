@@ -17,9 +17,6 @@ export class RoleScreen {
   @Column({ type: "varchar", length: 400, nullable: true, default: null })
   description: string | null;
 
-  @Column({ type: "varchar", length: 200, nullable: true, default: null })
-  app_guid: string | null;
-
   @ManyToOne(() => Role, role => role.id)
   @JoinColumn({ name: "role_code", referencedColumnName: "code" })
   role: Role;

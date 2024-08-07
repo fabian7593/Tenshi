@@ -22,6 +22,4 @@ export class RoleFunctionallity {
   @Column({ type: 'varchar', length: 400, nullable: true })
   description: string;
 
-  @Column({ type: 'varchar', length: 200, nullable: true })
-  app_guid: string;
 }

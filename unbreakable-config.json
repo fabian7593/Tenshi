@@ -13,7 +13,6 @@
         "SECRET_API_KEY": "8170fcb2-ef45-4173-9a1b-f682d38ddae9",
         "VALIDATE_API_KEY" : true,
         "PASSWORD_SALT" : "550e8400e29b41d4a716446655440000",
-        "APP_GUID" : "0079b54f-d99e-4b93-851b-0465f16d86e9",
         "IS_DEBUGGING": false,
         "FAIL_LOGIN_MAX_NUMBER": 3,
         "DEFAULT_LANGUAGE" : "en"

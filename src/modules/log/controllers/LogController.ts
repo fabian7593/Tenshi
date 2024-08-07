@@ -13,11 +13,6 @@ export default  class LogController extends GenericController{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
 
-            let appGuid : string | null = null;
-            if(reqHandler.getRequest().query['app_guid'] != undefined){
-                appGuid = reqHandler.getRequest().query['app_guid'] as string;
-            }
-
             let environment : string | null = null;
             if(reqHandler.getRequest().query['environment'] != undefined){
                 environment = reqHandler.getRequest().query['environment'] as string;
@@ -44,7 +39,7 @@ export default  class LogController extends GenericController{
                             config.HTTP_REQUEST.PAGE_SIZE;
 
                 //Execute Action DB
-                const entities = await this.getAllLogs(appGuid, environment, userId, type, page, size);
+                const entities = await this.getAllLogs(environment, userId, type, page, size);
 
                 // Filtrar el OkPacket
                 const data = entities.filter((item: any) => !('affectedRows' in item));
@@ -61,13 +56,13 @@ export default  class LogController extends GenericController{
      }
 
  
-     async getAllLogs(appGuid : string | null, environment : string | null,
+     async getAllLogs(environment : string | null,
                                    userId: string | null, type : string | null,
                                    page: number, size : number): Promise<any>{
             return await executeQuery(async (conn) => {
                 const result = await conn.query(
-                    "CALL GetLogsWithFilters(?, ?, ?, ?, ?, ?)",
-                    [appGuid, environment, userId, type, size, page] 
+                    "CALL GetLogsWithFilters(?, ?, ?, ?, ?)",
+                    [environment, userId, type, size, page] 
                 );
                
              return result;

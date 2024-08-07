@@ -51,6 +51,4 @@ export class UnitDynamicCentral {
   @Column({ type: "int", unsigned: true, nullable: true, default: null })
   user_updated_id: number | null;
 
-  @Column({ type: "varchar", length: 200, nullable: true, default: null })
-  app_guid: string | null;
 }

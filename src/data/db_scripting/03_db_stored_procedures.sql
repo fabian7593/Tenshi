@@ -61,7 +61,6 @@ DROP PROCEDURE IF EXISTS GetLogsWithFilters;
 DELIMITER //
 
 CREATE PROCEDURE GetLogsWithFilters(
-    IN pAppGuid VARCHAR(200),
     IN pEnvironment VARCHAR(200),
     IN pUserId VARCHAR(200),
     IN pType VARCHAR(40),
@@ -89,13 +88,11 @@ BEGIN
         description,
         created_date,
         user_id,
-        app_guid,
         environment
     FROM
         logs
     WHERE
-        (COALESCE(pAppGuid, '') = '' OR app_guid = pAppGuid)
-        AND (COALESCE(pEnvironment, '') = '' OR environment = pEnvironment)
+        (COALESCE(pEnvironment, '') = '' OR environment = pEnvironment)
         AND (COALESCE(pUserId, '') = '' OR user_id = pUserId)
         AND (COALESCE(pType, '') = '' OR type = pType)
     LIMIT pLimit
