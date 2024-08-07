@@ -17,6 +17,4 @@ export { getUrlParam, toSnakeCase, getCurrentFunctionName } from "@utils/general
 
 //Entity
 //role
-export { RoleFunctionallity } from '@entity/RoleFunctionallity';
-export { RoleScreen } from '@entity/RoleScreen';
-export { default as RoleRepository } from "@user/repositories/RoleRepository";
+export { default as RoleRepository } from "@index/generics/Role/RoleRepository";

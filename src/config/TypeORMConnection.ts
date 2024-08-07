@@ -3,10 +3,6 @@ import { DataSource } from "typeorm";
 import {default as config} from "@root/unbreakable-config";
 import { debuggingMessage } from "@index/index";
 import { User } from "@entity/User";
-import { Role } from "@entity/Role";
-import { RoleFunctionallity } from "@entity/RoleFunctionallity";
-import { RoleScreen } from "@entity/RoleScreen";
-import { Screen } from "@entity/Screen";
 import { Document } from "@entity/Document";
 import { Log } from "@entity/Log";
 import { Notification } from "@entity/Notification";
@@ -27,9 +23,9 @@ export class Database {
                 username: config.DB.USER,
                 password: config.DB.PASSWORD,
                 database: config.DB.NAME,
-                entities: [User, Role, RoleFunctionallity, 
-                           RoleScreen, Screen, Document,
-                           Log, Notification, UserNotification,
+                entities: [User, Document,
+                           Log, Notification, 
+                           UserNotification,
                            UnitDynamicCentral],
                 synchronize: true,
             });

@@ -1,12 +1,11 @@
 import { JWTObject, Validations, HttpAction } from "@index/index"
 import { EntityTarget, RequestHandler } from '@generics/index';
 
-import RoleRepository from "@user/repositories/RoleRepository"
+import RoleRepository from "@index/generics/Role/RoleRepository"
 import IGenericRepository from '@generics/Repository/IGenericRepository';
 import GenericRepository from '@generics/Repository/GenericRepository';
 
 import IGenericController from '@generics/Controller/IGenericController';
-import { RoleFunctionallity } from '@entity/RoleFunctionallity';
 import ControllerObject from '@objects/ControllerObject';
 
 import { createControllerObject } from '@patterns/ControllerObjectFactory';
@@ -29,7 +28,7 @@ export default  class GenericController implements IGenericController{
         this.controllerObj = createControllerObject(entityType);
 
         this.entityType = entityType;
-        this.roleRepository = new RoleRepository();
+        this.roleRepository = RoleRepository.getInstance();
         if(repositoryClass == null){
             this.repository = new GenericRepository(this.entityType);
         }else{
@@ -311,7 +310,7 @@ export default  class GenericController implements IGenericController{
          */
         if(reqHandler.getRoleValidation()){
             // Get the permission for the specified action and role from the role repository.
-            const roleFunc : RoleFunctionallity | null = await this.roleRepository.getPermissionByFuncAndRole(role, action);
+            const roleFunc = await this.roleRepository.getPermissionByFuncAndRole(role, action);
             // If the user does not have the permission, return an unauthorized error.
             if (roleFunc == null) {
                 return httpAction.unauthorizedError("ROLE_AUTH_ERROR");

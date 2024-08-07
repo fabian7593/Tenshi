@@ -20,10 +20,8 @@ export function sendMail(toMail: string, subject: string, message: string): Prom
     return new Promise<boolean>((resolve, reject) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-               // console.error('Error sending email:', error);
                 resolve(false); 
             } else {
-                //console.log('Email sent:', info.response);
                 resolve(true); 
             }
         });

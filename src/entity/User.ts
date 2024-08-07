@@ -1,7 +1,5 @@
 // src/entity/User.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Role } from "./Role";
-
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn({ type: "int", unsigned: true })
@@ -58,10 +56,6 @@ export class User {
   @Column({ type: "decimal", precision: 11, scale: 8, nullable: true, default: null })
   longitude: number | null;
 
-  @Column({ type: "varchar", length: 10, default: "en" })
+  @Column({ type: "varchar", length: 10, nullable: true, default: "en" })
   language: string | null;
-
-  @ManyToOne(() => Role, role => role.id)
-  @JoinColumn({ name: "role_code", referencedColumnName: "code" })
-  role: Role;
 }

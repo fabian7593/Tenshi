@@ -25,9 +25,6 @@ import { debuggingMessage, insertLogBackend, insertLogTracking } from '@utils/lo
 import { executeQuery } from '@utils/executionDBUtils';
 import { Database } from "@config/TypeORMConnection";
 
-import { SingletonDependencyContainer } from '@patterns/DependencyContainer';
-// Init the dependencyContainer
-const dependencyContainer = SingletonDependencyContainer.getInstance();
 
 //*************************************** */
 //              EXPORTS
@@ -43,7 +40,7 @@ export { default as Validations } from '@helpers/Validations';
 export { default as HttpAction } from '@helpers/HttpAction';
 export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
 
-export { debuggingMessage, insertLogBackend, insertLogTracking, executeQuery, config, dependencyContainer };
+export { debuggingMessage, insertLogBackend, insertLogTracking, executeQuery, config };
 
 
 
@@ -80,7 +77,6 @@ app.use(StartMiddleware);
 //              ROUTES
 //*************************************** */
 //Add Routers
-
 app.use(new UserRoutes().getRouter());
 app.use(new UdcRoutes().getRouter());
 app.use(new NotificationRoutes().getRouter());

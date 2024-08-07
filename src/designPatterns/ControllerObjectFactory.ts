@@ -7,11 +7,11 @@ export function createControllerObject(entity: EntityTarget<any>): ControllerObj
     const entityName = getEntityName(entity);
     const entityNameUpper = camelToUpperSnakeCase(entityName);
     return {
-        create: `${entityNameUpper}_CREATE`,
-        update: `${entityNameUpper}_UPDATE`,
-        delete: `${entityNameUpper}_DELETE`,
-        getAll: `${entityNameUpper}_GET_ALL`,
-        getById: `${entityNameUpper}_GET_BY_ID`,
+        create: `CREATE`,
+        update: `UPDATE`,
+        delete: `DELETE`,
+        getAll: `GET_ALL`,
+        getById: `GET_BY_ID`,
         controller: `${entityNameUpper}_CONTROLLER`,
         route: `/${toSnakeCase(entityName)}`
     };

@@ -199,7 +199,7 @@ export default class UserController extends GenericController{
     
                 if(isSuccess){
                     const screens = await this.getRoleRepository().getScreensByRole(user.role_code);
-
+                    
                     const jwtObj : JWTObject = {
                         id: user.id,
                         email: user.email,
