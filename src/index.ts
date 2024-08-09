@@ -9,7 +9,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
 import path from 'path';
-import ConfigManager from '@config/configManager';
+import ConfigManager from '@config/ConfigManager';
 
 const configPath = path.resolve(__dirname, '../tenshi-config.json');
 const configManager = ConfigManager.getInstance(configPath);
