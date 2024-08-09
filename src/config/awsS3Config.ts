@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 import { config } from "@index/index";
 
-// Configuración del AWS SDK
+// AWS CONFIG
 AWS.config.update({
     accessKeyId:  config.FILE.AWS.ACCESS_KEY,
     secretAccessKey: config.FILE.AWS.SECRET_ACCESS_KEY,

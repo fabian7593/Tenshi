@@ -87,10 +87,10 @@ async function saveLog(log: Log, title: string) {
 
         // If the setting in the config file allows it, save the log to a file.
         if(config.LOG.LOG_FILE == true){
-        // Call the logger function to save the log to a file.
-        // The logger function takes two parameters: the title of the log and
-        // the log object, converted to a JSON string.
-        await logger(title, JSON.stringify(log));
+            // Call the logger function to save the log to a file.
+            // The logger function takes two parameters: the title of the log and
+            // the log object, converted to a JSON string.
+            await logger(title, JSON.stringify(log));
         }
     }catch(error){
        debuggingMessage(error);

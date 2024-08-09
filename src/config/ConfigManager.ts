@@ -97,7 +97,12 @@ class ConfigManager {
     private static instance: ConfigManager;
     private config: AppConfig;
 
+    /**
+     * Private constructor to ensure a singleton instance of the ConfigManager class.
+     * @param {string} configPath - The path to the configuration file.
+     */
     private constructor(configPath: string) {
+        // Load the configuration file and store it in the 'config' property
         this.config = this.loadConfig(configPath);
     }
 
@@ -108,16 +113,32 @@ class ConfigManager {
         return ConfigManager.instance;
     }
 
+    /**
+     * Load configuration from the specified file path.
+     *
+     * @param {string} configPath - The path to the configuration file.
+     * @returns {AppConfig} - The loaded configuration.
+     * @throws {Error} - If the configuration file is not found.
+     */
     private loadConfig(configPath: string): AppConfig {
+        // Check if the configuration file exists
         if (!fs.existsSync(configPath)) {
+            // Throw an error if the configuration file is not found
             throw new Error(`Configuration file not found: ${configPath}`);
         }
 
+        // Read the configuration file and parse the JSON data
         const configData = fs.readFileSync(configPath, 'utf-8');
         return JSON.parse(configData) as AppConfig;
     }
 
+    /**
+     * Get the loaded configuration.
+     *
+     * @returns {AppConfig} The loaded configuration.
+     */
     public getConfig(): AppConfig {
+        // Return the loaded configuration
         return this.config;
     }
 }

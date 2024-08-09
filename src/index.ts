@@ -1,4 +1,25 @@
 //*************************************** */
+//              Configuration
+//*************************************** */
+import path from 'path';
+import ConfigManager from '@config/ConfigManager';
+const configPath = path.resolve(__dirname, '../tenshi-config.json');
+const configManager = ConfigManager.getInstance(configPath);
+const config = configManager.getConfig();
+
+//*************************************** */
+//          Entities and Database
+//*************************************** */
+import { Database } from "@config/TypeORMConnection";
+import { User } from '@entity/User';
+import { Document } from '@entity/Document';
+import { Notification } from '@entity/Notification';
+import { UnitDynamicCentral } from '@entity/UnitDynamicCentral';
+import { UserNotification } from '@entity/UserNotification';
+Database.getInstance([User, Document, Notification, UnitDynamicCentral, UserNotification]);
+
+
+//*************************************** */
 //              IMPORTS
 //*************************************** */
 //Import general libraries 
@@ -8,12 +29,6 @@ import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
-import path from 'path';
-import ConfigManager from '@config/ConfigManager';
-
-const configPath = path.resolve(__dirname, '../tenshi-config.json');
-const configManager = ConfigManager.getInstance(configPath);
-const config = configManager.getConfig();
 
 //Import Routes
 import UserRoutes from '@user/routers/UserRoutes';
@@ -28,7 +43,8 @@ import DocumentRoutes from '@document/routers/DocumentRoutes';
 import StartMiddleware from '@middlewares/StartMiddleware';
 import { debuggingMessage, insertLogBackend, insertLogTracking } from '@utils/logsUtils';
 import { executeQuery } from '@utils/executionDBUtils';
-import { Database } from "@config/TypeORMConnection";
+
+
 
 
 //*************************************** */
@@ -59,7 +75,6 @@ app.use(bodyParser.json());
 
 
 
-
 //*************************************** */
 //              MIDDLEWARE
 //*************************************** */
@@ -71,10 +86,6 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 
 //middleware to validate JWT and secret key
 app.use(StartMiddleware);
-
-
-
-
 
 
 
@@ -91,12 +102,10 @@ app.use(new EmailRoutes().getRouter());
 app.use(new DocumentRoutes().getRouter());
 
 
-
 //*************************************** */
 //              LISTENER
 //*************************************** */
 //Open port and listen API
 app.listen(config.SERVER.PORT, () => {
-  Database.getInstance();
-  debuggingMessage(`UNBREAKABLE Express TypeScript Service Start in Port ${config.SERVER.PORT}`);
+  debuggingMessage(`TENSHI Express TypeScript Service Start in Port ${config.SERVER.PORT}`);
 });

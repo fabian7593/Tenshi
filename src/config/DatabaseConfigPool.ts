@@ -1,6 +1,7 @@
 import mariadb from 'mariadb';
 import { config } from "@index/index";
 
+//Maria DB Config
 const pool = mariadb.createPool({
   host: config.DB.HOST,
   user: config.DB.USER,

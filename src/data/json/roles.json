@@ -3,7 +3,7 @@
       {
         "id": 1,
         "code": "ADMIN",
-        "name": "Admin",
+        "name": "Administrator",
         "description": "Administrator role with full access to all functionalities.",
         "tables": [
           {
@@ -87,19 +87,12 @@
             "name": "CREATE_NEW_PROJECT",
             "function_list": [
               "CREATE",
-              "READ",
-              "UPDATE",
-              "DELETE"
+              "READ"
             ]
           },
           {
             "name": "PRODUCTS",
-            "function_list": [
-              "CREATE",
-              "READ",
-              "UPDATE",
-              "DELETE"
-            ]
+            "function_list": []
           }
         ]
       },

@@ -1,28 +1,40 @@
 
 import { Request, Response, NextFunction,
     Validations, HttpAction, JWTObject, debuggingMessage, config } from "@index/index";
-import DeviceInfo from '../objects/DeviceInfo';
+import DeviceInfo from '@objects/DeviceInfo';
+import { ConstGeneral, ConstMessages } from "@index/consts/Const";
 
-/*
-Start Middleware class has the function to start the rest before the next function
-You can validate the autorization rest in some paths of the appliation rest
-*/
+/**
+ * Start Middleware function is the first middleware to be executed in the application.
+ * It is responsible for validating the authorization of the request in specific paths.
+ *
+ * @param {Request} req - The express request object.
+ * @param {Response} res - The express response object.
+ * @param {NextFunction} next - The next middleware function.
+ */
 function StartMiddleware(req : Request, res: Response, next: NextFunction) {
+    // Create HttpAction object to handle the response
     const httpExec = new HttpAction(res);
+
+    // Create Validations object to handle the request validation
     const validation = new Validations(req, httpExec);
+
+    // Initialize variables
     let jwtData : JWTObject | null = null;
     let nextMethod = false;
-   
 
+    // Check if the request path is excluded from JWT validation
     const isPageOutJwt = config.HTTP_REQUEST.PAGE_OUT_JWT.some(path => req.path.includes(path));
+
+    // Check if the request path is excluded from API Key validation
     const isPageOutApiKey = config.HTTP_REQUEST.PAGE_OUT_API_KEY.some(path => req.path.includes(path));
 
-    // The endpoints that don't need JWT
+    // Validate JWT if the request path is not excluded
     if (!isPageOutJwt) {
-        // JWT validation
         jwtData = validation.validateRequireJWT();
+
+        // If JWT validation fails, send the response and stop the execution
         if (jwtData == null) { 
-            // Send the response res, of the validateRequireJWT function.
             nextMethod = false;
             return; 
         } else {
@@ -32,7 +44,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         nextMethod = true;
     }
 
-    // The endpoints that need SECRET API KEY Validation
+    // Validate API Key if the request path is not excluded and API Key validation is enabled
     if (config.SERVER.VALIDATE_API_KEY) {
         if (!isPageOutApiKey) {
             if (validation.validateRequireSecretApiKey() === true) {
@@ -44,43 +56,55 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
         }
     }
 
-    //get the ip address
-    const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    // Get the IP address of the request
+    const ipAddress = req.ip || req.headers[ConstGeneral.HEADER_X_FORWARDED_FOR] || req.connection.remoteAddress;
 
+    // Get the device information from the request headers
     const deviceInfo : DeviceInfo | null = getDeviceInfo(req);
 
-    //Set in local variables to use in all request
+    // Set the local variables to be used in all subsequent middleware
     res.locals.jwtData = jwtData;
     res.locals.httpExec = httpExec;
     res.locals.validation = validation;
     res.locals.ipAddress = ipAddress;
     res.locals.deviceInfo = deviceInfo;
 
+    // Execute the next middleware if the request can proceed
     if(nextMethod){
         next();
     }
 }
 
 
-function getDeviceInfo(req: Request): DeviceInfo | null {
-const deviceInfoHeader = req.headers['device-info'];
 
-if (typeof deviceInfoHeader === 'string') {
-    try {
-        // Parse the device-info header
-        const deviceInfo: DeviceInfo = JSON.parse(deviceInfoHeader);
-        
-        // Return the object if parsing was successful
-        return deviceInfo;
-    } catch (error) {
-        //return null if error parsing
-        debuggingMessage("Error parsing device-info:" + error);
+/**
+ * Retrieves the device information from the request headers.
+ *
+ * @param {Request} req - The request object.
+ * @return {DeviceInfo | null} The device information object if available, otherwise null.
+ */
+function getDeviceInfo(req: Request): DeviceInfo | null {
+    // Get the device-info header from the request headers
+    const deviceInfoHeader = req.headers[ConstGeneral.HEADER_DEVICE_INFO];
+
+    // Check if the device-info header is a string
+    if (typeof deviceInfoHeader === 'string') {
+        try {
+            // Parse the device-info header as JSON
+            const deviceInfo: DeviceInfo = JSON.parse(deviceInfoHeader);
+            
+            // If parsing is successful, return the device information object
+            return deviceInfo;
+        } catch (error) {
+            // If parsing fails, log an error message and return null
+            debuggingMessage(ConstMessages.ERROR_PARSING_DEVIDE_INFO + error);
+            return null;
+        }
+    } else {
+        // If the device-info header is not a string, return null
         return null;
     }
-} else {
-    // Return null if header is not a string
-    return null;
 }
-}
+
 
 export default StartMiddleware;

@@ -42,108 +42,186 @@ export default  class GenericRepository implements IGenericRepository{
         return this.dataSource;
     }
     
+    /**
+     * Adds a new entity to the database.
+     *
+     * @param {any} entity - The entity to be added.
+     * @return {Promise<any>} - The saved entity.
+     * @throws {Error} - If there was an error while adding the entity.
+     */
     async add(entity: any): Promise<any> {
 
         try {
-            const savedEntity = await this.entityManager.save(this.entityTarget,entity);
+            // Save the entity to the database and return the saved entity
+            const savedEntity = await this.entityManager.save(this.entityTarget, entity);
             return savedEntity;
 
-        } catch (error : any) {
+        } catch (error: any) {
+            // Throw the error if there was an issue adding the entity
             throw error;
         } 
     }
+  
 
+    /**
+     * Updates an entity in the database by its ID.
+     *
+     * @param {number} id - The ID of the entity to be updated.
+     * @param {Partial<any>} newData - The new data to update the entity with.
+     * @param {boolean} hasLogicalDeleted - Indicates whether the entity has a logical deleted flag.
+     * @return {Promise<any | undefined>} The updated entity, or undefined if it was not found.
+     * @throws {Error} If there was an error while updating the entity.
+     */
     async update(id: number, 
                  newData: Partial<any>, 
                  hasLogicalDeleted : boolean): Promise<any | undefined> {
         try {
-            //update the entity by id, with the new data
+            // Update the entity by ID with the new data
             await this.entityManager.update(this.entityTarget, id, newData);
 
+            // Prepare the options for finding the updated entity
             let options: FindOneOptions<any> = {
-                where: { id: id }
+                where: { id: id } // Specify the ID of the entity to find
             };
+
+            // If the entity has a logical deleted flag, add a condition to find only non-deleted entities
             if(hasLogicalDeleted){
                 if (typeof options.where === 'object' && options.where !== null) {
                     options.where = {
-                        ...options.where,
-                        "is_deleted": 0
+                        ...options.where, // Merge the existing conditions with the new condition
+                        "is_deleted": 0 // Add a condition to find only non-deleted entities
                     };
                 }
             }
+
+            // Find and return the updated entity
             const updatedEntity = await this.entityManager.findOne(this.entityTarget, options); 
             return updatedEntity; 
+
         } catch (error : any) {
+            // Throw the error if there was an issue updating the entity
             throw error;
         }
     }
+   
 
+    /**
+     * Removes an entity from the database by its ID.
+     *
+     * @param {number} id - The ID of the entity to be removed.
+     * @return {Promise<any>} The entity that was removed from the database.
+     * @throws {Error} If the entity is not found or if there was an error while deleting the entity.
+     */
     async remove(id: number): Promise<any> {
 
         try {
+            // Define the options for finding the entity by its ID
             let options : FindOneOptions;
-            options = { where: { id : id }  }; 
+            options = { where: { id : id }  };  // Set the where clause to find the entity by its ID
 
+            // Find the entity by its ID
             const entity = await this.entityManager.findOne(this.entityTarget, options); 
 
-            //update the entity by id, with the new data
+            // Delete the entity from the database by its ID
             await this.entityManager.delete(this.entityTarget, id);
+
+            // Return the entity that was removed from the database
             return entity;
-           
+          
         } catch (error : any) {
+            // If there was an error while deleting the entity, throw the error
             throw error;
         } 
     }
+   
 
+    /**
+     * Logically remove an entity by its ID.
+     * 
+     * This function updates the "is_deleted" property of the entity to true,
+     * indicating that the entity is logically deleted.
+     *
+     * @param {number} id - The ID of the entity to be logically removed.
+     * @return {Promise<any>} The entity that was logically removed.
+     * @throws {Error} If the entity is not found or if the entity does not have an "is_deleted" property.
+     */
     async logicalRemove(id: number): Promise<any> {
         try {
             let options : FindOneOptions;
-            options = { where: { id : id }  }; 
+            options = { where: { id : id }  };  // Set the options to find the entity by its ID
 
-            const entity = await this.entityManager.findOne(this.entityTarget, options); 
+            const entity = await this.entityManager.findOne(this.entityTarget, options);  // Find the entity by its ID
 
-            if (entity["is_deleted"] !== undefined) {
-                entity["is_deleted"] = true;
+            if (entity["is_deleted"] === undefined) {  // Check if the entity has an "is_deleted" property
+                throw new Error("Entity does not have an 'is_deleted' property.");  // Throw an error if the entity does not have the property
             }
-            
-            //update the entity by id, with the new data
+
+            entity["is_deleted"] = true;  // Set the "is_deleted" property of the entity to true
+
+            // Update the entity by ID with the new data, including the "is_deleted" property
             await this.entityManager.update(this.entityTarget, id, entity);
-            return entity;
+
+            return entity;  // Return the entity that was logically removed
 
         } catch (error : any) {
-            throw error;
+            throw error;  // Throw any errors that occur during the process
         } 
     }
 
+    /**
+     * Find an entity by its ID.
+     * 
+     * @param {number} id - The ID of the entity.
+     * @param {boolean} hasLogicalDeleted - Whether the entity is logical deleted.
+     * @return {Promise<any>} The entity found.
+     * @throws {Error} If the entity is not found.
+     */
     async findById(id: number, 
                    hasLogicalDeleted : boolean): Promise<any> {
         try {
+            // Prepare the options for the entity manager's findOne method
             let options : FindOneOptions;
             options = { where: { id : id}  }; 
 
+            // If the entity is supposed to be logical deleted, add the filter for it
             if(hasLogicalDeleted){
                 if (typeof options.where === 'object' && options.where !== null) {
                     options.where = {
                         ...options.where,
-                        "is_deleted": 0
+                        "is_deleted": 0 // Only return non-logically deleted entities
                     };
                 }
             }
+
+            // Find the entity by ID
             const entity = await this.entityManager.findOne(this.entityTarget, options); 
+
+            // Return the found entity
             return entity;
 
         } catch (error : any) {
+            // If the entity is not found, throw an error
             throw error;
 
         } 
     }
+   
 
+    /**
+     * Find an entity by its code.
+     * 
+     * @param {string} code - The code of the entity.
+     * @param {boolean} hasLogicalDeleted - Whether the entity is logical deleted.
+     * @return {Promise<any | undefined>} The entity found, or undefined if not found.
+     */
     async findByCode(code: string, 
-                     hasLogicalDeleted : boolean): Promise<any> {
+                     hasLogicalDeleted : boolean): Promise<any | undefined> {
         try {
+            // Set up the options for finding the entity
             let options : FindManyOptions;
             options = { where: { code : code}  }; 
 
+            // If logical deletion is enabled, append the "is_deleted" condition
             if(hasLogicalDeleted){
                 if (typeof options.where === 'object' && options.where !== null) {
                     options.where = {
@@ -152,45 +230,75 @@ export default  class GenericRepository implements IGenericRepository{
                     };
                 }
             }
+
+            // Find the entity with the specified code
             const entity = await this.entityManager.findOne(this.entityTarget, options); 
             return entity;
 
         } catch (error : any) {
+            // Throw the error if it occurs
             throw error;
         } 
     }
 
+    /**
+     * Find all entities.
+     * 
+     * @param {boolean} hasLogicalDeleted - Whether the entities are logical deleted.
+     * @param {number} [page=1] - The page number.
+     * @param {number} [size=3000] - The number of entities per page.
+     * @return {Promise<any[] | null>} The entities found.
+     */
     async findAll(hasLogicalDeleted: boolean, 
                   page: number = 1, size: number = 3000): Promise<any[] | null> {
         try {
 
+            // Calculate the offset based on the page and size
             const offset = (page - 1) * size;
 
-            //find by user and password
+            // Initialize the find options
             let options : FindManyOptions;
+
+            // If logical deletion is required, set the where clause
             if(hasLogicalDeleted){
                 options = { where: { "is_deleted" : 0 }  }; 
             }else{
                 options = { }; 
             }
-            
+
+            // Set the skip and take options for pagination
             options.skip = offset;
             options.take = size;
+
+            // Find entities using the entity manager
             const getEntities = await this.entityManager.find(this.entityTarget, options); 
-           
+          
             return getEntities;
         } catch (error : any) {
+            // Throw the error
             throw error;
         } 
     }
+   
 
+    /**
+     * Find entities by filters.
+     * 
+     * @param {FindManyOptions} options - The find options.
+     * @param {boolean} hasLogicalDeleted - Whether the entities are logical deleted.
+     * @param {number} page - The page number.
+     * @param {number} size - The number of entities per page.
+     * @return {Promise<any>} The entities found.
+     */
     async findByFilters(options: FindManyOptions, hasLogicalDeleted: boolean,
                         page: number = 1, size: number = 3000
-    ): Promise<any>{
+    ): Promise<any> {
         try {
+            // Calculate the offset based on the page number and size.
             const offset = (page - 1) * size;
 
-            if(hasLogicalDeleted){
+            // If the entities are logical deleted, add the "is_deleted" filter.
+            if(hasLogicalDeleted) {
                 if (typeof options.where === 'object' && options.where !== null) {
                     options.where = {
                         ...options.where,
@@ -199,11 +307,15 @@ export default  class GenericRepository implements IGenericRepository{
                 }
             }
 
+            // Set the pagination options.
             options.skip = offset;
             options.take = size;
+
+            // Find the entities using the options.
             const getEntities = await this.entityManager.find(this.entityTarget, options); 
             return getEntities;
         } catch (error : any) {
+            // Throw the error if there is an exception.
             throw error;
         }
     }

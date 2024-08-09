@@ -1,6 +1,7 @@
 import { Response, insertLogBackend } from '@index/index';
 import { responseStruct } from '@objects/BodyResObject'
 import { getErrorDBbySqlState, getStatus, getMessage } from '@utils/jsonUtils';
+import {  ConstStatusJson, ConstGeneral, ConstMessagesJson } from "@index/consts/Const";
 
 /*
     HttpAction is a class for return res status for success and general errors
@@ -16,12 +17,12 @@ export default class HttpAction{
     }
 
     getHtml(htmlContent : string){
-        this.res.header("Content-Type", "text/html");
+        this.res.header(ConstGeneral.HEADER_TYPE, ConstGeneral.HEADER_HTML);
         return this.res.send(htmlContent);
     }
 
     successAction(responseJson : any | null, message : string){
-        const status = getStatus("SUCCESS");
+        const status = getStatus(ConstStatusJson.SUCCESS);
         return this.res.status(status.httpStatus).json(
             responseStruct(status, responseJson, getMessage(message))
         ); 
@@ -29,8 +30,8 @@ export default class HttpAction{
 
     paramsError() {
         // Get the message
-        const status = getStatus("ERROR");
-        const message = getMessage("REQUIRED_URL_PARAMS");
+        const status = getStatus(ConstStatusJson.ERROR);
+        const message = getMessage(ConstMessagesJson.REQUIRED_URL_PARAMS);
         return this.res.status(status.httpStatus).json(
             responseStruct(status, null, message)
         );
@@ -46,30 +47,30 @@ export default class HttpAction{
 
     async generalError(error : any, method : string = "", controller : string = "", id : string | null = null) {
         // Get the message
-        const status = getStatus("ERROR");
+        const status = getStatus(ConstStatusJson.ERROR);
         await insertLogBackend(method, controller, error.message, 
-                            status.httpStatus, "ERROR", id, 
-                            getMessage("ERROR_GENERAL"));
+                            status.httpStatus, ConstStatusJson.ERROR, id, 
+                            getMessage(ConstMessagesJson.ERROR_GENERAL));
 
         return this.res.status(status.httpStatus).json(
-            responseStruct(status, error.message, getMessage("ERROR_GENERAL"))
+            responseStruct(status, error.message, getMessage(ConstMessagesJson.ERROR_GENERAL))
         ); 
     }
 
     async databaseError(error : any, id: string | null = null, method : string = "", controller : string = "") {
-        const status = getStatus("ERROR");
+        const status = getStatus(ConstStatusJson.ERROR);
         await insertLogBackend(method, controller, error.message, 
-                        status.httpStatus, "DATABASE_ERROR", id, 
-                        getMessage("DATA_BASE_ERROR"));
+                        status.httpStatus, ConstMessagesJson.DATA_BASE_ERROR, id, 
+                        getMessage(ConstMessagesJson.DATA_BASE_ERROR));
 
         const errorJson =  getErrorDBbySqlState(error.message);
         return this.res.status(status.httpStatus).json(
-            responseStruct(status, errorJson || error.message, getMessage("DATA_BASE_ERROR"))
+            responseStruct(status, errorJson || error.message, getMessage(ConstMessagesJson.DATA_BASE_ERROR))
         ); 
     }
 
     unauthorizedError(errorName:string){
-      const status = getStatus("UNAUTHORIZED");
+      const status = getStatus(ConstStatusJson.UNAUTHORIZED);
       const message = getMessage(errorName);
       return this.res.status(status.httpStatus).json(
           responseStruct(status, null, message)
@@ -77,7 +78,7 @@ export default class HttpAction{
     }
 
     validationError(errorName:string){
-        const status = getStatus("VALIDATIONS");
+        const status = getStatus(ConstStatusJson.VALIDATIONS);
         const message = getMessage(errorName);
         return this.res.status(status.httpStatus).json(
             responseStruct(status, null, message)

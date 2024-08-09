@@ -1,5 +1,5 @@
 
-import s3 from '@config/awsS3Config';
+import s3 from '@index/config/AWSS3Config';
 import { Document } from '@entity/Document';
 import { config } from "@index/index";
 
