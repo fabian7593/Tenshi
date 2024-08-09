@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
-import {default as config} from "@root/unbreakable-config";
+import { config } from "@index/index";
 
 // Configuración del AWS SDK
 AWS.config.update({

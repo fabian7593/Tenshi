@@ -2,9 +2,9 @@ import { Request, Response, GenericRoutes,
     RequestHandler, RequestHandlerBuilder, 
     FindManyOptions } from "@modules/index";
 
+import { config } from "@index/index";
 import { Document, DocumentController, DocumentDTO, multer } from '@document/index';
 import { getUrlParam } from "@utils/generalUtils";
-import {default as config} from "@root/unbreakable-config";
 
 const storage = multer.memoryStorage(); // Almacenamiento en memoria
 const upload = multer({ 

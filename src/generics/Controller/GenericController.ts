@@ -1,4 +1,4 @@
-import { JWTObject, Validations, HttpAction } from "@index/index"
+import { JWTObject, Validations, HttpAction, config } from "@index/index"
 import { EntityTarget, RequestHandler } from '@generics/index';
 
 import RoleRepository from "@index/generics/Role/RoleRepository"
@@ -9,7 +9,6 @@ import IGenericController from '@generics/Controller/IGenericController';
 import ControllerObject from '@objects/ControllerObject';
 
 import { createControllerObject } from '@patterns/ControllerObjectFactory';
-import {default as config} from "@root/unbreakable-config";
 
 /*
     This class have the necessary methods (CRUDS) to send into the routing

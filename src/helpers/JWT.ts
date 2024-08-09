@@ -1,6 +1,5 @@
-import { JWTObject } from '@index/index';
+import { JWTObject, config } from '@index/index';
 import jwt from 'jsonwebtoken';
-import { default as config } from '@root/unbreakable-config';
 
 class JWTService {
     private static instance: JWTService;

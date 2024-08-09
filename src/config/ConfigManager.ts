@@ -1,5 +1,6 @@
 import fs from 'fs';
-import path from 'path';
+
+type DBType = "mysql" | "mariadb" | "postgres" | "sqlite" | "mssql" | "oracle" | "mongodb";
 
 interface CompanyConfig {
     NAME: string;
@@ -14,6 +15,8 @@ interface CompanyConfig {
 interface HttpRequestConfig {
     PAGE_SIZE: number;
     PAGE_OFFSET: number;
+    PAGE_OUT_JWT: string[];       
+    PAGE_OUT_API_KEY: string[];  
 }
 
 interface ServerConfig {
@@ -33,6 +36,7 @@ interface DbConfig {
     PASSWORD: string;
     NAME: string;
     CONNECTION_LIMIT: number;
+    TYPE: DBType;
 }
 
 interface JwtTokenConfig {
@@ -71,7 +75,6 @@ interface LogConfig {
     LOG_FILE: boolean;
 }
 
-
 interface EmailConfig {
     SERVICE: string;
     AUTH_USER: string;
@@ -90,8 +93,33 @@ interface AppConfig {
     EMAIL: EmailConfig;
 }
 
-const configPath = path.resolve(__dirname, './unbreakable-config.json');
-const configData = fs.readFileSync(configPath, 'utf-8');
-const config: AppConfig = JSON.parse(configData);
+class ConfigManager {
+    private static instance: ConfigManager;
+    private config: AppConfig;
 
-export default config;
+    private constructor(configPath: string) {
+        this.config = this.loadConfig(configPath);
+    }
+
+    public static getInstance(configPath: string): ConfigManager {
+        if (!ConfigManager.instance) {
+            ConfigManager.instance = new ConfigManager(configPath);
+        }
+        return ConfigManager.instance;
+    }
+
+    private loadConfig(configPath: string): AppConfig {
+        if (!fs.existsSync(configPath)) {
+            throw new Error(`Configuration file not found: ${configPath}`);
+        }
+
+        const configData = fs.readFileSync(configPath, 'utf-8');
+        return JSON.parse(configData) as AppConfig;
+    }
+
+    public getConfig(): AppConfig {
+        return this.config;
+    }
+}
+
+export default ConfigManager;

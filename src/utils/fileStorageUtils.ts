@@ -1,7 +1,7 @@
 
 import s3 from '@config/awsS3Config';
 import { Document } from '@entity/Document';
-import {default as config} from "@root/unbreakable-config";
+import { config } from "@index/index";
 
 
 export async function uploadFile(file : Express.Multer.File, filename: string) : Promise<any>{

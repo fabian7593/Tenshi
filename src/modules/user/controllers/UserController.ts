@@ -1,12 +1,11 @@
 import { HttpAction, Validations,
-        sendMail, replaceCompanyInfoEmails} from "@index/index";
+        sendMail, replaceCompanyInfoEmails, config} from "@index/index";
 
 import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword, JWTService, UserDTO } from "@user/index";
         
-import {default as config} from "@root/unbreakable-config";
 import { insertLogTracking } from "@utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@utils/htmlTemplateUtils";
 

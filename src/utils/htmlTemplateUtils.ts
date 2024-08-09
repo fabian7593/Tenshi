@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {default as config} from "@root/unbreakable-config";
+import {config} from "@index/index";
 
 const templatesDir = path.join(__dirname, '../templates');
 const messagesMultiLanguagesDir = path.join(__dirname, '../data/json/emailMessages');

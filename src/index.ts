@@ -8,7 +8,12 @@ import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
-import config from '../unbreakable-config';
+import path from 'path';
+import ConfigManager from '@config/configManager';
+
+const configPath = path.resolve(__dirname, '../tenshi-config.json');
+const configManager = ConfigManager.getInstance(configPath);
+const config = configManager.getConfig();
 
 //Import Routes
 import UserRoutes from '@user/routers/UserRoutes';

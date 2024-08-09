@@ -1,7 +1,6 @@
-import { HttpAction, executeQuery } from "@index/index";
+import { HttpAction, executeQuery, config } from "@index/index";
 
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
-import {default as config} from "@root/unbreakable-config";
 
 export default  class LogController extends GenericController{
 

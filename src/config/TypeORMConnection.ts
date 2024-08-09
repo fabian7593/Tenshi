@@ -1,6 +1,6 @@
 // src/utils/Database.ts
 import { DataSource } from "typeorm";
-import {default as config} from "@root/unbreakable-config";
+import { config } from "@index/index";
 import { debuggingMessage } from "@index/index";
 import { User } from "@entity/User";
 import { Document } from "@entity/Document";
@@ -17,7 +17,7 @@ export class Database {
     public static getInstance(): DataSource {
         if (!Database.instance) {
             Database.instance = new DataSource({
-                type: "mariadb",
+                type: config.DB.TYPE,
                 host: config.DB.HOST,
                 port: config.DB.PORT,
                 username: config.DB.USER,

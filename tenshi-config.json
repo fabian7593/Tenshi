@@ -1,6 +1,6 @@
 {
     "COMPANY": {
-        "NAME" : "Unbreakable",
+        "NAME" : "Tenshi",
         "LOGO" : "https://raw.githubusercontent.com/fabian7593/EasyRestApiLand/main/00/logo_alone.png",
         "BACKEND_HOST": "http://localhost:3000/",
         "FRONT_END_HOST": "http://localhost:3000/",
@@ -24,6 +24,7 @@
         "LOG_FILE":true
     },
     "DB": {
+        "TYPE": "mariadb",
         "PORT": 3307,
         "HOST": "localhost",
         "USER": "root",
@@ -33,7 +34,13 @@
     },
     "HTTP_REQUEST":{
         "PAGE_SIZE": 3000,
-        "PAGE_OFFSET":1
+        "PAGE_OFFSET":1,
+        "PAGE_OUT_JWT": ["login", "refresh_token", 
+                         "register", "confirmation_register", 
+                         "forgot_password", "verify_forgot_password",
+                          "reset_password", "recover_user", "active_user"],
+
+        "PAGE_OUT_API_KEY": ["confirmation_register", "verify_forgot_password", "active_user"]
     },
     "JWT": {
         "MAIN_TOKEN" :{

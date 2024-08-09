@@ -1,5 +1,5 @@
 import { Validations, HttpAction, 
-         sendMail, executeQuery } from "@index/index";
+         sendMail, executeQuery, config } from "@index/index";
 
 import { GenericRepository, 
          GenericController, RequestHandler,
@@ -8,7 +8,6 @@ import { GenericRepository,
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@notification/index";
 
-import {default as config} from "@root/unbreakable-config";
 import { getEmailTemplate } from "@utils/htmlTemplateUtils";
 
 export default  class UserNotificationController extends GenericController{

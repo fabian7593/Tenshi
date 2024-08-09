@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import {default as config} from "@root/unbreakable-config";
+import { config } from "@index/index";
 
 const transporter = nodemailer.createTransport({
     service: config.EMAIL.SERVICE,

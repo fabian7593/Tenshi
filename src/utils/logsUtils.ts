@@ -2,9 +2,9 @@
 import { Log } from '@entity/Log'
 import GenericRepository from '@generics/Repository/GenericRepository';
 import { RequestHandler } from '@index/generics';
-import {default as config} from "@root/unbreakable-config";
+import { config } from "@index/index";
 import { getStatus } from '@utils/jsonUtils';
-import  logger  from '@utils/logger';
+import logger from '@utils/logger';
 
 /*
     Logs Utils class is for logs in console for debbuging &
