@@ -1,5 +1,5 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { Document } from '@document/index'
+import { Document } from '@modules/document/index'
 
 export default  class DocumentDTO implements IAdapterFromBody{
     req: Request;

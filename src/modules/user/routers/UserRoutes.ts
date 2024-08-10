@@ -4,7 +4,7 @@ import { Request, Response,
 import {  UserDTO, UserController, User, UserRepository,
           regexValidationList, requiredBodyList, 
           regexValidationRecoverUserAndPassList, requiredBodyRecoverUserAndPassList
-        } from "@user/index";
+        } from "@modules/user/index";
 
 class UserRoutes extends GenericRoutes {
 

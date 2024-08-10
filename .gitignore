@@ -8,3 +8,4 @@ temp/
 unbreakable.config.json
 unbreakable.local.json
 unbreakable.empty.json
+logs/

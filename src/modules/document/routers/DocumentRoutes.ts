@@ -3,8 +3,8 @@ import { Request, Response, GenericRoutes,
     FindManyOptions } from "@modules/index";
 
 import { config } from "@index/index";
-import { Document, DocumentController, DocumentDTO, multer } from '@document/index';
-import { getUrlParam } from "@utils/generalUtils";
+import { Document, DocumentController, DocumentDTO, multer } from '@modules/document/index';
+import { getUrlParam } from "@TenshiJS/utils/generalUtils";
 
 const storage = multer.memoryStorage(); // Almacenamiento en memoria
 const upload = multer({ 

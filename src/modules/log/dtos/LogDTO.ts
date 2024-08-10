@@ -1,5 +1,5 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { Log } from '@log/index'
+import { Log } from '@modules/log/index'
 
 export default  class LogDTO implements IAdapterFromBody{
     req: Request;

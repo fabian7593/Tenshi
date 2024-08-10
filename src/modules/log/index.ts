@@ -1,3 +1,3 @@
-export { Log } from "@entity/Log";
-export { default as LogDTO } from "@log/dtos/LogDTO";
-export { default as LogController } from "@log/controllers/LogController";
+export { Log } from "@TenshiJS/entity/Log";
+export { default as LogDTO } from "@modules/log/dtos/LogDTO";
+export { default as LogController } from "@modules/log/controllers/LogController";

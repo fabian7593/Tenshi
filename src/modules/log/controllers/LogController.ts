@@ -1,6 +1,6 @@
 import { HttpAction, executeQuery, config } from "@index/index";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
-import { ConstHTTPRequest } from "@index/consts/Const";
+import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
 
 export default  class LogController extends GenericController{
 

@@ -1,7 +1,7 @@
 
 import { Request, Response, GenericRoutes,
     RequestHandler, RequestHandlerBuilder } from "@modules/index";
-import { Log, LogDTO, LogController } from '@log/index';
+import { Log, LogDTO, LogController } from '@modules/log/index';
 
 class LogRoutes extends GenericRoutes {
     constructor() {

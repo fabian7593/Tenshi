@@ -1,6 +1,5 @@
 import { FindOneOptions, GenericRepository } from "@modules/index";
-
-import { User } from "@user/index";
+import { User } from "@entity/User";
 
 export default class UserRepository extends GenericRepository{
 

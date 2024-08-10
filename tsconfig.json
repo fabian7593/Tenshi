@@ -20,28 +20,19 @@
      
      /* Completeness */
      "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
-     "baseUrl": "./src",
+     "baseUrl": "./",
       "paths": {
-        "@root/*": ["../*"],
-        "@index/*": ["./*"],
-        "@templates/*": ["templates/*"],
-        "@modules/*": ["modules/*"],
-        "@utils/*": ["utils/*"],
-        "@objects/*": ["objects/*"],
-        "@middlewares/*": ["middlewares/*"],
-        "@helpers/*": ["helpers/*"],
-        "@generics/*": ["generics/*"],
-        "@entity/*": ["entity/*"],
-        "@data/*": ["data/json/*"],
-        "@config/*": ["config/*"],
-        "@patterns/*": ["designPatterns/*"],
 
-        "@user/*": ["modules/user/*"],
-        "@udc/*": ["modules/udc/*"],
-        "@document/*": ["modules/document/*"],
-        "@email/*": ["modules/email/*"],
-        "@log/*": ["modules/log/*"],
-        "@notification/*": ["modules/notification/*"],
+        /* Assign Tenshi Library paths */
+        "@TenshiJS/*": ["tenshi/*"],
+
+        /* Set project paths*/
+        "@index/*": ["src/*"],
+        "@modules/*": ["src/modules/*"],
+        "@templates/*": ["src/templates/*"],
+        "@entity/*": ["src/entity/*"],
+        "@data/*": ["src/data/json/*"],
+        "@utils/*": ["src/utils/*"]
       },
    }
  }

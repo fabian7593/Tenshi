@@ -1,7 +1,7 @@
 import { Request, Response, GenericRoutes,
          RequestHandler, RequestHandlerBuilder} from "@modules/index";
-import { default as UserNotificationController } from '@notification/controllers/UserNotificationController';
-import { UserNotification, UserNotificationDTO, requiredBodyListUserNotifications } from '@notification/index';
+import { default as UserNotificationController } from '@modules/notification/controllers/UserNotificationController';
+import { UserNotification, UserNotificationDTO, requiredBodyListUserNotifications } from '@modules/notification/index';
 
 class UserNotificationRoutes extends GenericRoutes {
     constructor() {

@@ -1,5 +1,5 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { Notification } from '@notification/index';
+import { Notification } from '@modules/notification/index';
 
 export default  class NotificationDTO implements IAdapterFromBody{
     req: Request;

@@ -4,12 +4,12 @@ import { HttpAction, Validations,
 import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
-        decryptPassword, JWTService, UserDTO } from "@user/index";
+        decryptPassword, JWTService, UserDTO } from "@modules/user";
         
-import { insertLogTracking } from "@utils/logsUtils";
-import { getEmailTemplate, getMessageEmail } from "@utils/htmlTemplateUtils";
+import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
+import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 
-const templatesDir = path.join(__dirname, '../../../templates');
+const templatesDir = path.join(__dirname, '../../../templates/');
 
 const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDir, 'activeAccountPage.html'), 'utf8');
 const jwt = require('jsonwebtoken');

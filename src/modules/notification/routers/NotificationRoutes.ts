@@ -2,7 +2,7 @@ import { Request, Response, GenericRoutes,
         RequestHandler, RequestHandlerBuilder, 
         GenericController } from "@modules/index";
 
-import { NotificationDTO, Notification, requiredBodyListNotifications, regexValidationList } from '@notification/index';
+import { NotificationDTO, Notification, requiredBodyListNotifications, regexValidationList } from '@modules/notification/index';
 
 class NotificationRoutes extends GenericRoutes {
     constructor() {

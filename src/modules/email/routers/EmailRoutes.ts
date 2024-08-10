@@ -1,9 +1,9 @@
-import { getUrlParam } from "@utils/generalUtils";
+import { getUrlParam } from "@TenshiJS/utils/generalUtils";
 
 import { Request, Response, GenericRoutes,
     RequestHandler, RequestHandlerBuilder, 
     FindManyOptions } from "@modules/index";
-import { User, EmailController } from '@email/index';
+import { User, EmailController } from '@modules/email/index';
 
 class EmailRoutes extends GenericRoutes {
     constructor() {

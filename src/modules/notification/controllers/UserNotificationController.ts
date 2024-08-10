@@ -3,12 +3,12 @@ import { Validations, HttpAction,
 
 import { GenericRepository, 
          GenericController, RequestHandler,
-         JWTObject, fs } from "@modules/index";
+         JWTObject } from "@modules/index";
 
 import { UserNotification, Notification, User, 
-         UserNotificationDTO } from "@notification/index";
+         UserNotificationDTO } from "@modules/notification/index";
 
-import { getEmailTemplate } from "@utils/htmlTemplateUtils";
+import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 
 export default  class UserNotificationController extends GenericController{
 

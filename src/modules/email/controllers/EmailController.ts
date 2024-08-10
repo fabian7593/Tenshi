@@ -1,8 +1,8 @@
 import { HttpAction, Validations } from "@index/index";
 import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index";
-import { User, UserRepository, sendMail } from '@email/index';
-import { getEmailTemplate } from "@utils/htmlTemplateUtils";
-import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@index/consts/Const";
+import { User, UserRepository, sendMail } from '@modules/email/index';
+import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
+import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@TenshiJS/consts/Const";
 
 export default  class EmailController extends GenericController{
 

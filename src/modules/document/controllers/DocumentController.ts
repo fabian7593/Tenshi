@@ -1,7 +1,8 @@
 import { HttpAction, Validations } from "@index/index";
 import { GenericController, RequestHandler, JWTObject} from "@modules/index";
-import { Document, setNameDocument, uploadFile } from '@document/index';
-import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson } from "@index/consts/Const";
+import { Document, setNameDocument } from '@modules/document/index';
+import { uploadFile } from '@TenshiJS/utils/fileStorageUtils';
+import { ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson } from "@TenshiJS/consts/Const";
 
 export default  class DocumentController extends GenericController{
 

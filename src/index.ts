@@ -2,7 +2,8 @@
 //              Configuration
 //*************************************** */
 import path from 'path';
-import ConfigManager from '@config/ConfigManager';
+import ConfigManager from '@TenshiJS/config/ConfigManager';
+//set configuration first time
 const configPath = path.resolve(__dirname, '../tenshi-config.json');
 const configManager = ConfigManager.getInstance(configPath);
 const config = configManager.getConfig();
@@ -10,12 +11,13 @@ const config = configManager.getConfig();
 //*************************************** */
 //          Entities and Database
 //*************************************** */
-import { Database } from "@config/TypeORMConnection";
+import { Database } from "@TenshiJS/config/TypeORMConnection";
 import { User } from '@entity/User';
 import { Document } from '@entity/Document';
 import { Notification } from '@entity/Notification';
 import { UnitDynamicCentral } from '@entity/UnitDynamicCentral';
 import { UserNotification } from '@entity/UserNotification';
+//Init instance of database First time
 Database.getInstance([User, Document, Notification, UnitDynamicCentral, UserNotification]);
 
 
@@ -31,18 +33,18 @@ import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
 
 //Import Routes
-import UserRoutes from '@user/routers/UserRoutes';
-import UdcRoutes from '@udc/routers/UdcRoutes';
-import NotificationRoutes from '@index/modules/notification/routers/NotificationRoutes';
-import UserNotificationRoutes from '@index/modules/notification/routers/UserNotificationRoutes';
-import LogRoutes from '@index/modules/log/routers/LogRoutes';
-import EmailRoutes from '@email/routers/EmailRoutes';
-import DocumentRoutes from '@document/routers/DocumentRoutes';
+import UserRoutes from '@modules/user/routers/UserRoutes';
+import UdcRoutes from '@modules/udc/routers/UdcRoutes';
+import NotificationRoutes from '@modules/notification/routers/NotificationRoutes';
+import UserNotificationRoutes from '@modules/notification/routers/UserNotificationRoutes';
+import LogRoutes from '@modules/log/routers/LogRoutes';
+import EmailRoutes from '@modules/email/routers/EmailRoutes';
+import DocumentRoutes from '@modules/document/routers/DocumentRoutes';
 
 //Import internal classes and functions
-import StartMiddleware from '@middlewares/StartMiddleware';
-import { debuggingMessage, insertLogBackend, insertLogTracking } from '@utils/logsUtils';
-import { executeQuery } from '@utils/executionDBUtils';
+import StartMiddleware from '@TenshiJS/middlewares/StartMiddleware';
+import { debuggingMessage, insertLogBackend, insertLogTracking } from '@TenshiJS/utils/logsUtils';
+import { executeQuery } from '@TenshiJS/utils/executionDBUtils';
 
 
 
@@ -54,12 +56,12 @@ export { Router, Request, Response, NextFunction };
 export { express, cors, bodyParser };
 
 //Objects
-export { default as JWTObject } from '@objects/JWTObject';
+export { default as JWTObject } from '@TenshiJS/objects/JWTObject';
 
 //Utils & helpers
-export { default as Validations } from '@helpers/Validations';
-export { default as HttpAction } from '@helpers/HttpAction';
-export { sendMail, replaceCompanyInfoEmails } from "@utils/sendEmailsUtils";
+export { default as Validations } from '@TenshiJS/helpers/Validations';
+export { default as HttpAction } from '@TenshiJS/helpers/HttpAction';
+export { sendMail, replaceCompanyInfoEmails } from "@TenshiJS/utils/sendEmailsUtils";
 
 export { debuggingMessage, insertLogBackend, insertLogTracking, executeQuery, config };
 
@@ -107,5 +109,5 @@ app.use(new DocumentRoutes().getRouter());
 //*************************************** */
 //Open port and listen API
 app.listen(config.SERVER.PORT, () => {
-  debuggingMessage(`TENSHI Express TypeScript Service Start in Port ${config.SERVER.PORT}`);
+  debuggingMessage(`${config.COMPANY.NAME} - TenshiJS Service Start in Port ${config.SERVER.PORT}`);
 });

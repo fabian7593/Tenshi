@@ -1,5 +1,5 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { UnitDynamicCentral } from '@udc/index'
+import { UnitDynamicCentral } from '@modules/udc';
 
 export default  class UdcDTO implements IAdapterFromBody{
     req: Request;
