@@ -3,14 +3,10 @@ import JWTObject  from 'tenshi/objects/JWTObject';
 import HttpAction from 'tenshi/helpers/HttpAction';
 
 import ConfigManager  from "tenshi/config/ConfigManager";
-
 import { getRegex } from "tenshi/utils/jsonUtils";
-
-
 import {  ConstStatusJson, ConstGeneral, ConstMessagesJson, ConstRoles } from "tenshi/consts/Const";
 
 const jwt = require('jsonwebtoken');
-
 /*
     This Validations Class have all the required validation in the app
 */

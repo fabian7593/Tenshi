@@ -1,8 +1,9 @@
 import { HttpAction, Validations } from "@index/index";
 import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index";
-import { User, UserRepository, sendMail } from '@modules/email/index';
+import { User, UserRepository } from '@modules/email/index';
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@TenshiJS/consts/Const";
+import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 
 export default  class EmailController extends GenericController{
 
@@ -12,7 +13,7 @@ export default  class EmailController extends GenericController{
      * @param {RequestHandler} reqHandler - The request handler object.
      * @returns {Promise<any>} A promise that resolves with the result of the email sending operation.
      */
-    async sendMail(reqHandler: RequestHandler) : Promise<any> {
+    async sendMailController(reqHandler: RequestHandler) : Promise<any> {
         // Get the HTTP execution object from the response locals
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
@@ -59,7 +60,13 @@ export default  class EmailController extends GenericController{
                     const htmlBody = await getEmailTemplate(ConstGeneral.GENERIC_TEMPLATE_EMAIL, user.language, variables);
 
                     // Send the email to the user
-                    await sendMail(user.email, emailStructure.subject, htmlBody);
+                    const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                    await emailService.sendEmail({
+                        toMail: user.email,
+                        subject: emailStructure.subject,
+                        message: htmlBody,
+                        file: null
+                    });
 
                     // Return success response
                     return httpExec.successAction(null, ConstHTTPRequest.SEND_MAIL_SUCCESS);
@@ -126,7 +133,14 @@ export default  class EmailController extends GenericController{
                             emailContent: emailStructure.body
                         };
                         const htmlBody = await getEmailTemplate(ConstGeneral.GENERIC_TEMPLATE_EMAIL, user.language, variables);
-                        await sendMail(user.email,  emailStructure.subject, htmlBody);
+                        const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                        await emailService.sendEmail({
+                            toMail: user.email,
+                            subject: emailStructure.subject,
+                            message: htmlBody,
+                            file: null
+                        });
+    
                     });
 
                 }else{

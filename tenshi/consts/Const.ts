@@ -52,6 +52,8 @@ export class ConstMessages {
 
 
 export class ConstGeneral {
+
+    public static readonly GMAIL: string = "gmail";
    
     //HEADERS
     public static readonly HEADER_TYPE: string = "Content-Type";
@@ -71,4 +73,13 @@ export class ConstGeneral {
 
     //ACTION
     public static readonly SEND_MAIL: string = "SEND_MAIL";
+}
+
+
+export class ConstLogs {
+   
+    public static readonly LOG_ERROR: string = "ERROR";
+    public static readonly SERVER: string = "SERVER";
+    public static readonly BACKEND: string = "BACKEND";
+    public static readonly TRACKING: string = "TRACKING";
 }

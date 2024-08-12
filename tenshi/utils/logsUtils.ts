@@ -6,6 +6,8 @@ import ConfigManager  from "tenshi/config/ConfigManager";
 import { getStatus } from 'tenshi/utils/jsonUtils';
 import logger from 'tenshi/utils/logger';
 
+import { ConstLogs } from "tenshi/consts/Const";
+
 /*
     Logs Utils class is for logs in console for debbuging &
     In Logs for a DB traceabillity for errors, use of information and others
@@ -18,7 +20,7 @@ export function debuggingMessage(message : any) {
             console.log(message);
         }
     }catch(err){
-        logger('Error', 'Error in debuggingMessage: ' + err);
+        logger(ConstLogs.LOG_ERROR, `debuggingMessage: ` + err);
     }
     
 }
@@ -39,13 +41,13 @@ export async function insertLogBackend(method: string, className: string, messag
             log.user_id = userId;
             log.data = data;
             log.created_date = new Date();
-            log.environment = "BACKEND";
-            log.platform = "SERVER";
+            log.environment = ConstLogs.BACKEND;
+            log.platform = ConstLogs.SERVER;
 
-            await saveLog(log, "BACKEND");
+            await saveLog(log, ConstLogs.BACKEND);
         }
     }catch(err){
-        await logger('Error', 'Error in insertLogBackend: ' + err);
+        await logger(ConstLogs.LOG_ERROR, `insertLogBackend: ` + err);
     }
 }
 
@@ -74,10 +76,10 @@ export async function insertLogTracking(reqHandler: RequestHandler,
                 log.device_information = JSON.stringify(reqHandler.getResponse().locals.deviceInfo);
             }
 
-            await saveLog(log, "TRACKING");
+            await saveLog(log, ConstLogs.TRACKING);
         }
     }catch(err){
-        await logger('Error', 'Error in insertLogTracking: ' + err);
+        await logger(ConstLogs.LOG_ERROR, `insertLogTracking: ` + err);
     }
 }
 

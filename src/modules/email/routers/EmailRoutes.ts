@@ -34,7 +34,7 @@ class EmailRoutes extends GenericRoutes {
                 .build(); // Build the request handler object
 
             // Execute the sendMail method of the EmailController with the request handler object
-            (this.getController() as EmailController).sendMail(requestHandler);
+            (this.getController() as EmailController).sendMailController(requestHandler);
         });
 
         // Route for sending an email to multiple users based on specified filters

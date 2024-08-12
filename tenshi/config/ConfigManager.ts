@@ -27,6 +27,7 @@ interface ServerConfig {
     IS_DEBUGGING: boolean;
     FAIL_LOGIN_MAX_NUMBER: number;
     DEFAULT_LANGUAGE: string;
+    FORMAT_DATE: string;
 }
 
 interface DbConfig {

@@ -1,5 +1,5 @@
 import { Validations, HttpAction, 
-         sendMail, executeQuery, config } from "@index/index";
+        executeQuery, config } from "@index/index";
 
 import { GenericRepository, 
          GenericController, RequestHandler,
@@ -7,6 +7,8 @@ import { GenericRepository,
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@modules/notification/index";
+import { ConstGeneral } from "@TenshiJS/consts/Const";
+import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 
@@ -44,7 +46,13 @@ export default  class UserNotificationController extends GenericController{
                         emailContent: notification.message
                     };
                     const htmlBody = await getEmailTemplate("genericTemplateEmail", user.language, variables);
-                    await sendMail(user.email, notification.subject, htmlBody);
+                    const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                    await emailService.sendEmail({
+                        toMail: user.email,
+                        subject: notification.subject,
+                        message: htmlBody,
+                        file: null
+                    });
                  }
              }else{
                 return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");

@@ -61,7 +61,7 @@ export { default as JWTObject } from '@TenshiJS/objects/JWTObject';
 //Utils & helpers
 export { default as Validations } from '@TenshiJS/helpers/Validations';
 export { default as HttpAction } from '@TenshiJS/helpers/HttpAction';
-export { sendMail, replaceCompanyInfoEmails } from "@TenshiJS/utils/sendEmailsUtils";
+export { replaceCompanyInfoEmails } from "@TenshiJS/utils/sendEmailsUtils";
 
 export { debuggingMessage, insertLogBackend, insertLogTracking, executeQuery, config };
 

@@ -1,5 +1,5 @@
 import { HttpAction, Validations,
-        sendMail, replaceCompanyInfoEmails, config} from "@index/index";
+        replaceCompanyInfoEmails, config} from "@index/index";
 
 import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
 
@@ -8,6 +8,8 @@ import { UserRepository, encryptPassword,
         
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
+import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
+import { ConstGeneral } from "@TenshiJS/consts/Const";
 
 const templatesDir = path.join(__dirname, '../../../templates/');
 
@@ -130,9 +132,15 @@ export default class UserController extends GenericController{
                 };
                 const htmlBody = await getEmailTemplate("registerEmail", user.language, variables);
                 
-                const subject = getMessageEmail("registerEmailSubject",user.language);
-                await sendMail(user.email, subject, htmlBody);
-
+                const subject = getMessageEmail("registerEmailSubject", user.language);
+                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                await emailService.sendEmail({
+                    toMail: user.email,
+                    subject: subject,
+                    message: htmlBody,
+                    file: null
+                });
+             
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
             
             }catch(error : any){
@@ -330,7 +338,13 @@ export default class UserController extends GenericController{
                 const htmlBody = await getEmailTemplate("recoverUserByEmail", user.language, variables);
 
                 const subject = getMessageEmail("activeAccountPageSubject",user.language!);
-                await sendMail(user.email, subject, htmlBody);
+                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                await emailService.sendEmail({
+                    toMail: user.email,
+                    subject: subject,
+                    message: htmlBody,
+                    file: null
+                });
 
                 await insertLogTracking(reqHandler, `Recover User ${user.email}`, "SUCCESS",
                     null, user.id.toString(), "LoginTracking");
@@ -366,7 +380,13 @@ export default class UserController extends GenericController{
                 const htmlBody = await getEmailTemplate("forgotPasswordEmail", user.language, variables);
 
                 const subject = getMessageEmail("forgotPasswordEmailSubject", user.language!);
-                await sendMail(user.email, subject, htmlBody);
+                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                await emailService.sendEmail({
+                    toMail: user.email,
+                    subject: subject,
+                    message: htmlBody,
+                    file: null
+                });
 
                 await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",
                     null, user.id.toString(), "LoginTracking");
