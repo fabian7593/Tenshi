@@ -1,5 +1,5 @@
 import { HttpAction, config } from "@index/index";
-import { MariaDbAdapter } from "@index/persistance/MariaDBAdapter";
+import { DBPersistanceFactory } from "@TenshiJS/persistance/DBPersistanceFactory";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
 import { executeQuery } from "@TenshiJS/helpers/DataBaseHelper/ExecuteQuery";
@@ -75,7 +75,7 @@ export default  class LogController extends GenericController{
                                    userId: string | null, type : string | null,
                                    page: number, size : number): Promise<any>{
 
-        const dbAdapter = new MariaDbAdapter();
+        const dbAdapter = DBPersistanceFactory.createDBAdapterPersistance(config.DB.TYPE);
         return await executeQuery(dbAdapter, async (conn) => {
             const result = await dbAdapter.executeQuery(conn,
                 "CALL GetLogsWithFilters(?, ?, ?, ?, ?)",

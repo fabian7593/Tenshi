@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-type DBType = "mysql" | "mariadb" | "postgres" | "sqlite" | "mssql" | "oracle" | "mongodb";
+type DBType = "mysql" | "mariadb" | "postgres" | "mssql" ;
 
 interface CompanyConfig {
     NAME: string;

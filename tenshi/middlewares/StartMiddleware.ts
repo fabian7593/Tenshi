@@ -78,7 +78,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
 
     // Execute the next middleware if the request can proceed
     if(nextMethod){
-        debuggingMessage( ConstMessages.INIT_MIDDLEWARE + req.path);
+        debuggingMessage(ConstMessages.INIT_MIDDLEWARE + req.path);
         next();
     }
 }

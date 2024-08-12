@@ -83,12 +83,16 @@ BEGIN
         method,
         class,
         type,
+        action,
         https,
         message,
-        description,
+        data,
         created_date,
         user_id,
-        environment
+        ip_address,
+        environment,
+        platform,
+        device_information
     FROM
         logs
     WHERE

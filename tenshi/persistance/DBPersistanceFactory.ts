@@ -1,0 +1,33 @@
+import { IDatabaseAdapter } from "tenshi/helpers/DataBaseHelper/IDatabaseAdapter";
+import { MariaDbAdapter } from "./Adapters/MariaDBAdapter";
+import { MySQLAdapter } from "./Adapters/MySQLAdapter";
+import { PostgresAdapter } from "./Adapters/PostgresAdapter";
+import { SqlServerAdapter } from "./Adapters/SQLServerAdapter";
+
+export class DBPersistanceFactory {
+    /**
+     * Creates a database persistence adapter based on the provided type.
+     * Currently only supports MariaDB.
+     *
+     * @param type - The type of database adapter to create. Defaults to null.
+     * @returns An instance of the database adapter.
+     * @throws {Error} If an unsupported adapter type is provided.
+     */
+    static createDBAdapterPersistance(type: string | null = null): IDatabaseAdapter {
+        // Check if the provided type is null (default) or not supported
+        switch (type) {
+            case "mariadb" :
+                return new MariaDbAdapter();
+            case "mysql" :
+                return new MySQLAdapter();
+            case "postgres" :
+                return new PostgresAdapter();
+            case "mssql" :
+                return new SqlServerAdapter();
+            default:
+                // If not null or supported, throw an error
+                throw new Error(`Factory: Adapter type ${type} is not supported.`);
+        }
+    }
+}
+
