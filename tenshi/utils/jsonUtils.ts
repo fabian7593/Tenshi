@@ -1,5 +1,5 @@
 import ConfigManager from "tenshi/config/ConfigManager";
-import { ConstGeneral } from "@TenshiJS/consts/Const";
+import { ConstGeneral } from "tenshi/consts/Const";
 const config = ConfigManager.getInstance().getConfig();
 
 // The json files

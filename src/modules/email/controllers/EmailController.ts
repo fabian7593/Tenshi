@@ -3,7 +3,7 @@ import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index"
 import { User, UserRepository } from '@modules/email/index';
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@TenshiJS/consts/Const";
-import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
+import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstTemplate } from "@index/consts/Const";
 
 export default  class EmailController extends GenericController{

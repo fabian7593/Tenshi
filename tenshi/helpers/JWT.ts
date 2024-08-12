@@ -3,7 +3,7 @@ import JWTObject  from 'tenshi/objects/JWTObject';
 import jwt from 'jsonwebtoken';
 import ConfigManager  from "tenshi/config/ConfigManager";
 import { debuggingMessage } from "tenshi/utils/logsUtils";
-import { ConstMessages } from '@TenshiJS/consts/Const';
+import { ConstMessages } from 'tenshi/consts/Const';
 
 class JWTService {
     private static instance: JWTService;

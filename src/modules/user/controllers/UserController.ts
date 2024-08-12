@@ -7,7 +7,7 @@ import { UserRepository, encryptPassword,
         
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
-import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
+import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate, ConstUrls } from "@index/consts/Const";
 const jwt = require('jsonwebtoken');

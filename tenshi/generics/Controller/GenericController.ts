@@ -12,7 +12,7 @@ import GenericRepository from 'tenshi/generics/Repository/GenericRepository';
 import IGenericController from 'tenshi/generics/Controller/IGenericController';
 import ControllerObject from 'tenshi/objects/ControllerObject';
 
-import { createControllerObject } from 'tenshi/designPatterns/ControllerObjectFactory';
+import { createControllerObject } from 'tenshi/services/ControllerObjectFactory';
 
 import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson, ConstRoles, ConstGeneral } from "tenshi/consts/Const";
 

@@ -8,7 +8,7 @@ import { GenericRepository,
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@modules/notification/index";
 import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
-import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
+import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import { ConstHTTPRequest, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
