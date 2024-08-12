@@ -85,9 +85,8 @@ export class ConstGeneral {
     public static readonly CODE: string = "code";
     public static readonly ID: string = "id";
 
-    //TEMPLATES
-    public static readonly GENERIC_TEMPLATE_EMAIL: string = "genericTemplateEmail";
-    public static readonly ACTIVE_ACCOUNT_PAGE: string = "activeAccountPage";
+    //JSON
+    public static readonly MESSAGES_JSON: string = "tenshi/data/json/messages.json";
 
     //ACTION
     public static readonly SEND_MAIL: string = "SEND_MAIL";

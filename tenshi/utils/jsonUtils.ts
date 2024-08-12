@@ -1,8 +1,9 @@
 import ConfigManager from "tenshi/config/ConfigManager";
+import { ConstGeneral } from "@TenshiJS/consts/Const";
 const config = ConfigManager.getInstance().getConfig();
 
 // The json files
-const messages = require(config.URL_FILES.MESSAGES_JSON);
+const messages = require(ConstGeneral.MESSAGES_JSON);
 const regexes = require(config.URL_FILES.REGEX_JSON);
 const statusResponseList = require('tenshi/data/json/statusResponse.json');
 const errorDbList = require('tenshi/data/json/errorDBList.json');
@@ -11,6 +12,7 @@ const errorDbList = require('tenshi/data/json/errorDBList.json');
 import ErrorMessage from "tenshi/objects/ErrorMessageObject";
 import StatusResponseObject from "tenshi/objects/StatusResponseObject";
 import RegexObject from "tenshi/objects/RegexObject";
+
 
 /*
   Json Utils class use all information of the files in the json folder

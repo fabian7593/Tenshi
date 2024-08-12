@@ -4,6 +4,7 @@ import { User, UserRepository } from '@modules/email/index';
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@TenshiJS/consts/Const";
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
+import { ConstTemplate } from "@index/consts/Const";
 
 export default  class EmailController extends GenericController{
 
@@ -57,7 +58,7 @@ export default  class EmailController extends GenericController{
                     };
 
                     // Generate the HTML body of the email using the email template
-                    const htmlBody = await getEmailTemplate(ConstGeneral.GENERIC_TEMPLATE_EMAIL, user.language, variables);
+                    const htmlBody = await getEmailTemplate(ConstTemplate.GENERIC_TEMPLATE_EMAIL, user.language, variables);
 
                     // Send the email to the user
                     const emailService = EmailService.getInstance();
@@ -132,7 +133,7 @@ export default  class EmailController extends GenericController{
                             emailSubject: emailStructure.subject,
                             emailContent: emailStructure.body
                         };
-                        const htmlBody = await getEmailTemplate(ConstGeneral.GENERIC_TEMPLATE_EMAIL, user.language, variables);
+                        const htmlBody = await getEmailTemplate(ConstTemplate.GENERIC_TEMPLATE_EMAIL, user.language, variables);
                         const emailService = EmailService.getInstance();
                         await emailService.sendEmail({
                             toMail: user.email,

@@ -86,7 +86,6 @@ interface EmailConfig {
 
 interface UrlFilesConfig {
     SAVE_LOGS: string;
-    MESSAGES_JSON: string;
     REGEX_JSON: string;
     TEMPLATES_PATH: string;
     EMAIL_LANGUAGES_PATH: string;

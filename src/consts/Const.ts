@@ -17,4 +17,5 @@ export class ConstTemplate{
     public static readonly RECOVER_USER_EMAIL: string = "recoverUserByEmail";
     public static readonly FORGOT_PASSWORD_EMAIL: string = "forgotPasswordEmail";
     public static readonly GENERIC_TEMPLATE_EMAIL: string = "genericTemplateEmail";
+    public static readonly ACTIVE_ACCOUNT_PAGE: string = "activeAccountPage";
 }

@@ -25,14 +25,13 @@
         "HOST": "localhost",
         "USER": "root",
         "PASSWORD": "",
-        "NAME": "unbreakable",
+        "NAME": "tenshi",
         "CONNECTION_LIMIT": 150
     },
     "URL_FILES":{
         "SAVE_LOGS":"../../logs",
         "TEMPLATES_PATH":"../../src/templates",
         "EMAIL_LANGUAGES_PATH":"../../src/data/json/emailMessages",
-        "MESSAGES_JSON":"src/data/json/messages.json",
         "REGEX_JSON":"src/data/json/regex.json",
         "ROLES_JSON":"./src/data/json/roles.json"
     },
