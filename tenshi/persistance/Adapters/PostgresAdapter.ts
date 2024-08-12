@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from "tenshi/helpers/DataBaseHelper/IDatabaseAdapter";
+import { IDatabaseAdapter } from "@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter";
 import { Pool, PoolClient } from 'pg';
 
 import ConfigManager  from "tenshi/config/ConfigManager";

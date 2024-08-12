@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from 'tenshi/helpers/DataBaseHelper/IDatabaseAdapter';
+import { IDatabaseAdapter } from '@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter';
 import { Pool, PoolConnection } from 'mariadb';
 import mariadb from 'mariadb';
 
@@ -22,7 +22,7 @@ export class MariaDbAdapter implements IDatabaseAdapter {
             collation: 'utf8mb4_unicode_ci'
         });
     }
-    
+
     async getConnection(): Promise<PoolConnection> {
         return await this.pool.getConnection();  // Get a connection from the connection pool
     }

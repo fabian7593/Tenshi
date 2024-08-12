@@ -12,8 +12,6 @@ import ErrorMessage from "tenshi/objects/ErrorMessageObject";
 import StatusResponseObject from "tenshi/objects/StatusResponseObject";
 import RegexObject from "tenshi/objects/RegexObject";
 
-
-
 /*
   Json Utils class use all information of the files in the json folder
 */

@@ -43,6 +43,7 @@ import DocumentRoutes from '@modules/document/routers/DocumentRoutes';
 
 //Import internal classes and functions
 import StartMiddleware from '@TenshiJS/middlewares/StartMiddleware';
+import RateLimitMiddleware from '@TenshiJS/middlewares/RateLimitMiddleware';
 import { debuggingMessage, insertLogBackend, insertLogTracking } from '@TenshiJS/utils/logsUtils';
 
 
@@ -82,6 +83,8 @@ app.use((req : Request, res : Response, next : NextFunction) => {
   next();
 });
 
+//rate limit fo dos attack middleware
+app.use(RateLimitMiddleware);
 //middleware to validate JWT and secret key
 app.use(StartMiddleware);
 

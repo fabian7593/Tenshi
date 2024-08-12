@@ -7,7 +7,7 @@ import { GenericRepository,
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@modules/notification/index";
-import { executeQuery } from "@TenshiJS/helpers/DataBaseHelper/ExecuteQuery";
+import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
@@ -191,7 +191,6 @@ export default  class UserNotificationController extends GenericController{
  
      async getAllUserNotifications(userReceive : string | null, userSend : string | null,
                                    page: number, size : number ): Promise<any>{
-
 
             const dbAdapter = DBPersistanceFactory.createDBAdapterPersistance(config.DB.TYPE);
             return await executeQuery(dbAdapter, async (conn) => {

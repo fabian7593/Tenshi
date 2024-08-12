@@ -2,7 +2,7 @@ import { HttpAction, config } from "@index/index";
 import { DBPersistanceFactory } from "@TenshiJS/persistance/DBPersistanceFactory";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
-import { executeQuery } from "@TenshiJS/helpers/DataBaseHelper/ExecuteQuery";
+import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
 
 export default  class LogController extends GenericController{
 

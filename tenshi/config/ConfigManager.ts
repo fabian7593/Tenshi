@@ -28,6 +28,7 @@ interface ServerConfig {
     FAIL_LOGIN_MAX_NUMBER: number;
     DEFAULT_LANGUAGE: string;
     FORMAT_DATE: string;
+    MAX_REQUEST_PER_SECOND: number;
 }
 
 interface DbConfig {

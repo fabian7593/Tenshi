@@ -53,5 +53,11 @@
       "name": "Bad Request",
       "id": 11,
       "httpStatus": 400
+  },
+  "TOO_MANY_REQUEST": {
+      "name": "Too Many Requests",
+      "id": 12,
+      "httpStatus": 429
   }
 }
+

@@ -24,6 +24,7 @@ export class ConstStatusJson {
     public static readonly NOT_FOUND: string =  "NOT_FOUND";
     public static readonly UNAUTHORIZED: string =  "UNAUTHORIZED";
     public static readonly VALIDATIONS: string =  "VALIDATIONS";
+    public static readonly TOO_MANY_REQUESTS: string =  "TOO_MANY_REQUESTS";
     public static readonly ERROR: string =  "ERROR";
     public static readonly SUCCESS: string =  "SUCCESS";
     public static readonly REGEX: string =  "REGEX";

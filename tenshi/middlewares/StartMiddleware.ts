@@ -8,6 +8,7 @@ import ConfigManager  from "tenshi/config/ConfigManager";
 import { debuggingMessage } from "tenshi/utils/logsUtils";
 import DeviceInfo from 'tenshi/objects/DeviceInfo';
 import { ConstGeneral, ConstMessages } from "tenshi/consts/Const";
+import { getIpAddress } from 'tenshi/utils/httpUtils';
 
 /**
  * Start Middleware function is the first middleware to be executed in the application.
@@ -64,7 +65,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     }
 
     // Get the IP address of the request
-    const ipAddress = req.ip || req.headers[ConstGeneral.HEADER_X_FORWARDED_FOR] || req.connection.remoteAddress;
+    const ipAddress = getIpAddress(req);
 
     // Get the device information from the request headers
     const deviceInfo : DeviceInfo | null = getDeviceInfo(req);
@@ -78,7 +79,6 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
 
     // Execute the next middleware if the request can proceed
     if(nextMethod){
-        debuggingMessage(ConstMessages.INIT_MIDDLEWARE + req.path);
         next();
     }
 }

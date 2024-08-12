@@ -38,11 +38,11 @@ export default class HttpAction{
         );
     }
 
-    dynamicError(statusCode : string , errorMessage : string) {
+    dynamicError(statusCode : string , errorMessage : string = "") {
         // Get the message
         const status = getStatus(statusCode);
         return this.res.status(status.httpStatus).json(
-            responseStruct(status, null, getMessage(errorMessage) )
+            responseStruct(status, null, getMessage(errorMessage))
         );
     }
 
