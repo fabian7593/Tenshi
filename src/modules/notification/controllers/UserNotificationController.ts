@@ -11,11 +11,12 @@ import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery"
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
+import { ConstHTTPRequest, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
+import { ConstTemplate } from "@index/consts/Const";
 
 export default  class UserNotificationController extends GenericController{
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
-        const successMessage : string = "INSERT_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
@@ -45,7 +46,7 @@ export default  class UserNotificationController extends GenericController{
                         emailSubject: notification.subject,
                         emailContent: notification.message
                     };
-                    const htmlBody = await getEmailTemplate("genericTemplateEmail", user.language, variables);
+                    const htmlBody = await getEmailTemplate(ConstTemplate.GENERIC_TEMPLATE_EMAIL, user.language, variables);
                     const emailService = EmailService.getInstance();
                     await emailService.sendEmail({
                         toMail: user.email,
@@ -55,7 +56,7 @@ export default  class UserNotificationController extends GenericController{
                     });
                  }
              }else{
-                return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
+                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
              }
             
 
@@ -63,7 +64,7 @@ export default  class UserNotificationController extends GenericController{
                 //Execute Action DB
                 const userNotificationAdded: UserNotification = await repositoryUserNotification.add(userNotifications);
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(userNotificationAdded, notification);
-                return httpExec.successAction(responseWithNewAdapter, successMessage);
+                return httpExec.successAction(responseWithNewAdapter, ConstHTTPRequest.INSERT_SUCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -78,7 +79,6 @@ export default  class UserNotificationController extends GenericController{
 
 
     async update(reqHandler: RequestHandler): Promise<any>{
-        const successMessage : string = "UPDATE_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
@@ -104,20 +104,20 @@ export default  class UserNotificationController extends GenericController{
 
             if(userNotification != undefined && userNotification != null){}
             else{
-                return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
+                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
             }
 
             if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != "ADMIN"){
+                if(jwtData.role != ConstRoles.ADMIN){
                     userId = jwtData.id;
                 }
              
                 if(userNotification != undefined && userNotification != null){
                     if(userId != null && userNotification.id_user_receive != userId){
-                        return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
+                        return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
                     }
                 }else{
-                    return httpExec.dynamicError("NOT_FOUND", "DONT_EXISTS");
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                 }
             }
 
@@ -130,7 +130,7 @@ export default  class UserNotificationController extends GenericController{
                 const notification : Notification = await repositoryNotification.findByCode(updateEntity.notificationCode, false);
 
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(updateEntity, notification);
-                return httpExec.successAction(responseWithNewAdapter, successMessage);
+                return httpExec.successAction(responseWithNewAdapter, ConstHTTPRequest.UPDATE_SUCCESS);
 
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -143,7 +143,6 @@ export default  class UserNotificationController extends GenericController{
 
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
-        const successMessage : string = "GET_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
@@ -178,7 +177,7 @@ export default  class UserNotificationController extends GenericController{
                 const data = entities.filter((item: any) => !('affectedRows' in item));
 
                 //const entities = await this.getAllUserNotifications();
-                return httpExec.successAction(data, successMessage);
+                return httpExec.successAction(data, ConstHTTPRequest.GET_ALL_SUCCESS);
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
                 reqHandler.getMethod(), this.getControllerObj().controller);

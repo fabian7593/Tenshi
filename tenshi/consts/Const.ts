@@ -8,6 +8,8 @@ export class ConstFunctions {
 }
 
 export class ConstHTTPRequest {
+    public static readonly LOGIN_SUCCESS: string = "LOGIN_SUCCESS";
+    public static readonly REFRESH_TOKEN_SUCCESS: string = "REFRESH_TOKEN_SUCCESS";
     public static readonly INSERT_SUCESS: string = "INSERT_SUCCESS";
     public static readonly UPDATE_SUCCESS: string = "UPDATE_SUCCESS";
     public static readonly DELETE_SUCCESS: string = "DELETE_SUCCESS";
@@ -44,7 +46,12 @@ export class ConstMessagesJson {
     public static readonly ROLE_AUTH_ERROR: string = "ROLE_AUTH_ERROR";
     public static readonly THERE_ARE_NOT_INFO: string = "THERE_ARE_NOT_INFO";
     public static readonly EMAIL_NOT_EXISTS_ERROR: string = "EMAIL_NOT_EXISTS_ERROR";
+    public static readonly USER_FAIL_LOGIN_ERROR: string = "USER_FAIL_LOGIN_ERROR";
+    public static readonly USER_PASS_ERROR: string = "USER_PASS_ERROR";
+    public static readonly RESET_PASSWORD: string = "RESET_PASSWORD";
+    public static readonly EMAIL_SENT_SUCCESS: string = "EMAIL_SENT_SUCCESS";
 }
+
 
 export class ConstMessages {
     //Init variables
@@ -61,16 +68,17 @@ export class ConstMessages {
 
 
 export class ConstGeneral {
-
     public static readonly GMAIL: string = "gmail";
    
     //HEADERS
     public static readonly HEADER_TYPE: string = "Content-Type";
     public static readonly HEADER_HTML: string = "text/html";
+    public static readonly HEADER_JSON: string = "application/json; charset=utf-8";
     public static readonly HEADER_AUTH: string = "authorization";
     public static readonly HEADER_API_KEY: string = "x-api-key";
     public static readonly HEADER_X_FORWARDED_FOR: string = "x-forwarded-for";
     public static readonly HEADER_DEVICE_INFO: string = "device-info";
+    public static readonly HEADER_LANGUAGE: string = "accept-language";
 
     //DB FIELDS
     public static readonly USER_ID: string = "user_id";
@@ -92,4 +100,5 @@ export class ConstLogs {
     public static readonly SERVER: string = "SERVER";
     public static readonly BACKEND: string = "BACKEND";
     public static readonly TRACKING: string = "TRACKING";
+    public static readonly LOGIN_TRACKING: string = "LoginTracking";
 }

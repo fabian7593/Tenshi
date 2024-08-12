@@ -45,6 +45,8 @@ import DocumentRoutes from '@modules/document/routers/DocumentRoutes';
 import StartMiddleware from '@TenshiJS/middlewares/StartMiddleware';
 import RateLimitMiddleware from '@TenshiJS/middlewares/RateLimitMiddleware';
 import { debuggingMessage, insertLogBackend, insertLogTracking } from '@TenshiJS/utils/logsUtils';
+import helmet from 'helmet';
+import { ConstGeneral } from '@TenshiJS/consts/Const';
 
 
 //*************************************** */
@@ -79,12 +81,17 @@ app.use(bodyParser.json());
 //*************************************** */
 //MiddleWare to set content type to json
 app.use((req : Request, res : Response, next : NextFunction) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader(ConstGeneral.HEADER_TYPE, ConstGeneral.HEADER_JSON);
   next();
 });
 
-//rate limit fo dos attack middleware
-app.use(RateLimitMiddleware);
+if(config.SERVER.IS_DEBUGGING === false) {
+  //security helmet headers middleware
+  app.use(helmet());
+  //rate limit fo dos attack middleware
+  app.use(RateLimitMiddleware);
+}
+
 //middleware to validate JWT and secret key
 app.use(StartMiddleware);
 

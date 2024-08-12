@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from '@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter';
+import { IDatabaseAdapter } from 'tenshi/persistance/DataBaseHelper/IDatabaseAdapter';
 import sql, { ConnectionPool, Request } from 'mssql';
 
 import ConfigManager  from "tenshi/config/ConfigManager";

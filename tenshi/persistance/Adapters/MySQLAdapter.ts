@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from '@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter';
+import { IDatabaseAdapter } from 'tenshi/persistance/DataBaseHelper/IDatabaseAdapter';
 import { PoolConnection } from 'mysql2/promise';
 const mysql = require('mysql2/promise');
 import { Pool } from 'mysql2/promise';

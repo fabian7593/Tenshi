@@ -21,7 +21,6 @@ export default class EmailService {
 
     public async sendEmail(options: IEmailOptions) {
         try {
-            console.log(options);
             await this.transporter.sendMail(options);
             
         } catch (error) {

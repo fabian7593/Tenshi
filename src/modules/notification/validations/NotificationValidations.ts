@@ -1,9 +1,10 @@
 
+import { ConstRegex } from "@index/consts/Const";
 import { Request  } from "@modules/index";
 
 export const regexValidationList = (req: Request): [string, string][] => {
     return [
-        ['LANGUAGE_MAX_LENGHT_REGEX', req.body.language as string]
+        [ConstRegex.LANGUAGE_MAX_LENGHT_REGEX, req.body.language as string]
     ];
 };
 

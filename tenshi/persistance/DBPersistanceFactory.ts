@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from "@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter";
+import { IDatabaseAdapter } from "tenshi/persistance/DataBaseHelper/IDatabaseAdapter";
 import { MariaDbAdapter } from "./Adapters/MariaDBAdapter";
 import { MySQLAdapter } from "./Adapters/MySQLAdapter";
 import { PostgresAdapter } from "./Adapters/PostgresAdapter";

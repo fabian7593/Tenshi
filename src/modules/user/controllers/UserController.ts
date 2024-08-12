@@ -1,6 +1,6 @@
 import { HttpAction, Validations, config} from "@index/index";
 
-import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword, JWTService, UserDTO } from "@modules/user";
@@ -8,14 +8,14 @@ import { UserRepository, encryptPassword,
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
-import { ConstGeneral } from "@TenshiJS/consts/Const";
+import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstStatusJson } from "@TenshiJS/consts/Const";
+import { ConstTemplate, ConstUrls } from "@index/consts/Const";
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
     
+   
     async update(reqHandler: RequestHandler) : Promise<any>{
-
-        const successMessage : string = "UPDATE_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
@@ -38,7 +38,7 @@ export default class UserController extends GenericController{
                 
                 //Execute Action DB
                 const user = await this.getRepository().update(id, userBody, reqHandler.getLogicalDelete());
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.UPDATE_SUCCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -51,7 +51,6 @@ export default class UserController extends GenericController{
 
 
     async insert(reqHandler: RequestHandler) : Promise<any>{
-        const successMessage : string = "INSERT_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
@@ -72,7 +71,7 @@ export default class UserController extends GenericController{
     
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -87,7 +86,6 @@ export default class UserController extends GenericController{
     //Logic to register user
     async register(reqHandler: RequestHandler) : Promise<any>{
 
-        const successMessage : string = "INSERT_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
@@ -112,22 +110,22 @@ export default class UserController extends GenericController{
                 userBody.active_register_token = registerToken;
 
                 //set the language
-                userBody.language = userBody.language == null ? reqHandler.getRequest().headers['accept-language'] : userBody.language
+                userBody.language = userBody.language == null ? reqHandler.getRequest().headers[ConstGeneral.HEADER_LANGUAGE] : userBody.language
            
             try{
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
 
-                await insertLogTracking(reqHandler, `Register User ${user.email}`, "SUCCESS",
-                    JSON.stringify(user), user.id, "LoginTracking");
+                await insertLogTracking(reqHandler, `Register User ${user.email}`, ConstStatusJson.SUCCESS,
+                    JSON.stringify(user), user.id, ConstLogs.LOGIN_TRACKING);
 
                 const variables = {
                     userName: user.first_name + " " + user.last_name,
-                    confirmationLink: config.COMPANY.BACKEND_HOST + 'confirmation_register/'+ registerToken
+                    confirmationLink: config.COMPANY.BACKEND_HOST + ConstUrls.CONFIRMATION_REGISTER + registerToken
                 };
-                const htmlBody = await getEmailTemplate("registerEmail", user.language, variables);
+                const htmlBody = await getEmailTemplate(ConstTemplate.REGISTER_EMAIL, user.language, variables);
                 
-                const subject = getMessageEmail("registerEmailSubject", user.language);
+                const subject = getMessageEmail(ConstTemplate.REGISTER_EMAIL, user.language);
                 const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
@@ -136,7 +134,7 @@ export default class UserController extends GenericController{
                     attachments: [] 
                 });
              
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, null, 
@@ -150,7 +148,7 @@ export default class UserController extends GenericController{
 
     //Logic to login user
     async loginUser(reqHandler: RequestHandler){
-        const successMessage : string = "LOGIN_SUCCESS";
+
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
     
         try{
@@ -173,7 +171,7 @@ export default class UserController extends GenericController{
 
                     //fail login validation
                     if(config.SERVER.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active == false){
-                        return httpExec.dynamicError("UNAUTHORIZED","USER_FAIL_LOGIN_ERROR");
+                        return httpExec.dynamicError(ConstStatusJson.UNAUTHORIZED, ConstMessagesJson.USER_FAIL_LOGIN_ERROR);
                     }
                     
                     //decrypt password with server salt
@@ -187,16 +185,16 @@ export default class UserController extends GenericController{
                         user.fail_login_number += 1;
                         user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
 
-                        await insertLogTracking(reqHandler, `Incorrect Password Login ${userBody.email}`, "UNAUTHORIZED",
-                            null, user.id, "LoginTracking");
+                        await insertLogTracking(reqHandler, `Incorrect Password Login ${userBody.email}`, ConstStatusJson.UNAUTHORIZED,
+                            null, user.id, ConstLogs.LOGIN_TRACKING);
                         //incorrect user or password
-                        return httpExec.dynamicError("UNAUTHORIZED","USER_PASS_ERROR");
+                        return httpExec.dynamicError(ConstStatusJson.UNAUTHORIZED, ConstMessagesJson.USER_PASS_ERROR);
                     }
                 }else{
-                    await insertLogTracking(reqHandler, `Email ${userBody.email} not found`, "NOT_FOUND", null,
-                                      null, "LoginTracking");
+                    await insertLogTracking(reqHandler, `Email ${userBody.email} not found`, ConstStatusJson.NOT_FOUND, null,
+                                      null, ConstLogs.LOGIN_TRACKING);
                     //email not exist
-                    return httpExec.dynamicError("NOT_FOUND","EMAIL_NOT_EXISTS_ERROR");
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
                 }
     
                 if(isSuccess){
@@ -215,13 +213,13 @@ export default class UserController extends GenericController{
                     const token = JWTService.generateToken(jwtObj); 
                     const refreshToken = JWTService.generateRefreshToken(jwtObj); 
 
-                    await insertLogTracking(reqHandler, `Last Login ${userBody.email}`, "SUCCESS",
-                        token, user.id, "LoginTracking");
+                    await insertLogTracking(reqHandler, `Last Login ${userBody.email}`, ConstStatusJson.SUCCESS,
+                        token, user.id, ConstLogs.LOGIN_TRACKING);
 
-                    return httpExec.successAction(userDTO.tokenToResponse(token, refreshToken, screens), successMessage);
+                    return httpExec.successAction(userDTO.tokenToResponse(token, refreshToken, screens), ConstHTTPRequest.LOGIN_SUCCESS);
     
                 }else{
-                    return httpExec.unauthorizedError("ROLE_AUTH_ERROR");
+                    return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
                 }
     
             }catch(error : any){
@@ -237,7 +235,6 @@ export default class UserController extends GenericController{
 
     //Logic to refresh token
     async refreshToken(reqHandler: RequestHandler){
-        const successMessage : string = "REFRESH_TOKEN_SUCCESS";
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
@@ -248,7 +245,7 @@ export default class UserController extends GenericController{
             try {
                   verify =  jwt.verify(refreshToken, config.JWT.REFRESH_TOKEN.SECRET_KEY);
             } catch (error) {
-                return httpExec.unauthorizedError("INVALID_TOKEN");
+                return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
             }
 
             const jwtObj : JWTObject = {
@@ -258,7 +255,7 @@ export default class UserController extends GenericController{
             }
         
             const accessToken = JWTService.generateToken(jwtObj);   
-            return httpExec.successAction(userDTO.refreshToResponse(accessToken), successMessage);
+            return httpExec.successAction(userDTO.refreshToResponse(accessToken), ConstHTTPRequest.REFRESH_TOKEN_SUCCESS);
         } catch(error : any){
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
@@ -276,7 +273,7 @@ export default class UserController extends GenericController{
             try {
                 verify =  jwt.verify(registerToken, config.JWT.REGISTER_TOKEN.SECRET_KEY);
             } catch (error) {
-                return httpExec.unauthorizedError("INVALID_TOKEN");
+                return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
             }
 
             const user = await (this.getRepository() as UserRepository).getUserByEmailParam(verify!.email);
@@ -295,7 +292,7 @@ export default class UserController extends GenericController{
                 
                 return httpExec.getHtml(htmlBody);
             }else{
-                return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
             }
             
             
@@ -331,11 +328,11 @@ export default class UserController extends GenericController{
 
                 const variables = {
                     userName: user.first_name + " " + user.last_name,
-                    recoverLink: config.COMPANY.BACKEND_HOST + 'active_user/'+ recoverEmailToken
+                    recoverLink: config.COMPANY.BACKEND_HOST + ConstUrls.ACTIVE_USER + recoverEmailToken
                 };
-                const htmlBody = await getEmailTemplate("recoverUserByEmail", user.language, variables);
+                const htmlBody = await getEmailTemplate(ConstTemplate.RECOVER_USER_EMAIL, user.language, variables);
 
-                const subject = getMessageEmail("activeAccountPageSubject",user.language!);
+                const subject = getMessageEmail(ConstTemplate.RECOVER_USER_EMAIL,user.language!);
                 const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
@@ -344,12 +341,12 @@ export default class UserController extends GenericController{
                     attachments: [] 
                 });
 
-                await insertLogTracking(reqHandler, `Recover User ${user.email}`, "SUCCESS",
-                    null, user.id.toString(), "LoginTracking");
+                await insertLogTracking(reqHandler, `Recover User ${user.email}`, ConstStatusJson.SUCCESS,
+                    null, user.id.toString(), ConstLogs.LOGIN_TRACKING);
 
-                return httpExec.successAction(null, "SEND_MAIL_SUCCESS");
+                return httpExec.successAction(null, ConstHTTPRequest.SEND_MAIL_SUCCESS);
             }else{
-                return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
             }
         } catch(error : any){
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
@@ -373,11 +370,11 @@ export default class UserController extends GenericController{
 
                 const variables = {
                     userName: user.first_name + " " + user.last_name,
-                    resetLink: config.COMPANY.FRONT_END_HOST + 'verify_forgot_password/' + forgotUserPasswordToken
+                    resetLink: config.COMPANY.FRONT_END_HOST + ConstUrls.FORGOT_PASSWORD_VERIFICATION + forgotUserPasswordToken
                 };
-                const htmlBody = await getEmailTemplate("forgotPasswordEmail", user.language, variables);
+                const htmlBody = await getEmailTemplate(ConstTemplate.FORGOT_PASSWORD_EMAIL, user.language, variables);
+                const subject = getMessageEmail(ConstTemplate.FORGOT_PASSWORD_EMAIL, user.language!);
 
-                const subject = getMessageEmail("forgotPasswordEmailSubject", user.language!);
                 const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
@@ -386,12 +383,12 @@ export default class UserController extends GenericController{
                     attachments: [] 
                 });
 
-                await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",
-                    null, user.id.toString(), "LoginTracking");
+                await insertLogTracking(reqHandler, `Forgot passsword ${email}`, ConstStatusJson.SUCCESS,
+                    null, user.id.toString(), ConstLogs.LOGIN_TRACKING);
 
-                return httpExec.successAction(null, "EMAIL_SENT_SUCCESS");
+                return httpExec.successAction(null, ConstMessagesJson.EMAIL_SENT_SUCCESS);
             }else{
-                return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
             }
             
         } catch(error : any){
@@ -409,7 +406,7 @@ export default class UserController extends GenericController{
             try {
                 jwt.verify(forgotPassToken, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY);
             } catch (error) {
-                return httpExec.unauthorizedError("INVALID_TOKEN");
+                return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
             }
 
             return reqHandler.getResponse().redirect( config.COMPANY.FRONT_END_HOST + config.COMPANY.RESET_PASSWORD_URL+ forgotPassToken);
@@ -430,7 +427,7 @@ export default class UserController extends GenericController{
             try {
                 verify =  jwt.verify(forgotPassToken, config.JWT.FORGOT_PASS_TOKEN.SECRET_KEY);
             } catch (error) {
-                return httpExec.unauthorizedError("INVALID_TOKEN");
+                return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
             }
 
             try{
@@ -440,9 +437,9 @@ export default class UserController extends GenericController{
 
                     user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
                     await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
-                    return httpExec.successAction(user.email, "RESET_PASSWORD");
+                    return httpExec.successAction(user.email, ConstMessagesJson.RESET_PASSWORD);
                 }else{
-                    return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
                 }
             }catch(error : any){
                 return await httpExec.databaseError(error, null, 

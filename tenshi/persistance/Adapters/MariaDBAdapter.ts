@@ -1,4 +1,4 @@
-import { IDatabaseAdapter } from '@TenshiJS/persistance/DataBaseHelper/IDatabaseAdapter';
+import { IDatabaseAdapter } from 'tenshi/persistance/DataBaseHelper/IDatabaseAdapter';
 import { Pool, PoolConnection } from 'mariadb';
 import mariadb from 'mariadb';
 

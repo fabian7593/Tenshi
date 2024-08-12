@@ -30,7 +30,7 @@ function loadMessages(language: string): { [key: string]: string } {
 
 export function getMessageEmail(key: string, language: string): string {
     const messages = loadMessages(language);
-    return messages[key];
+    return messages[key + "Subject"];
 }
 
 /**

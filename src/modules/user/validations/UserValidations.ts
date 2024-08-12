@@ -1,10 +1,11 @@
 
+import { ConstRegex } from "@index/consts/Const";
 import { Request } from "@modules/index";
 export const regexValidationList = (req: Request): [string, string][] => {
     return [
-        ['EMAIL_REGEX', req.body.email as string],
-        ['PASSWORD_REQUIRED_REGEX', req.body.password as string],
-        ['LANGUAGE_MAX_LENGHT_REGEX', req.body.language as string]
+        [ConstRegex.EMAIL_REGEX, req.body.email as string],
+        [ConstRegex.PASSWORD_REQUIRED_REGEX, req.body.password as string],
+        [ConstRegex.LANGUAGE_MAX_LENGHT_REGEX, req.body.language as string]
     ];
 };
 
@@ -20,7 +21,7 @@ export const requiredBodyList = (req: Request): string[] => {
          
 export const regexValidationRecoverUserAndPassList = (req: Request): [string, string][] => {
     return [
-        ['EMAIL_REGEX', req.body.email as string]
+        [ConstRegex.EMAIL_REGEX, req.body.email as string]
     ];
 };
 

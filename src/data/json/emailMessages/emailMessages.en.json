@@ -8,6 +8,7 @@
     "forgotPasswordEmailMessage": "We received a request to reset your password for {{ companyName }}. If you did not make this request, you can ignore this email.",
     "forgotPasswordEmailLink": "To reset your password, please click the following link:",
     
+    "recoverUserByEmailSubject": "Recover User",
     "recoverUserByEmailTitle": "Recover User",
     "recoverUserByEmailMessage": "We received a request to recover your user for {{ companyName }}. If you did not make this request, you can ignore this email.",
     "recoverUserByEmailLink": "To recover your user, please click the following link:",

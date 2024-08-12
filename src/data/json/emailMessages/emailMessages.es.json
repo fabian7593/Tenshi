@@ -8,6 +8,7 @@
     "forgotPasswordEmailMessage": "Recibimos una solicitud para restablecer tu contraseña para {{ companyName }}. Si no hiciste esta solicitud, puedes ignorar este correo.",
     "forgotPasswordEmailLink": "Para restablecer tu contraseña, por favor haz clic en el siguiente enlace:",
     
+    "recoverUserByEmailSubject": "Recuperar Usuario",
     "recoverUserByEmailTitle": "Recuperar Usuario",
     "recoverUserByEmailMessage": "Recibimos una solicitud para recuperar tu usuario para {{ companyName }}. Si no hiciste esta solicitud, puedes ignorar este correo.",
     "recoverUserByEmailLink": "Para recuperar tu usuario, por favor haz clic en el siguiente enlace:",
