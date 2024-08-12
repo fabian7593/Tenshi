@@ -4,6 +4,7 @@ import { promisify } from 'util';
 const readFile = promisify(fs.readFile);
 
 import { ConstMessages } from "tenshi/consts/Const";
+import ConfigManager from "tenshi/config/ConfigManager";
 
 interface Role {
   id: number;
@@ -26,11 +27,13 @@ export default class RoleRepository {
    * The roles file path is './src/data/json/roles.json'.
    */
   private constructor() {
+    const config = ConfigManager.getInstance().getConfig();
+
     // Initialize the roles array.
     this.roles = [];
 
     // Load the roles data from the JSON file.
-    this.loadRolesFromFile('./src/data/json/roles.json');
+    this.loadRolesFromFile(config.URL_FILES.ROLES_JSON);
   }
   
 

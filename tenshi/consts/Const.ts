@@ -46,8 +46,16 @@ export class ConstMessagesJson {
 }
 
 export class ConstMessages {
+    //Init variables
+    public static readonly INIT_MIDDLEWARE: string = "Initialize Middleware: ";
+    public static readonly INIT_JWT: string = "Initialize JWT Service";
+    public static readonly INIT_DATASOURCE: string = "Data Source has been initialized!";
+
+    //general errors
     public static readonly ERROR_ROLE_FILE: string = "Error reading roles from file: ";
     public static readonly ERROR_PARSING_DEVIDE_INFO: string = "Error parsing device-info: ";
+    public static readonly ERROR_NOT_HAVE_IS_DELETED: string = "Entity does not have an 'is_deleted' property.";
+    
 }
 
 
@@ -70,6 +78,7 @@ export class ConstGeneral {
 
     //TEMPLATES
     public static readonly GENERIC_TEMPLATE_EMAIL: string = "genericTemplateEmail";
+    public static readonly ACTIVE_ACCOUNT_PAGE: string = "activeAccountPage";
 
     //ACTION
     public static readonly SEND_MAIL: string = "SEND_MAIL";

@@ -15,8 +15,8 @@ interface CompanyConfig {
 interface HttpRequestConfig {
     PAGE_SIZE: number;
     PAGE_OFFSET: number;
-    PAGE_OUT_JWT: string[];       
-    PAGE_OUT_API_KEY: string[];  
+    REQUEST_WITHOUT_JWT: string[];       
+    REQUEST_WITHOUT_API_KEY: string[];  
 }
 
 interface ServerConfig {
@@ -64,7 +64,7 @@ interface AwsConfig {
     PUBLIC_FOLDER: string;
 }
 
-interface FileConfig {
+interface FileStorageConfig {
     GENERAL: GeneralFileConfig;
     AWS: AwsConfig;
 }
@@ -83,6 +83,15 @@ interface EmailConfig {
     EMAIL_FROM: string;
 }
 
+interface UrlFilesConfig {
+    SAVE_LOGS: string;
+    MESSAGES_JSON: string;
+    REGEX_JSON: string;
+    TEMPLATES_PATH: string;
+    EMAIL_LANGUAGES_PATH: string;
+    ROLES_JSON: string;
+}
+
 interface AppConfig {
     COMPANY: CompanyConfig;
     SERVER: ServerConfig;
@@ -90,8 +99,9 @@ interface AppConfig {
     DB: DbConfig;
     HTTP_REQUEST: HttpRequestConfig;
     JWT: JwtConfig;
-    FILE: FileConfig;
+    FILE_STORAGE: FileStorageConfig;
     EMAIL: EmailConfig;
+    URL_FILES: UrlFilesConfig;
 }
 
 class ConfigManager {

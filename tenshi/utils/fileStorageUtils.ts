@@ -6,7 +6,7 @@ export async function uploadFile(file : Express.Multer.File, filename: string) :
     const config = ConfigManager.getInstance().getConfig();
 
     const params = {
-        Bucket: config.FILE.AWS.BUCKET_NAME,
+        Bucket: config.FILE_STORAGE.AWS.BUCKET_NAME,
         Key: filename,
         Body: file.buffer,
         ContentType: file.mimetype, 

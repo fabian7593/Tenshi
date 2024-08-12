@@ -1,5 +1,4 @@
-import { HttpAction, Validations,
-        replaceCompanyInfoEmails, config} from "@index/index";
+import { HttpAction, Validations, config} from "@index/index";
 
 import { GenericController, RequestHandler, JWTObject, fs, path } from "@modules/index";
 
@@ -10,10 +9,6 @@ import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 import { ConstGeneral } from "@TenshiJS/consts/Const";
-
-const templatesDir = path.join(__dirname, '../../../templates/');
-
-const htmlActiveAccountTemplate : string = fs.readFileSync(path.join(templatesDir, 'activeAccountPage.html'), 'utf8');
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
@@ -133,12 +128,12 @@ export default class UserController extends GenericController{
                 const htmlBody = await getEmailTemplate("registerEmail", user.language, variables);
                 
                 const subject = getMessageEmail("registerEmailSubject", user.language);
-                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
                     subject: subject,
                     message: htmlBody,
-                    file: null
+                    attachments: [] 
                 });
              
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), successMessage);
@@ -291,10 +286,13 @@ export default class UserController extends GenericController{
                 user.is_active = true;
                 user.fail_login_number = 0;
                 await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
+
+
+                const variables = {
+                    userName: user.first_name + " " + user.last_name,
+                };
+                const htmlBody = await getEmailTemplate(ConstGeneral.ACTIVE_ACCOUNT_PAGE, user.language, variables);
                 
-                let htmlBody = replaceCompanyInfoEmails(htmlActiveAccountTemplate);
-                htmlBody = htmlBody.replace(/\{\{ userName \}\}/g, user!.first_name + " " +user!.last_name);
-            
                 return httpExec.getHtml(htmlBody);
             }else{
                 return httpExec.dynamicError("NOT_FOUND", "EMAIL_NOT_EXISTS_ERROR");
@@ -338,12 +336,12 @@ export default class UserController extends GenericController{
                 const htmlBody = await getEmailTemplate("recoverUserByEmail", user.language, variables);
 
                 const subject = getMessageEmail("activeAccountPageSubject",user.language!);
-                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
                     subject: subject,
                     message: htmlBody,
-                    file: null
+                    attachments: [] 
                 });
 
                 await insertLogTracking(reqHandler, `Recover User ${user.email}`, "SUCCESS",
@@ -380,12 +378,12 @@ export default class UserController extends GenericController{
                 const htmlBody = await getEmailTemplate("forgotPasswordEmail", user.language, variables);
 
                 const subject = getMessageEmail("forgotPasswordEmailSubject", user.language!);
-                const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                const emailService = EmailService.getInstance();
                 await emailService.sendEmail({
                     toMail: user.email,
                     subject: subject,
                     message: htmlBody,
-                    file: null
+                    attachments: [] 
                 });
 
                 await insertLogTracking(reqHandler, `Forgot passsword ${email}`, "SUCCESS",

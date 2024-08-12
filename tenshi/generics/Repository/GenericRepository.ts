@@ -1,3 +1,4 @@
+import { ConstMessages } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
 import { DataSource } from 'typeorm';
@@ -153,7 +154,7 @@ export default  class GenericRepository implements IGenericRepository{
             const entity = await this.entityManager.findOne(this.entityTarget, options);  // Find the entity by its ID
 
             if (entity["is_deleted"] === undefined) {  // Check if the entity has an "is_deleted" property
-                throw new Error("Entity does not have an 'is_deleted' property.");  // Throw an error if the entity does not have the property
+                throw new Error(ConstMessages.ERROR_NOT_HAVE_IS_DELETED);  // Throw an error if the entity does not have the property
             }
 
             entity["is_deleted"] = true;  // Set the "is_deleted" property of the entity to true

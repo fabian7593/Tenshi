@@ -1,6 +1,8 @@
-import { HttpAction, executeQuery, config } from "@index/index";
+import { HttpAction, config } from "@index/index";
+import { MariaDbAdapter } from "@index/persistance/MariaDBAdapter";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
+import { executeQuery } from "@TenshiJS/helpers/DataBaseHelper/ExecuteQuery";
 
 export default  class LogController extends GenericController{
 
@@ -72,13 +74,14 @@ export default  class LogController extends GenericController{
      async getAllLogs(environment : string | null,
                                    userId: string | null, type : string | null,
                                    page: number, size : number): Promise<any>{
-            return await executeQuery(async (conn) => {
-                const result = await conn.query(
-                    "CALL GetLogsWithFilters(?, ?, ?, ?, ?)",
-                    [environment, userId, type, size, page] 
-                );
-               
-             return result;
-         });
+
+        const dbAdapter = new MariaDbAdapter();
+        return await executeQuery(dbAdapter, async (conn) => {
+            const result = await dbAdapter.executeQuery(conn,
+                "CALL GetLogsWithFilters(?, ?, ?, ?, ?)",
+                [environment, userId, type, size, page] 
+            );
+            return result;
+        });
      }
 }

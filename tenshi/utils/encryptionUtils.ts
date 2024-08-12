@@ -15,7 +15,6 @@ export function encryptPassword(password: string, encryptionKey: string): string
         encryptedPassword += cipher.final('hex');
         return iv + ':' + encryptedPassword;
     } catch (error) {
-        console.error('Error al cifrar la contraseña:', error);
         return null;
     }
 }

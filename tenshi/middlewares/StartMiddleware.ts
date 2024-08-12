@@ -31,10 +31,10 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
     let nextMethod = false;
 
     // Check if the request path is excluded from JWT validation
-    const isPageOutJwt = config.HTTP_REQUEST.PAGE_OUT_JWT.some((path: string) => req.path.includes(path));
+    const isPageOutJwt = config.HTTP_REQUEST.REQUEST_WITHOUT_JWT.some((path: string) => req.path.includes(path));
 
     // Check if the request path is excluded from API Key validation
-    const isPageOutApiKey = config.HTTP_REQUEST.PAGE_OUT_API_KEY.some((path: string) => req.path.includes(path));
+    const isPageOutApiKey = config.HTTP_REQUEST.REQUEST_WITHOUT_API_KEY.some((path: string) => req.path.includes(path));
 
     // Validate JWT if the request path is not excluded
     if (!isPageOutJwt) {
@@ -78,7 +78,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
 
     // Execute the next middleware if the request can proceed
     if(nextMethod){
-        debuggingMessage("Initialize Middleware: " + req.path);
+        debuggingMessage( ConstMessages.INIT_MIDDLEWARE + req.path);
         next();
     }
 }

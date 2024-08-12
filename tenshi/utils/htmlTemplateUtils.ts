@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import ConfigManager  from "tenshi/config/ConfigManager";
+const config = ConfigManager.getInstance().getConfig();
 
-const templatesDir = path.join(__dirname, '../../src/templates');
-const messagesMultiLanguagesDir = path.join(__dirname, '../../src/data/json/emailMessages');
+const templatesDir = path.join(__dirname, config.URL_FILES.TEMPLATES_PATH);
+const messagesMultiLanguagesDir = path.join(__dirname, config.URL_FILES.EMAIL_LANGUAGES_PATH);
 
 /**
  * Loads the JSON file of messages for the selected language.
@@ -28,7 +29,6 @@ function loadMessages(language: string): { [key: string]: string } {
 
 
 export function getMessageEmail(key: string, language: string): string {
- 
     const messages = loadMessages(language);
     return messages[key];
 }
@@ -43,8 +43,7 @@ export function getMessageEmail(key: string, language: string): string {
  */
 function replaceTemplateText(template: string, messages: { [key: string]: string }, variables: { [key: string]: string }): string {
     let updatedTemplate = template;
-    const config = ConfigManager.getInstance().getConfig();
-
+    
     // Replace messages placeholders
     for (const [key, value] of Object.entries(messages)) {
         // Replace the message placeholder in the template
@@ -63,7 +62,6 @@ function replaceTemplateText(template: string, messages: { [key: string]: string
       .replace(/\{\{ companyLogo \}\}/g, config.COMPANY.LOGO)
       // Replace main color placeholder
       .replace(/\{\{ mainColor \}\}/g, config.COMPANY.MAIN_COLOR);
-
 
     // Replace dynamic variables placeholders
     for (const [key, value] of Object.entries(variables)) {
@@ -87,8 +85,6 @@ function replaceTemplateText(template: string, messages: { [key: string]: string
  */
 // Ejemplo de uso
 export function getEmailTemplate(templateName: string, language: string | null, variables: { [key: string]: string }): string {
-    const config = ConfigManager.getInstance().getConfig();
-    
     // Construct the path to the email template file
     const templatePath = path.join(templatesDir, `${templateName}.html`);
 

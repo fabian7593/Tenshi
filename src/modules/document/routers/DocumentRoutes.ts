@@ -10,7 +10,7 @@ const storage = multer.memoryStorage(); // Almacenamiento en memoria
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: config.FILE.GENERAL.MAX_FILE_SIZE * 1024 * 1024, // 50 MB (en bytes)
+        fileSize: config.FILE_STORAGE.GENERAL.MAX_FILE_SIZE * 1024 * 1024, // 50 MB (en bytes)
       }
 });
 

@@ -1,6 +1,9 @@
+import ConfigManager from "tenshi/config/ConfigManager";
+const config = ConfigManager.getInstance().getConfig();
+
 // The json files
-const messages = require('src/data/json/messages.json');
-const regexes = require('src/data/json/regex.json');
+const messages = require(config.URL_FILES.MESSAGES_JSON);
+const regexes = require(config.URL_FILES.REGEX_JSON);
 const statusResponseList = require('tenshi/data/json/statusResponse.json');
 const errorDbList = require('tenshi/data/json/errorDBList.json');
 
@@ -8,6 +11,7 @@ const errorDbList = require('tenshi/data/json/errorDBList.json');
 import ErrorMessage from "tenshi/objects/ErrorMessageObject";
 import StatusResponseObject from "tenshi/objects/StatusResponseObject";
 import RegexObject from "tenshi/objects/RegexObject";
+
 
 
 /*

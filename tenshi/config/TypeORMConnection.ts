@@ -4,6 +4,7 @@ import { debuggingMessage } from "tenshi/utils/logsUtils";
 import { Log } from "tenshi/entity/Log";
 
 import ConfigManager  from "tenshi/config/ConfigManager";
+import { ConstMessages } from "tenshi/consts/Const";
 
 export class Database {
 
@@ -39,7 +40,7 @@ private static instance: DataSource;
             // Initialize the DataSource
             Database.instance.initialize()
                 .then(() => {
-                    debuggingMessage("Data Source has been initialized!"); // Log a message when initialization is successful
+                    debuggingMessage(ConstMessages.INIT_DATASOURCE); // Log a message when initialization is successful
                 })
                 .catch((err) => {
                     throw err; // Throw an error if initialization fails

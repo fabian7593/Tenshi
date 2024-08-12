@@ -1,5 +1,5 @@
-import { Validations, HttpAction, 
-        executeQuery, config } from "@index/index";
+import { Validations, HttpAction, config } from "@index/index";
+import { MariaDbAdapter } from "@index/persistance/MariaDBAdapter";
 
 import { GenericRepository, 
          GenericController, RequestHandler,
@@ -7,7 +7,7 @@ import { GenericRepository,
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@modules/notification/index";
-import { ConstGeneral } from "@TenshiJS/consts/Const";
+import { executeQuery } from "@TenshiJS/helpers/DataBaseHelper/ExecuteQuery";
 import EmailService from "@TenshiJS/helpers/EmailHelper/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
@@ -46,12 +46,12 @@ export default  class UserNotificationController extends GenericController{
                         emailContent: notification.message
                     };
                     const htmlBody = await getEmailTemplate("genericTemplateEmail", user.language, variables);
-                    const emailService = EmailService.getInstance(ConstGeneral.GMAIL);
+                    const emailService = EmailService.getInstance();
                     await emailService.sendEmail({
                         toMail: user.email,
                         subject: notification.subject,
                         message: htmlBody,
-                        file: null
+                        attachments: [] 
                     });
                  }
              }else{
@@ -191,14 +191,16 @@ export default  class UserNotificationController extends GenericController{
  
      async getAllUserNotifications(userReceive : string | null, userSend : string | null,
                                    page: number, size : number ): Promise<any>{
-                                   
-            return await executeQuery(async (conn) => {
-                const result = await conn.query(
+
+
+            const dbAdapter = new MariaDbAdapter();
+            return await executeQuery(dbAdapter, async (conn) => {
+                const result = await dbAdapter.executeQuery(conn,
                     "CALL GetUserNotifications(?, ?, ?, ?)",
-                    [userSend, userReceive, size, page] // Valores de los parámetros en el mismo orden que en la consulta
+                    [userSend, userReceive, size, page] 
                 );
-               
-             return result;
-         });
+                return result;
+            });
+                     
      }
 }

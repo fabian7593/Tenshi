@@ -5,10 +5,10 @@ const config = ConfigManager.getInstance().getConfig();
 
 // AWS CONFIG
 AWS.config.update({
-    accessKeyId:  config.FILE.AWS.ACCESS_KEY,
-    secretAccessKey: config.FILE.AWS.SECRET_ACCESS_KEY,
-    region: config.FILE.AWS.REGION, 
-    Bucket: config.FILE.AWS.BUCKET_NAME,
+    accessKeyId:  config.FILE_STORAGE.AWS.ACCESS_KEY,
+    secretAccessKey: config.FILE_STORAGE.AWS.SECRET_ACCESS_KEY,
+    region: config.FILE_STORAGE.AWS.REGION, 
+    Bucket: config.FILE_STORAGE.AWS.BUCKET_NAME,
   });
   
 const s3 = new AWS.S3();

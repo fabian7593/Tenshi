@@ -18,12 +18,6 @@
         "DEFAULT_LANGUAGE" : "en",
         "FORMAT_DATE" : "es-ES"
     },
-    "LOG": {
-        "LOG_SERVER":true,
-        "LOG_TRACEABILLITY":true,
-        "LOG_DATABASE":true,
-        "LOG_FILE":true
-    },
     "DB": {
         "TYPE": "mariadb",
         "PORT": 3307,
@@ -33,15 +27,29 @@
         "NAME": "unbreakable",
         "CONNECTION_LIMIT": 150
     },
+    "URL_FILES":{
+        "SAVE_LOGS":"../../logs",
+        "TEMPLATES_PATH":"../../src/templates",
+        "EMAIL_LANGUAGES_PATH":"../../src/data/json/emailMessages",
+        "MESSAGES_JSON":"src/data/json/messages.json",
+        "REGEX_JSON":"src/data/json/regex.json",
+        "ROLES_JSON":"./src/data/json/roles.json"
+    },
+    "LOG": {
+        "LOG_SERVER":true,
+        "LOG_TRACEABILLITY":true,
+        "LOG_DATABASE":true,
+        "LOG_FILE":true
+    },
     "HTTP_REQUEST":{
         "PAGE_SIZE": 3000,
         "PAGE_OFFSET":1,
-        "PAGE_OUT_JWT": ["login", "refresh_token", 
+        "REQUEST_WITHOUT_JWT": ["login", "refresh_token", 
                          "register", "confirmation_register", 
                          "forgot_password", "verify_forgot_password",
                           "reset_password", "recover_user", "active_user"],
 
-        "PAGE_OUT_API_KEY": ["confirmation_register", "verify_forgot_password", "active_user"]
+        "REQUEST_WITHOUT_API_KEY": ["confirmation_register", "verify_forgot_password", "active_user"]
     },
     "JWT": {
         "MAIN_TOKEN" :{
@@ -60,7 +68,7 @@
             "EXPIRE": null,
             "SECRET_KEY": "44fr2167-1oi8-55ht-3ew1-630184b443f6"
         }
-    },"FILE":{
+    },"FILE_STORAGE":{
         "GENERAL":{
             "MAX_FILE_SIZE" : 50
         },

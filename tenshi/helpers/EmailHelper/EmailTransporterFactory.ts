@@ -1,12 +1,12 @@
 import { IEmailTransporter } from './Interfaces/IEmailTransporter';
-import { GmailTransporter } from './GmailTransporter';
+import { GeneralTransporter } from './Transporters/GeneralTransporter';
 
 export class EmailTransporterFactory {
-    static createEmailTransporter(type: string): IEmailTransporter {
+    static createEmailTransporter(type: string | null = null): IEmailTransporter {
         switch (type) {
-            case 'gmail':
-                return new GmailTransporter();
-            // Añade otros casos para diferentes transporters
+            case null:
+                return new GeneralTransporter();
+            // ADD OTHER CASES HERE
             default:
                 throw new Error(`Transporter type ${type} is not supported.`);
         }

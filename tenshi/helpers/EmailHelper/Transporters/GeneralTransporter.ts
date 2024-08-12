@@ -1,12 +1,12 @@
-import { IEmailTransporter } from './Interfaces/IEmailTransporter';
+import { IEmailTransporter } from '../Interfaces/IEmailTransporter';
 import nodemailer from 'nodemailer';
 import ConfigManager  from "tenshi/config/ConfigManager";
-import { IEmailOptions } from './Interfaces/IEmailOptions';
-import { ConstLogs } from '@TenshiJS/consts/Const';
-import logger from '@TenshiJS/utils/logger';
+import { IEmailOptions } from '../Interfaces/IEmailOptions';
+import { ConstLogs } from 'tenshi/consts/Const';
+import logger from 'tenshi/utils/logger';
 const config = ConfigManager.getInstance().getConfig();
 
-export class GmailTransporter implements IEmailTransporter {
+export class GeneralTransporter implements IEmailTransporter {
     private emailTransporter: any; 
 
     constructor() {
@@ -25,7 +25,8 @@ export class GmailTransporter implements IEmailTransporter {
             from: config.EMAIL.EMAIL_FROM,      
             to: options.toMail,  
             subject: options.subject,      
-            html: options.message
+            html: options.message,
+            attachments: options.attachments || []
         };
     
         try {
