@@ -47,7 +47,7 @@
         "REQUEST_WITHOUT_JWT": ["login", "refresh_token", 
                          "register", "confirmation_register", 
                          "forgot_password", "verify_forgot_password",
-                          "reset_password", "recover_user", "active_user"],
+                         "reset_password", "recover_user", "active_user"],
 
         "REQUEST_WITHOUT_API_KEY": ["confirmation_register", "verify_forgot_password", "active_user"]
     },
@@ -68,7 +68,8 @@
             "EXPIRE": null,
             "SECRET_KEY": "44fr2167-1oi8-55ht-3ew1-630184b443f6"
         }
-    },"FILE_STORAGE":{
+    },
+    "FILE_STORAGE":{
         "GENERAL":{
             "MAX_FILE_SIZE" : 50
         },
@@ -77,7 +78,8 @@
             "REGION": "us-east-2",
             "ACCESS_KEY": "AKIAZQ3DRSPRNUX52EUI",
             "SECRET_ACCESS_KEY": "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",
-            "PUBLIC_FOLDER" : ""
+            "MINUTES_LIMIT_PRIVATE_FILE": 120,
+            "PUBLIC_FOLDER" : "/PublicFiles/"
         }
     },
     "EMAIL" : {
@@ -87,4 +89,3 @@
         "EMAIL_FROM": "fabian7593@gmail.com"
     }
 }
-

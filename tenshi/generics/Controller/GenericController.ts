@@ -536,9 +536,11 @@ export default  class GenericController implements IGenericController{
             }
 
             // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
-            if (entity != undefined && entity != null) {
-                if (userId != null && entity.userId != userId) {
-                    return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+            if (entity != undefined && entity != null ) {
+                if(jwtData.role != ConstRoles.ADMIN){
+                    if (userId != null && entity.userId != userId) {
+                        return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                    }
                 }
             } else {
                 return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist

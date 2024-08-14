@@ -1,7 +1,7 @@
 import { HttpAction, Validations } from "@index/index";
 import { GenericController, RequestHandler, JWTObject} from "@modules/index";
 import { Document, setNameDocument } from '@modules/document/index';
-import { uploadFile } from '@TenshiJS/utils/fileStorageUtils';
+import { uploadFile, getFile } from '@TenshiJS/utils/fileStorageUtils';
 import { ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson } from "@TenshiJS/consts/Const";
 
 export default  class DocumentController extends GenericController{
@@ -56,7 +56,7 @@ export default  class DocumentController extends GenericController{
 
             // Set the name and upload the file
             documentBody = setNameDocument(reqHandler.getRequest().file!, documentBody);
-            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
+            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!, documentBody.is_public);
 
             try {
                 // Execute the database action
@@ -122,7 +122,7 @@ export default  class DocumentController extends GenericController{
 
             // Set the name and upload the file
             documentBody = setNameDocument(reqHandler.getRequest().file!, documentBody);
-            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!);
+            documentBody.url = await uploadFile(reqHandler.getRequest().file!, documentBody.file_name!, documentBody.is_public);
 
             try {
                 // Execute the database action
@@ -140,5 +140,45 @@ export default  class DocumentController extends GenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
+
+
+
+
+    async getByCode(reqHandler: RequestHandler): Promise<any> {
+        // Get the HTTP action object from the response
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
+
+        try{
+             // Get the validations object from the response
+             const validation : Validations = reqHandler.getResponse().locals.validation;
+             // Get the JWT object from the response
+             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
+             // Get the code from URL params
+             const code = this.getCodeFromQuery(validation, httpExec) as string;
+
+             // Validate the role of the user
+             if(await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
+             // Validate the user id
+             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, code);
+
+            try{
+                // Execute the get by code action in the database
+                const entity : Document = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
+                if(entity.is_public == false){
+                    entity.url = await getFile(entity.file_name);
+                }
+                // Return the success response
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+
+            }catch(error : any){
+                // Return the database error response
+                return await httpExec.databaseError(error, jwtData.id.toString(), 
+                reqHandler.getMethod(), this.getControllerObj().controller);
+            }
+        }catch(error : any){
+            // Return the general error response
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+        }
+     }
    
 }

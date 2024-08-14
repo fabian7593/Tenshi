@@ -20,6 +20,11 @@ import RegexObject from "tenshi/objects/RegexObject";
 
 // Get the message of json file message
 export function getMessage(key : string): string {
+
+  if(key === "") {
+    return key;
+  }
+
   const message = messages[key];
 
   // if key entry doesnt exist

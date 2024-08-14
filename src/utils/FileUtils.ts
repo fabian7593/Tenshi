@@ -27,14 +27,17 @@ export function setNameDocument (file : Express.Multer.File,  documentBody : Doc
     const name = documentBody.action_type + "__" + documentBody.table +  "__" + documentBody.id_for_table;
 
     // Construct the file name using the name and other properties of the document object.
-    fileName = name + "__" + documentBody.type + "__" + formatDate;
+    fileName = name + "__" + documentBody.type + "__" + formatDate + "." + extension;
 
     // Update the file name and title properties of the document object.
+    console.log(documentBody.title);
     documentBody.file_name = fileName;
-    documentBody.title = fileName + documentBody.action_type + "__" + formatDate;
+    documentBody.title = (!documentBody.title ? name : documentBody.title);
+    documentBody.description = (!documentBody.description ? "" : documentBody.description);
+    documentBody.is_public = (!documentBody.is_public ? false : documentBody.is_public);
 
     // Update the code property of the document object.
-    documentBody.code = fileName + documentBody.action_type + "__" + formatDate;
+    documentBody.code = documentBody.title.toUpperCase();
 
     // Return the updated document object.
     return documentBody;

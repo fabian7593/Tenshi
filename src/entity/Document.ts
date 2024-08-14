@@ -6,13 +6,16 @@ export class Document {
   @PrimaryGeneratedColumn({ type: "int", unsigned: true })
   id: number;
 
-  @Column({ type: "varchar", length: 250, unique: true })
+  //the title or the document, this cannot will be change
+  @Column({ type: "varchar", length: 350 })
   title: string;
 
+  //the code is the title but in upper case
   @Column({ type: "varchar", length: 500, unique: true })
   code: string;
 
-  @Column({ type: "varchar", length: 250 })
+  //this is the file name upload to aws or to server
+  @Column({ type: "varchar", length: 500, unique: true  })
   file_name: string;
 
   @Column({ type: "varchar", length: 10 })

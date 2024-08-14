@@ -63,6 +63,7 @@ interface AwsConfig {
     ACCESS_KEY: string;
     SECRET_ACCESS_KEY: string;
     PUBLIC_FOLDER: string;
+    MINUTES_LIMIT_PRIVATE_FILE: number;
 }
 
 interface FileStorageConfig {
