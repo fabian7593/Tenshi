@@ -13,6 +13,8 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
     private req: Request;
     //this variable is the name of the method to save on logs
     private method: string = '';
+    //this variable is the name of the module
+    private module: string = '';
     //add specific adapter
     private adapter: IAdapterFromBody;
     //if you need to validate role, set it on true
@@ -50,6 +52,8 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
         return this;
     }
 
+   
+
     //Set the adapter of the current entity 
     setAdapter(adapter: IAdapterFromBody): IRequestHandlerBuilder {
         this.adapter = adapter;
@@ -63,7 +67,8 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
     }
 
     //If the user need to validate the function with his current role
-    isValidateRole(): IRequestHandlerBuilder {
+    isValidateRole(module: string): IRequestHandlerBuilder {
+        this.module = module;
         this.requireValidateRole = true;
         return this;
     }
@@ -82,7 +87,8 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
     //Return an object of request handler
     build(): RequestHandler {
         return new RequestHandler(this.res, this.req, 
-                                  this.method, this.adapter, 
+                                  this.method, this.module, 
+                                  this.adapter, 
                                   this.requireValidateRole, 
                                   this.requireLogicalRemove,
                                   this.requireValidWhereByUserId,

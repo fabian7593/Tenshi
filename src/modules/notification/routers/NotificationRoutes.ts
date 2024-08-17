@@ -16,7 +16,7 @@ class NotificationRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("getNotificationById")
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .build();
         
             this.getController().getById(requestHandler);
@@ -28,7 +28,7 @@ class NotificationRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("getNotificationByCode")
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .build();
         
             this.getController().getByCode(requestHandler);
@@ -40,7 +40,7 @@ class NotificationRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("getNotifications")
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .build();
         
             this.getController().getAll(requestHandler);
@@ -54,7 +54,7 @@ class NotificationRoutes extends GenericRoutes {
                                     .setMethod("insertNotification")
                                     .setRequiredFiles(requiredBodyListNotifications(req))
                                     .setRegexValidation(regexValidationList(req))
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .build();
         
             this.getController().insert(requestHandler);
@@ -65,7 +65,7 @@ class NotificationRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("updateNotification")
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .isValidateWhereByUserId()
                                     .build();
         
@@ -78,7 +78,7 @@ class NotificationRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("deleteNotification")
-                                    .isValidateRole()
+                                    .isValidateRole("NOTIFICATION")
                                     .build();
         
             this.getController().delete(requestHandler);

@@ -44,6 +44,7 @@ export class ConstMessagesJson {
     public static readonly INVALID_API_KEY: string = "INVALID_API_KEY";
     public static readonly REQUIRED_FILE: string = "REQUIRED_FILE";
     public static readonly ROLE_AUTH_ERROR: string = "ROLE_AUTH_ERROR";
+    public static readonly ROLE_MODULE_ERROR: string = "ROLE_MODULE_ERROR";
     public static readonly THERE_ARE_NOT_INFO: string = "THERE_ARE_NOT_INFO";
     public static readonly EMAIL_NOT_EXISTS_ERROR: string = "EMAIL_NOT_EXISTS_ERROR";
     public static readonly USER_FAIL_LOGIN_ERROR: string = "USER_FAIL_LOGIN_ERROR";

@@ -10,6 +10,7 @@
     "USER_PASS_ERROR": "Incorrect Password",
     "USER_FAIL_LOGIN_ERROR": "Your user is inactive due to multiple login attempts.",
     "ROLE_AUTH_ERROR": "This user is not authorized to perform this function",
+    "ROLE_MODULE_ERROR": "You try to validate role without set module name",
     "THERE_ARE_NOT_INFO": "There are not information to show",
     "DONT_DELETE": "It was not eliminated any entry",
     "DONT_EXISTS": "Entry doesn't exists",

@@ -8,7 +8,7 @@ import { UserRepository, encryptPassword,
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
-import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstStatusJson } from "@TenshiJS/consts/Const";
+import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate, ConstUrls } from "@index/consts/Const";
 const jwt = require('jsonwebtoken');
 
@@ -21,7 +21,14 @@ export default class UserController extends GenericController{
         try{
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-            const id = validation.validateIdFromQueryUsers(jwtData);
+
+            let id : number | null = null;
+            if(jwtData.role == ConstRoles.ADMIN){
+                id = validation.validateIdFromQuery();
+            }else{
+                id = jwtData.id;
+            }
+             
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
             if(!this.validateRegex(reqHandler, validation)){ return; };
@@ -37,7 +44,7 @@ export default class UserController extends GenericController{
                 }
                 
                 //Execute Action DB
-                const user = await this.getRepository().update(id, userBody, reqHandler.getLogicalDelete());
+                const user = await this.getRepository().update(id!, userBody, reqHandler.getLogicalDelete());
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.UPDATE_SUCCESS);
             
             }catch(error : any){

@@ -11,7 +11,7 @@ interface Role {
   code: string;
   name: string;
   description: string;
-  tables: { name: string; function_list: string[] | null }[];
+  modules: { name: string; function_list: string[] | null }[];
   screens: { name: string; function_list: string[] | null }[];
 }
 
@@ -82,43 +82,52 @@ export default class RoleRepository {
   }
 
 
+ 
   /**
    * Retrieves the role object that contains the specified function code
    * among its table or screen function lists.
    *
    * @param {string} roleCode - The code of the role to be searched.
-   * @param {string} funcCode - The code of the function to be searched.
-   * @return {Promise<Role | null>} - A promise that resolves to the role object
-   * that contains the specified function code, or null if no such role is found.
+   * @param {string} moduleName - The name of the module to be searched.
+   * @param {string} action - The function code to be searched.
+   * @return {Promise<boolean>} - A promise that resolves to true if the function code is found
+   * in the role's module function list, false otherwise.
    */
-  public async getPermissionByFuncAndRole(roleCode: string, funcCode: string): Promise<Role | null> {
-    // Find the role object with the specified code.
+  public async getPermissionByFuncAndRole(roleCode: string, moduleName : string, action: string): Promise<boolean> {
+    // Find the role object with the specified role code.
     const role = this.roles.find(role => role.code === roleCode);
 
-    // If no role is found, return null.
+    // If no role is found, return false.
     if (!role) {
-      return null;
+      return false;
     }
 
-    // Search for the specified function code in the tables of the role.
-    const table = role.tables.find(table =>
-      table.function_list && table.function_list.includes(funcCode)
-    );
+    // Find the module object with the specified module name.
+    const module = role.modules.find(module => module.name === moduleName);
 
-    // If the function code is found in a table, return the role object.
-    if (table) {
-      return role;
+    // If no module is found, return false.
+    if (!module) {
+      return false;
     }
 
-    // If the function code is not found in a table, search for it in the screens of the role.
-    const screen = role.screens.find(screen =>
-      screen.function_list && screen.function_list.includes(funcCode)
-    );
+    // Check if the module has a non-null function list.
+    if(module.function_list !== null){
+      // Find the function name in the module's function list.
+      const functionName = module.function_list.find(functionName => functionName == action );
 
-    // If the function code is found in a screen, return the role object.
-    // Otherwise, return null.
-    return screen ? role : null;
+      // If the function name is not found, return false.
+      if (!functionName) {
+        return false;
+      }
+    }else{
+      // If the module has a null function list, return false.
+      return false;
+    }
+
+    // If the function code is found in a module, return true.
+    return true;
   }
+ 
   
 
   /**

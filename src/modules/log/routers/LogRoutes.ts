@@ -15,7 +15,7 @@ class LogRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new LogDTO(req))
                                     .setMethod("getLogsByFilter")
-                                    .isValidateRole()
+                                    .isValidateRole("LOG")
                                     .build();
         
             this.getController().getByFilters(requestHandler);
@@ -32,7 +32,7 @@ class LogRoutes extends GenericRoutes {
                                     .setAdapter(new LogDTO(req))
                                     .setMethod("insertLog")
                                     .setRequiredFiles(requiredBodyList)
-                                    .isValidateRole()
+                                    .isValidateRole("LOG")
                                     .build();
         
             this.getController().insert(requestHandler);

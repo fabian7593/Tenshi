@@ -30,7 +30,7 @@ class EmailRoutes extends GenericRoutes {
             const requestHandler: RequestHandler = new RequestHandlerBuilder(res, req)
                 .setMethod("sendEmail") // Set the method to be executed
                 .setRequiredFiles(requiredBodyList) // Set the required fields in the request body
-                .isValidateRole() // Validate the role of the user
+                .isValidateRole("SEND_MAIL") // Validate the role of the user
                 .build(); // Build the request handler object
 
             // Execute the sendMail method of the EmailController with the request handler object
@@ -71,7 +71,7 @@ class EmailRoutes extends GenericRoutes {
             // Create a request handler object with the necessary data
             const requestHandler: RequestHandler = new RequestHandlerBuilder(res, req)
                 .setMethod("sendEmail") // Set the method to be executed
-                .isValidateRole() // Validate the role of the user
+                .isValidateRole("SEND_MAIL") // Validate the role of the user
                 .isLogicalDelete() // Set the logical delete flag
                 .setFilters(options) // Set the filters for the findMany method
                 .build(); // Build the request handler object

@@ -93,12 +93,7 @@ export default  class DocumentController extends GenericController{
             const validation: Validations = reqHandler.getResponse().locals.validation;
             const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            // Validate the ID from the query parameters
-            const id = validation.validateIdFromQuery();
-            if (id == null) {
-                // Return a parameters error response if ID is null
-                return httpExec.paramsError();
-            }
+            const id =  (this.getIdFromQuery(validation, httpExec) as number); 
 
             // Validate the role of the user
             if (await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().update, httpExec) !== true) {
@@ -112,7 +107,7 @@ export default  class DocumentController extends GenericController{
             }
 
             // Validate the user ID by ID or code entity
-            await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
+            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
 
             // Convert the fields from a JSON to a JavaScript object
             const body = JSON.parse(reqHandler.getRequest().body.fields);
@@ -159,7 +154,7 @@ export default  class DocumentController extends GenericController{
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, code);
+             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code);
 
             try{
                 // Execute the get by code action in the database

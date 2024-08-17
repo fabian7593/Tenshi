@@ -59,7 +59,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("getDocumentBySomeParams")
                                     .setFilters(options)
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
                                     .build();
         
@@ -77,7 +77,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("getDocumentByName")
                                     .setFilters(options)
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
                                     .build();
         
@@ -90,7 +90,7 @@ class DocumentRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("getDocuments")
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
                                     .build();
         
@@ -103,7 +103,7 @@ class DocumentRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("insertDocument")
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .build();
         
             this.getController().insert(requestHandler);
@@ -114,7 +114,7 @@ class DocumentRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("updateDocument")
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .isValidateWhereByUserId()
                                     .build();
         
@@ -127,7 +127,7 @@ class DocumentRoutes extends GenericRoutes {
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("deleteDocument")
-                                    .isValidateRole()
+                                    .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
                                     .isValidateWhereByUserId()
                                     .build();

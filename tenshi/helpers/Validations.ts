@@ -223,36 +223,6 @@ export default class Validations{
     }
     
 
-
-
-    /**
-     * This function is used to validate the ID from the query string.
-     * It checks if the ID is present in the query string and if the user's role is admin.
-     * If both conditions are met, it parses the ID from the query string and returns it.
-     * Otherwise, it returns the ID from the JWT.
-     *
-     * @param {JWTObject} jwtData - The JWT object containing the user's role and ID.
-     * @return {number} The ID parsed from the query string or the ID from the JWT.
-     */
-    public validateIdFromQueryUsers(jwtData: JWTObject): number {
-        try {
-
-            let id: number = 0;
-            // Check if the ID is present in the query string and if the user's role is admin
-            if (this.req.query[ConstGeneral.ID] != undefined && jwtData.role == ConstRoles.ADMIN) {
-                id = parseInt(this.req.query[ConstGeneral.ID] as string, 10);
-            } else {
-                id = jwtData.id;
-            }
-            return id;
-
-        } catch (error: any) {
-            // Return 0 if there is an error
-            return 0;
-        } 
-    }
-   
-
     /**
      * This function validates the ID from the query string.
      * It checks if the ID is present in the query string and if it can be parsed as a number.

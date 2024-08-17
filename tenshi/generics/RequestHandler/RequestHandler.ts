@@ -9,6 +9,7 @@ export default class RequestHandler {
     private res: Response;
     private req: Request;
     private method: string = "";
+    private module: string = "";
     private adapter: IAdapterFromBody;
     private requireValidateRole: boolean = false;
     private requireLogicalRemove: boolean = false;
@@ -19,6 +20,7 @@ export default class RequestHandler {
 
     constructor(res: Response, req: Request, 
                 method: string, 
+                module: string,
                 adapter: IAdapterFromBody, 
                 requireValidateRole: boolean,
                 requireLogicalRemove: boolean,
@@ -29,6 +31,7 @@ export default class RequestHandler {
         this.res = res;
         this.req = req;
         this.method = method;
+        this.module = module;
         this.adapter = adapter;
         this.requireValidateRole = requireValidateRole;
         this.requireLogicalRemove = requireLogicalRemove;
@@ -49,6 +52,10 @@ export default class RequestHandler {
 
     getMethod(): string {
         return this.method;
+    }
+
+    getModule(): string {
+        return this.module;
     }
 
     getAdapter(): IAdapterFromBody {

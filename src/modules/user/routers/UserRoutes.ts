@@ -27,7 +27,7 @@ class UserRoutes extends GenericRoutes {
                 .setAdapter(new UserDTO(req))
                 .setMethod("getUserById")
                 .isLogicalDelete()
-                .isValidateRole()
+                .isValidateRole("USER")
                 .build();
 
             this.getController().getById(requestHandler);
@@ -39,7 +39,7 @@ class UserRoutes extends GenericRoutes {
                 .setAdapter(new UserDTO(req))
                 .setMethod("get_all")
                 .isLogicalDelete()
-                .isValidateRole()
+                .isValidateRole("USER")
                 .build();
 
                 this.getController().getAll(requestHandler);
@@ -55,7 +55,7 @@ class UserRoutes extends GenericRoutes {
                 .setMethod("insertUser")
                 .setRegexValidation(regexValidationList(req))
                 .setRequiredFiles(requiredBodyList(req))
-                .isValidateRole()
+                .isValidateRole("USER")
                 .build();
 
                 this.getController().insert(requestHandler);
@@ -94,7 +94,7 @@ class UserRoutes extends GenericRoutes {
                 .setAdapter(new UserDTO(req))
                 .setMethod("updateUser")
                 .setRegexValidation(regexValidationList(req))
-                .isValidateRole()
+                .isValidateRole("USER")
                 .build();
 
                 this.getController().update(requestHandler);
@@ -105,7 +105,7 @@ class UserRoutes extends GenericRoutes {
             new RequestHandlerBuilder(res, req)
                 .setAdapter(new UserDTO(req))
                 .setMethod("deleteUser")
-                .isValidateRole()
+                .isValidateRole("USER")
                 .isLogicalDelete()
                 .build();
 

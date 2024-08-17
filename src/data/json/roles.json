@@ -5,19 +5,9 @@
         "code": "ADMIN",
         "name": "Administrator",
         "description": "Administrator role with full access to all functionalities.",
-        "tables": [
+        "modules": [
           {
             "name": "DOCUMENT",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "PRODUCTS",
             "function_list": [
               "CREATE",
               "UPDATE",
@@ -71,15 +61,6 @@
             "function_list": [
               "CREATE"
             ]
-          },
-          {
-            "name": "USER_NOTIFICATION",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID"
-            ]
           }
         ],
         "screens": [
@@ -101,7 +82,7 @@
         "code": "ANALYST",
         "name": "Analyst",
         "description": "Analyst role with access to analytical tools and reporting functionalities.",
-        "tables": [],
+        "modules": [],
         "screens": []
       },
       {
@@ -109,7 +90,7 @@
         "code": "CUSTOMER",
         "name": "Customer",
         "description": "Customer role with access to customer-specific functionalities.",
-        "tables": [],
+        "modules": [],
         "screens": []
       }
     ]

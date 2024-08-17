@@ -157,7 +157,7 @@ export default  class GenericController implements IGenericController{
 
             // If you need to validate if the user id of the table 
             // should be the user id of the user request (JWT)
-            await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
+            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
 
             // Get data from the body
             const body = reqHandler.getAdapter().entityFromPutBody();
@@ -202,7 +202,7 @@ export default  class GenericController implements IGenericController{
             // Validate the role of the user
             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.delete, httpExec) !== true){ return; }
             // Validate the user id
-            await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
+            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
 
             try{
                 // Execute the delete action in the database
@@ -248,7 +248,7 @@ export default  class GenericController implements IGenericController{
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, id);
+             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
 
             try{
                 // Execute the get by id action in the database
@@ -289,7 +289,7 @@ export default  class GenericController implements IGenericController{
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdByIdOrCodeEntity(reqHandler, httpExec, jwtData, code);
+             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code);
 
             try{
                 // Execute the get by code action in the database
@@ -427,10 +427,16 @@ export default  class GenericController implements IGenericController{
          * @returns {Promise<any>} A promise that resolves to the result of the validation.
          */
         if(reqHandler.getRoleValidation()){
+
+            // If the module is empty, return an error.
+            if(reqHandler.getModule() == ""){
+                return httpAction.dynamicError(ConstStatusJson.ERROR, ConstMessagesJson.ROLE_MODULE_ERROR);
+            }
+
             // Get the permission for the specified action and role from the role repository.
-            const roleFunc = await this.roleRepository.getPermissionByFuncAndRole(role, action);
+            const roleFunc = await this.roleRepository.getPermissionByFuncAndRole(role, reqHandler.getModule(), action);
             // If the user does not have the permission, return an unauthorized error.
-            if (roleFunc == null) {
+            if (roleFunc == false) {
                 return httpAction.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
             }
         }
@@ -517,7 +523,7 @@ export default  class GenericController implements IGenericController{
      * @param {number | string} idOrCode - The ID or code of the entity.
      * @return {Promise<any>} - Returns a promise that resolves to the result of the HTTP action object.
      */
-    protected async validateUserIdByIdOrCodeEntity(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
+    protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
         let userId: number | null = null; // Initialize user ID
 
         // Check if the request handler object requires validation of the where clause by user ID
@@ -537,11 +543,10 @@ export default  class GenericController implements IGenericController{
 
             // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
             if (entity != undefined && entity != null ) {
-                if(jwtData.role != ConstRoles.ADMIN){
-                    if (userId != null && entity.userId != userId) {
-                        return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
-                    }
+                if (userId != null && entity.user_id != userId) {
+                    return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
                 }
+                
             } else {
                 return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
             }
