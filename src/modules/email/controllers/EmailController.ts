@@ -1,8 +1,8 @@
 import { HttpAction, Validations } from "@index/index";
-import { GenericController, RequestHandler, fs,JWTObject } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { User, UserRepository } from '@modules/email/index';
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
-import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstGeneral } from "@TenshiJS/consts/Const";
+import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstFunctions } from "@TenshiJS/consts/Const";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstTemplate } from "@index/consts/Const";
 
@@ -24,7 +24,7 @@ export default  class EmailController extends GenericController{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             // Validate the role of the user
-            if (await this.validateRole(reqHandler, jwtData.role, ConstGeneral.SEND_MAIL, httpExec) !== true) {
+            if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.CREATE, httpExec) !== true) {
                 return;
             }
 
@@ -105,7 +105,7 @@ export default  class EmailController extends GenericController{
             }
 
             // Validate role
-            if(await this.validateRole(reqHandler,  jwtData.role, ConstGeneral.SEND_MAIL, httpExec) !== true){ 
+            if(await this.validateRole(reqHandler,  jwtData.role, ConstFunctions.CREATE, httpExec) !== true){ 
                 return; 
             }
 

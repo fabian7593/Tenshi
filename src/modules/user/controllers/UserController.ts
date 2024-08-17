@@ -294,6 +294,8 @@ export default class UserController extends GenericController{
 
                 const variables = {
                     userName: user.first_name + " " + user.last_name,
+                    loginUrl: config.COMPANY.LOGIN_URL
+
                 };
                 const htmlBody = await getEmailTemplate(ConstTemplate.ACTIVE_ACCOUNT_PAGE, user.language, variables);
                 

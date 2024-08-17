@@ -7,8 +7,10 @@ interface CompanyConfig {
     LOGO: string;
     BACKEND_HOST: string;
     FRONT_END_HOST: string;
+    LOGIN_URL: string;
     RESET_PASSWORD_URL: string;
     MAIN_COLOR: string;
+    BACKGROUND_COLOR: string;
     LANDING_PAGE: string;
 }
 

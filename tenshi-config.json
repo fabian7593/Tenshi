@@ -4,8 +4,10 @@
         "LOGO" : "https://raw.githubusercontent.com/fabian7593/EasyRestApiLand/main/00/logo_alone.png",
         "BACKEND_HOST": "http://localhost:3000/",
         "FRONT_END_HOST": "http://localhost:3000/",
+        "LOGIN_URL": "http://localhost:3000/",
         "RESET_PASSWORD_URL" : "password_reset/",
-        "MAIN_COLOR": "#6666FF",
+        "MAIN_COLOR": "#679FEC",
+        "BACKGROUND_COLOR": "#F3F8FF",
         "LANDING_PAGE": "https://www.example.com"
     },
     "SERVER" : {

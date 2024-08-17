@@ -2,6 +2,7 @@
     "activeAccountPageSubject": "Active User",
     "activeAccountPageTitle": "Account Activated Successfully",
     "activeAccountPageMessage": "Your account has been successfully activated. You can now access all the features of {{ companyName }}.",
+    "activeAccountPageLogin": "Log in",
     
     "forgotPasswordEmailSubject": "Forgot Password",
     "forgotPasswordEmailTitle": "Password Reset",
@@ -23,5 +24,6 @@
     "generalQuestionContact":"If you have any questions, feel free to contact us.",
     "generalProblemContact":"If you encounter any issues or need further assistance, feel free to contact us.",
     "generalRegards":"Best regards,",
-    "generalSupport":"{{ companyName }} Support Team"
+    "generalSupport":"{{ companyName }} Support Team",
+    "generalCopyright":"{{ year }} @Copyright - {{ companyName }}"
   }

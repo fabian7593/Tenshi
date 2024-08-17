@@ -1,82 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Email</title>
-    <style>
-        /* Estilos para el cuerpo del correo */
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{{ registerEmailTitle }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body, table, td, a {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        table, td {
+            mso-table-rspace: 0pt;
+            mso-table-lspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a[x-apple-data-detectors] {
+            font-family: inherit !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
-        /* Contenedor principal */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        table {
+            border-collapse: collapse;
         }
 
-        /* Encabezado */
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        header img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Título */
-        h1 {
-            color: #6666FF;
-            font-size: 24px;
-            margin-top: 0;
-        }
-
-        /* Enlace */
         a {
-            color: #6666FF;
-            text-decoration: none;
+            color: mainColor;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto;
-            max-width: 150px; /* Tamaño máximo de la imagen */
+        img {
             height: auto;
+            line-height: 100%;
+            text-decoration: none;
+            border: 0;
+            outline: none;
+        }
+
+        .title {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            height: 50px;
+            line-height: 40px;
+            color: mainColor;
+            border-bottom: 1px solid #eee;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <a href="{{ companyDomain }}">
-                <img class="logo" src="{{ companyLogo }}" alt="Company Logo">
-            </a>
-        </header>
-        <h1>{{ registerEmailTitle }}</h1>
-        <p>{{ generalHello }}</p>
-        <p>{{ registerEmailMessage }}</p>
-        <p>{{ registerEmailLink }}</p>
-        <a href="{{ confirmationLink }}">{{ registerEmailConfirmation }}</a>
-        <p>{{ generalQuestionContact }}</p>
-        <p>{{ generalRegards }}</p>
-        <p>{{ generalSupport }}</p>
+
+<body style="background-color: backgroundColor; font-family: 'Poppins', sans-serif;">
+    <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
+        {{ registerEmailTitle }}
     </div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+        <tr>
+            <td align="center" bgcolor="backgroundColor">
+              
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 20px 10px;">
+                            <a href="{{ companyDomain }}">
+                                <img class="logo" src="{{ companyLogo }}" alt="Logo {{ company }}" border="0" width="250" style="display: block; width: 250px; max-width: 250px; min-width: 250px;">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+               
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center" bgcolor="backgroundColor">
+                
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;position: relative;">
+
+                    <tr style="max-width: 600px;">
+                        <td bgcolor="#ffffff" align="left" style="padding:0 24px 24px 24px; font-size: 15px;">
+                            <h1 class="title">
+                                {{ registerEmailTitle }}
+                            </h1>
+                        </td>
+                    </tr>
+
+                    <tr style="max-width: 600px;">
+                        <td bgcolor="#ffffff" align="left" style="padding:0 24px 24px 24px; font-size: 15px;">
+                            <p style=" margin: 0;">{{ generalHello }}</p>
+                            <p></p>
+                            <p style=" margin: 0;">{{ registerEmailMessage }}</p>
+                            <p></p>
+                            <p style=" margin: 0;">{{ registerEmailLink }}</p>
+                        </td>
+                    </tr>
+
+                    <tr style="max-width: 600px;">
+                        <td align="left" bgcolor="#ffffff">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" bgcolor="#ffffff" style="padding: 20px;">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td align="center" bgcolor="mainColor" style="border-radius: 6px;">
+                                                    <a href="{{ confirmationLink }}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 15px 50px; font-size: 15px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 6px;">&nbsp; {{ registerEmailTitle }} &nbsp;</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                  
+                    <tr style="max-width: 600px;">
+                        <td align="left" bgcolor="#ffffff" style="padding: 24px; font-size: 15px; line-height: 24px; border-bottom: 5px solid  mainColor">
+                            <p style=" margin: 0;">{{ generalQuestionContact }}</p>
+                            <p></p>
+                            <p style="margin: 0;">{{ generalRegards }}</p>
+                            <p style="margin: 0;">{{ generalSupport }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center" bgcolor="backgroundColor" style="padding: 24px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" bgcolor="backgroundColor" style="padding: 12px 24px; font-size: 14px; line-height: 20px; color: #666;">
+                            <p style="margin: 0;">{{ generalCopyright }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

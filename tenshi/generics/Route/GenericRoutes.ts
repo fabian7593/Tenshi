@@ -6,15 +6,19 @@ abstract class GenericRoutes {
     private controller: GenericController;
     private routerName: string;
 
-    constructor(controller: GenericController) {
+    constructor(controller: GenericController, routerName: string | null = null) {
         // Init Router
         this.router = Router();
 
         // Assign the controller
         this.controller = controller;
 
-        this.routerName = this.controller.getControllerObj().route;
-
+        if(routerName === null) {
+            this.routerName = this.controller.getControllerObj().route;
+        }else {
+            this.routerName = routerName;
+        }
+        
         // Init Routes method
         this.initializeRoutes();
     }

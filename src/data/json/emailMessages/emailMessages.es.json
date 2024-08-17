@@ -2,6 +2,7 @@
     "activeAccountPageSubject": "Activacion de usuario",
     "activeAccountPageTitle": "Cuenta Activada con Éxito",
     "activeAccountPageMessage": "Tu cuenta ha sido activada con éxito. Ahora puedes acceder a todas las funciones de {{ companyName }}.",
+    "activeAccountPageLogin": "Ingresar",
     
     "forgotPasswordEmailSubject": "Restablecimiento de Contraseña",
     "forgotPasswordEmailTitle": "Restablecimiento de Contraseña",
@@ -23,5 +24,6 @@
     "generalQuestionContact":"Si tienes alguna pregunta, no dudes en ponerte en contacto con nosotros.",
     "generalProblemContact":"Si encuentras algún problema o necesitas asistencia, no dudes en contactarnos.",
     "generalRegards":"Saludos cordiales,",
-    "generalSupport":"Equipo de Soporte de {{ companyName }}"
+    "generalSupport":"Equipo de Soporte de {{ companyName }}",
+    "generalCopyright":"{{ year }} @Copyright - {{ companyName }}"
   }

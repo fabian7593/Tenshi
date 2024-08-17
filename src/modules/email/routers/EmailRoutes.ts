@@ -1,13 +1,13 @@
 import { getUrlParam } from "@TenshiJS/utils/generalUtils";
 
 import { Request, Response, GenericRoutes,
-    RequestHandler, RequestHandlerBuilder, 
-    FindManyOptions } from "@modules/index";
-import { User, EmailController } from '@modules/email/index';
+         RequestHandler, RequestHandlerBuilder, 
+         FindManyOptions } from "@modules/index";
+import { User, EmailController, UserRepository } from '@modules/email/index';
 
 class EmailRoutes extends GenericRoutes {
     constructor() {
-        super(new EmailController(User));
+        super(new EmailController(User, new UserRepository()), "/email");
     }
 
     /**
@@ -18,6 +18,7 @@ class EmailRoutes extends GenericRoutes {
     protected initializeRoutes() {
         // Route for sending a single email to a specific user
         this.router.post(`${this.getRouterName()}/send_email`, async (req: Request, res: Response) => {
+            
             
             // List of required fields in the request body
             const requiredBodyList: Array<string> = [
@@ -70,7 +71,7 @@ class EmailRoutes extends GenericRoutes {
 
             // Create a request handler object with the necessary data
             const requestHandler: RequestHandler = new RequestHandlerBuilder(res, req)
-                .setMethod("sendEmail") // Set the method to be executed
+                .setMethod("send_email_all_users") // Set the method to be executed
                 .isValidateRole("SEND_MAIL") // Validate the role of the user
                 .isLogicalDelete() // Set the logical delete flag
                 .setFilters(options) // Set the filters for the findMany method

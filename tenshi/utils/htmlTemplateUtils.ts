@@ -61,7 +61,11 @@ function replaceTemplateText(template: string, messages: { [key: string]: string
       // Replace company logo placeholder
       .replace(/\{\{ companyLogo \}\}/g, config.COMPANY.LOGO)
       // Replace main color placeholder
-      .replace(/\{\{ mainColor \}\}/g, config.COMPANY.MAIN_COLOR);
+      .replace(/mainColor/g, config.COMPANY.MAIN_COLOR)
+      // Replace background color
+      .replace(/backgroundColor/g, config.COMPANY.BACKGROUND_COLOR)
+      // Replace year by the current year
+      .replace(/\{\{ year \}\}/g, new Date().getFullYear().toString());
 
     // Replace dynamic variables placeholders
     for (const [key, value] of Object.entries(variables)) {
