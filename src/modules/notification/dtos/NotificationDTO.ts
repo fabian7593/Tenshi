@@ -17,7 +17,7 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.required_send_email = this.req.body.required_send_email || null;
         entity.is_delete_after_read = this.req.body.is_delete_after_read || null;
         entity.action_url = this.req.body.action_url || null;
-        entity.language = this.req.body.language || null;
+        entity.language = this.req.body.language;
         entity.created_date = new Date();
         return entity;
     }

@@ -93,7 +93,9 @@ export default  class DocumentController extends GenericController{
             const validation: Validations = reqHandler.getResponse().locals.validation;
             const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            const id =  (this.getIdFromQuery(validation, httpExec) as number); 
+            const validateId = this.getIdFromQuery(validation, httpExec);
+            if(validateId === null){ return; }
+            const id = validateId as number; 
 
             // Validate the role of the user
             if (await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().update, httpExec) !== true) {
@@ -107,7 +109,7 @@ export default  class DocumentController extends GenericController{
             }
 
             // Validate the user ID by ID or code entity
-            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
+            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
             // Convert the fields from a JSON to a JavaScript object
             const body = JSON.parse(reqHandler.getRequest().body.fields);
@@ -149,22 +151,28 @@ export default  class DocumentController extends GenericController{
              // Get the JWT object from the response
              const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              // Get the code from URL params
-             const code = this.getCodeFromQuery(validation, httpExec) as string;
+             const validateCode = this.getCodeFromQuery(validation, httpExec);
+             if(validateCode === null){ return; }
+             const code = validateCode as string; 
 
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code);
+             if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code) !== true){ return; }
 
             try{
                 // Execute the get by code action in the database
                 const entity : Document = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
-                if(entity.is_public == false){
-                    entity.url = await getFile(entity.file_name);
-                }
-                // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
 
+                if(entity != null && entity != undefined){
+                    if(entity.is_public == false){
+                        entity.url = await getFile(entity.file_name);
+                    }
+                    // Return the success response
+                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+                }else{
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                }
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 

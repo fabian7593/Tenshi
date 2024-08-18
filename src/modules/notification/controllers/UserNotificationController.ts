@@ -92,7 +92,9 @@ export default  class UserNotificationController extends GenericController{
              //This calls the jwt data into JWTObject
              const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              //get the id from URL params
-             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
+             const validateId = this.getIdFromQuery(validation, httpExec);
+             if(validateId === null){ return; }
+             const id = validateId as number; 
 
             if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
 

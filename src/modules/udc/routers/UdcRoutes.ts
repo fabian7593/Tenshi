@@ -5,7 +5,7 @@ import { UnitDynamicCentral, UdcDTO } from '@modules/udc';
 
 class UdcRoutes extends GenericRoutes{
     constructor() {
-        super(new GenericController(UnitDynamicCentral));
+        super(new GenericController(UnitDynamicCentral), "/udc");
     }
 
     protected initializeRoutes() {

@@ -51,7 +51,7 @@ class DocumentRoutes extends GenericRoutes {
             }
         
             if(userId != null){
-                options.where = { ...options.where, userId: userId};
+                options.where = { ...options.where, user_id: userId};
             }
         
             const requestHandler : RequestHandler = 
@@ -66,22 +66,17 @@ class DocumentRoutes extends GenericRoutes {
             this.getController().getByFilters(requestHandler);
         });
         
-        this.router.get(`${this.getRouterName()}/get_by_name`, async (req: Request, res: Response) => {
-            const nameParam : string = getUrlParam("name", req);
-        
-            let options : FindManyOptions;
-            options = { where: { name : nameParam}  }; 
-        
+        this.router.get(`${this.getRouterName()}/get_by_code`, async (req: Request, res: Response) => {
+          
             const requestHandler : RequestHandler = 
                                     new RequestHandlerBuilder(res,req)
                                     .setAdapter(new DocumentDTO(req))
-                                    .setMethod("getDocumentByName")
-                                    .setFilters(options)
+                                    .setMethod("getDocumentByCode")
                                     .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
                                     .build();
         
-            this.getController().getByFilters(requestHandler);
+            this.getController().getByCode(requestHandler);
         });
         
         this.router.get(`${this.getRouterName()}/get_all`, async (req: Request, res: Response) => {

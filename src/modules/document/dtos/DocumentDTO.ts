@@ -1,5 +1,6 @@
 import { Request, IAdapterFromBody } from "@modules/index";
 import { Document } from '@modules/document/index'
+import { Code } from "typeorm";
 
 export default  class DocumentDTO implements IAdapterFromBody{
     req: Request;
@@ -22,6 +23,7 @@ export default  class DocumentDTO implements IAdapterFromBody{
         entity.id_for_table = body.id_for_table || 0;
         entity.table = body.table;
         entity.user_id = body.user_id;
+        entity.is_public = body.is_public || 0;
         entity.created_date = new Date();
         return entity;
     }
@@ -31,6 +33,7 @@ export default  class DocumentDTO implements IAdapterFromBody{
         return  {
             id : entity.id,
             name: entity.title,
+            code: entity.code,
             file_name: entity.file_name,
             type: entity.type,
             extension: entity.extension,
@@ -39,6 +42,7 @@ export default  class DocumentDTO implements IAdapterFromBody{
             id_for_table: entity.id_for_table,
             table: entity.table,
             user_id: entity.user_id,
+            is_public: entity.is_public,
             created_date: entity.created_date
         };
     }

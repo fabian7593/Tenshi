@@ -153,11 +153,13 @@ export default  class GenericController implements IGenericController{
             }
 
             // Get the id from the URL params
-            const id = this.getIdFromQuery(validation, httpExec) as number;
+            const validateId = this.getIdFromQuery(validation, httpExec);
+            if(validateId === null){ return; }
+            const id = validateId as number; 
 
             // If you need to validate if the user id of the table 
             // should be the user id of the user request (JWT)
-            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
+            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
             // Get data from the body
             const body = reqHandler.getAdapter().entityFromPutBody();
@@ -197,12 +199,14 @@ export default  class GenericController implements IGenericController{
             // Get the JWT object from the response
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             // Get the id from URL params
-            const id =  (this.getIdFromQuery(validation, httpExec) as number); 
+            const validateId = this.getIdFromQuery(validation, httpExec);
+            if(validateId === null){ return; }
+            const id = validateId as number; 
 
             // Validate the role of the user
             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.delete, httpExec) !== true){ return; }
             // Validate the user id
-            await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
+            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
             try{
                 // Execute the delete action in the database
@@ -243,19 +247,26 @@ export default  class GenericController implements IGenericController{
              // Get the JWT object from the response
              const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              // Get the id from URL params
-             const id =  (this.getIdFromQuery(validation, httpExec) as number); 
+             const validateId = this.getIdFromQuery(validation, httpExec);
+             if(validateId === null){ return; }
+             const id = validateId as number; 
 
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id);
+             if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
             try{
                 // Execute the get by id action in the database
                 const entity = await this.repository.findById(id, reqHandler.getLogicalDelete());
-                // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
 
+                if(entity != null && entity != undefined){
+                    // Return the success response
+                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+                }else{
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                }
+                
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -284,19 +295,25 @@ export default  class GenericController implements IGenericController{
              // Get the JWT object from the response
              const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
              // Get the code from URL params
-             const code = this.getCodeFromQuery(validation, httpExec) as string;
+             const validateCode = this.getCodeFromQuery(validation, httpExec);
+             if(validateCode === null){ return; }
+             const code = validateCode as string; 
 
              // Validate the role of the user
              if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
              // Validate the user id
-             await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code);
+             if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code) !== true){ return; }
 
             try{
                 // Execute the get by code action in the database
                 const entity = await this.repository.findByCode(code, reqHandler.getLogicalDelete());
-                // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
-
+                if(entity != null && entity != undefined){
+                    // Return the success response
+                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+                }else{
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                }
+                
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
@@ -340,9 +357,14 @@ export default  class GenericController implements IGenericController{
 
                 // Execute the get all action in the database
                 const entities = await this.repository.findAll(reqHandler.getLogicalDelete(), page, size);
+                if(entities != null && entities != undefined){
+                    // Return the success response
+                    return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
+                }else{
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                }
 
-                // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
+               
             } catch (error: any) {
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(),
@@ -392,8 +414,12 @@ export default  class GenericController implements IGenericController{
                 const entities = await this.repository.findByFilters(reqHandler.getFilters()!,
                     reqHandler.getLogicalDelete(), page, size);
 
-                // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
+                if(entities != null && entities != undefined){
+                    // Return the success response
+                    return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
+                }else{
+                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                }
 
             } catch (error: any) {
                 // Return the database error response
@@ -544,13 +570,17 @@ export default  class GenericController implements IGenericController{
             // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
             if (entity != undefined && entity != null ) {
                 if (userId != null && entity.user_id != userId) {
-                    return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                    return false;
                 }
                 
             } else {
-                return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
+                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
+                return false;
             }
         }
+
+        return true;
     }
   
     /**
@@ -560,13 +590,14 @@ export default  class GenericController implements IGenericController{
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {number | null} - The ID from the query parameters or null if validation fails.
      */
-    protected getIdFromQuery(validation: Validations, httpExec: HttpAction){
+    protected getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
         // Validate the ID from the query parameters
         const id = validation.validateIdFromQuery();
 
         // If the ID is null (validation failed), return a parameter error
         if(id == null){
-            return httpExec.paramsError();
+            httpExec.paramsError();
+            return null;
         }
 
         // Return the ID from the query parameters
@@ -581,14 +612,15 @@ export default  class GenericController implements IGenericController{
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {string | null} - The code from the query parameters or null if validation fails.
      */
-    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction){
+    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
         // Validate the code from the query parameters
         const code = validation.validateCodeFromQuery();
 
         // If the code is null (validation failed), return a parameter error
         if(code == null){
             // Return a parameter error
-            return httpExec.paramsError();
+            httpExec.paramsError();
+            return null;
         }
 
         // Return the code from the query parameters

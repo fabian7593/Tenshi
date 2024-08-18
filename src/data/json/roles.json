@@ -1,98 +1,126 @@
 {
-    "roles": [
-      {
-        "id": 1,
-        "code": "ADMIN",
-        "name": "Administrator",
-        "description": "Administrator role with full access to all functionalities.",
-        "modules": [
-          {
-            "name": "DOCUMENT",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "NOTIFICATION",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "USER",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "UNIT_DYNAMIC_CENTRAL",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "LOG",
-            "function_list": [
-              "CREATE",
-              "UPDATE",
-              "DELETE",
-              "GET_BY_ID",
-              "GET_ALL"
-            ]
-          },
-          {
-            "name": "SEND_MAIL",
-            "function_list": [
-              "CREATE"
-            ]
-          }
-        ],
-        "screens": [
-          {
-            "name": "CREATE_NEW_PROJECT",
-            "function_list": [
-              "CREATE",
-              "READ"
-            ]
-          },
-          {
-            "name": "PRODUCTS",
-            "function_list": []
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "code": "ANALYST",
-        "name": "Analyst",
-        "description": "Analyst role with access to analytical tools and reporting functionalities.",
-        "modules": [],
-        "screens": []
-      },
-      {
-        "id": 3,
-        "code": "CUSTOMER",
-        "name": "Customer",
-        "description": "Customer role with access to customer-specific functionalities.",
-        "modules": [],
-        "screens": []
-      }
-    ]
-  }
-  
+  "roles": [
+    {
+      "id": 1,
+      "code": "ADMIN",
+      "name": "Administrator",
+      "description": "Administrator role with full access to all functionalities.",
+      "modules": [
+        {
+          "name": "DOCUMENT",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "NOTIFICATION",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "USER",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "UNIT_DYNAMIC_CENTRAL",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "LOG",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "SEND_MAIL",
+          "function_list": [
+            "CREATE"
+          ]
+        }
+      ],
+      "screens": [
+        {
+          "name": "CREATE_NEW_PROJECT",
+          "function_list": [
+            "CREATE",
+            "READ"
+          ]
+        },
+        {
+          "name": "PRODUCTS",
+          "function_list": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "code": "ANALYST",
+      "name": "Analyst",
+      "description": "Analyst role with access to analytical tools and reporting functionalities.",
+      "modules": [
+        {
+          "name": "DOCUMENT",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        }
+      ],
+      "screens": [
+        {
+          "name": "PRODUCTS",
+          "function_list": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "code": "CUSTOMER",
+      "name": "Customer",
+      "description": "Customer role with access to customer-specific functionalities.",
+      "modules": [
+        {
+          "name": "DOCUMENT",
+          "function_list": [
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        }
+      ],
+      "screens": [
+        {
+          "name": "PRODUCTS",
+          "function_list": []
+        }
+      ]
+    }
+  ]
+}
