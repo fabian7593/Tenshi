@@ -10,6 +10,7 @@ const config = ConfigManager.getInstance().getConfig();
 export class MySQLAdapter implements IDatabaseAdapter {
 
     private pool: Pool;
+    private static instance: MySQLAdapter;
     constructor() {
         //MYSQL Config
         this.pool = mysql.createPool({
@@ -21,6 +22,13 @@ export class MySQLAdapter implements IDatabaseAdapter {
             connectionLimit: 150,
             charset: 'utf8mb4'
           });
+    }
+
+    public static getInstance(): MySQLAdapter {
+        if (!MySQLAdapter.instance) {
+            MySQLAdapter.instance = new MySQLAdapter();
+        }
+        return MySQLAdapter.instance;
     }
 
     async getConnection(): Promise<PoolConnection> {

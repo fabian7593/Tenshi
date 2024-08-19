@@ -10,7 +10,7 @@ export class Notification {
   @Column({ type: "varchar", length: 60, unique: true })
   code: string;
 
-  @Column({ type: "varchar", length: 30, default: "GENERAL" })
+  @Column({ type: "varchar", length: 30,  nullable: true, default: "GENERAL" })
   type: string;
 
   @Column({ type: "varchar", length: 100 })

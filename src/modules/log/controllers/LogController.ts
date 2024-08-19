@@ -2,7 +2,7 @@ import { HttpAction, config } from "@index/index";
 import { DBPersistanceFactory } from "@TenshiJS/persistance/DBPersistanceFactory";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
-import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
+import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
 
 export default  class LogController extends GenericController{
 
@@ -76,7 +76,7 @@ export default  class LogController extends GenericController{
                                    page: number, size : number): Promise<any>{
 
         const dbAdapter = DBPersistanceFactory.createDBAdapterPersistance(config.DB.TYPE);
-        return await executeQuery(dbAdapter, async (conn) => {
+        return await executeDatabaseQuery(dbAdapter, async (conn) => {
             const result = await dbAdapter.executeQuery(conn,
                 "CALL GetLogsWithFilters(?, ?, ?, ?, ?)",
                 [environment, userId, type, size, page] 

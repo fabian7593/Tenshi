@@ -8,6 +8,7 @@ const config = ConfigManager.getInstance().getConfig();
 // MariaDB adapter implementing the IDatabaseAdapter interface
 export class MariaDbAdapter implements IDatabaseAdapter {
 
+    private static instance: MariaDbAdapter;
     private pool: Pool;
     constructor() {
         //Maria DB Config
@@ -23,12 +24,21 @@ export class MariaDbAdapter implements IDatabaseAdapter {
         });
     }
 
+    public static getInstance(): MariaDbAdapter {
+        if (!MariaDbAdapter.instance) {
+            MariaDbAdapter.instance = new MariaDbAdapter();
+        }
+        return MariaDbAdapter.instance;
+    }
+
     async getConnection(): Promise<PoolConnection> {
         return await this.pool.getConnection();  // Get a connection from the connection pool
     }
 
     releaseConnection(conn: PoolConnection): void {
-        conn.release();  // Release the connection back to the pool
+        if (conn) {
+            conn.release();  // Release the connection back to the pool
+        }
     }
 
     async executeQuery<T>(conn: PoolConnection, query: string, params: any[] = []): Promise<T> {

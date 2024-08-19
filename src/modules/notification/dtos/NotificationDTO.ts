@@ -11,11 +11,11 @@ export default  class NotificationDTO implements IAdapterFromBody{
     entityFromPostBody() : Notification{
         const entity = new Notification();
         entity.code = this.req.body.code;
-        entity.type = this.req.body.type || null;
+        entity.type = this.req.body.type;
         entity.subject = this.req.body.subject;
         entity.message = this.req.body.message;
-        entity.required_send_email = this.req.body.required_send_email || null;
-        entity.is_delete_after_read = this.req.body.is_delete_after_read || null;
+        entity.required_send_email = this.req.body.required_send_email || 0;
+        entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
         entity.action_url = this.req.body.action_url || null;
         entity.language = this.req.body.language;
         entity.created_date = new Date();
@@ -55,11 +55,11 @@ export default  class NotificationDTO implements IAdapterFromBody{
     entityFromPutBody() : Notification{
         const entity = new Notification();
         entity.code = this.req.body.code;
-        entity.type = this.req.body.type || null;
+        entity.type = this.req.body.type;
         entity.subject = this.req.body.subject;
         entity.message = this.req.body.message;
-        entity.required_send_email = this.req.body.required_send_email || null;
-        entity.is_delete_after_read = this.req.body.is_delete_after_read || null;
+        entity.required_send_email = this.req.body.required_send_email || 0;
+        entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
         entity.action_url = this.req.body.action_url || null;
         entity.language = this.req.body.language || null;
         return entity;

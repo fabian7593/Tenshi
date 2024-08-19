@@ -17,13 +17,13 @@ export class DBPersistanceFactory {
         // Check if the provided type is null (default) or not supported
         switch (type) {
             case "mariadb" :
-                return new MariaDbAdapter();
+                return MariaDbAdapter.getInstance();
             case "mysql" :
-                return new MySQLAdapter();
+                return MySQLAdapter.getInstance();
             case "postgres" :
-                return new PostgresAdapter();
+                return PostgresAdapter.getInstance();
             case "mssql" :
-                return new SqlServerAdapter();
+                return SqlServerAdapter.getInstance();
             default:
                 // If not null or supported, throw an error
                 throw new Error(`Factory: Adapter type ${type} is not supported.`);

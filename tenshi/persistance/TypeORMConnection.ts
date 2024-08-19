@@ -35,6 +35,9 @@ private static instance: DataSource;
                 database: config.DB.NAME, // Name of the database
                 entities: entities, // Array of entities to be used
                 synchronize: true, // Synchronize the schema with the database
+                extra: {
+                    connectionLimit: 150, 
+                },
             });
 
             // Initialize the DataSource

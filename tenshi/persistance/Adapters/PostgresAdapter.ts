@@ -8,6 +8,8 @@ const config = ConfigManager.getInstance().getConfig();
 export class PostgresAdapter implements IDatabaseAdapter {
 
     private pool: Pool;
+    private static instance: PostgresAdapter;
+
     constructor() {
         //postgressql Config
         this.pool = new Pool({
@@ -20,6 +22,13 @@ export class PostgresAdapter implements IDatabaseAdapter {
             idleTimeoutMillis: 30000, 
             connectionTimeoutMillis: 2000                 
         });
+    }
+
+    public static getInstance(): PostgresAdapter {
+        if (!PostgresAdapter.instance) {
+            PostgresAdapter.instance = new PostgresAdapter();
+        }
+        return PostgresAdapter.instance;
     }
 
     async getConnection(): Promise<PoolClient> {

@@ -7,7 +7,7 @@ import { GenericRepository,
 
 import { UserNotification, Notification, User, 
          UserNotificationDTO } from "@modules/notification/index";
-import { executeQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
+import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
@@ -124,11 +124,11 @@ export default  class UserNotificationController extends GenericController{
             }
 
             userNotification.is_read = true;
-
             try{
                 //Execute Action DB
-                const updateEntity = await repositoryNotification.update(id, userNotification,  
+                const updateEntity = await repository.update(id, userNotification,  
                                                              reqHandler.getLogicalDelete());
+
                 const notification : Notification = await repositoryNotification.findByCode(updateEntity.notificationCode, false);
 
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(updateEntity, notification);
@@ -194,7 +194,7 @@ export default  class UserNotificationController extends GenericController{
                                    page: number, size : number ): Promise<any>{
 
             const dbAdapter = DBPersistanceFactory.createDBAdapterPersistance(config.DB.TYPE);
-            return await executeQuery(dbAdapter, async (conn) => {
+            return await executeDatabaseQuery(dbAdapter, async (conn) => {
                 const result = await dbAdapter.executeQuery(conn,
                     "CALL GetUserNotifications(?, ?, ?, ?)",
                     [userSend, userReceive, size, page] 

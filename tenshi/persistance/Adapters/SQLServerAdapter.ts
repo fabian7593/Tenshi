@@ -7,6 +7,8 @@ const config = ConfigManager.getInstance().getConfig();
 export class SqlServerAdapter implements IDatabaseAdapter {
 
     private pool: ConnectionPool;
+    private static instance: SqlServerAdapter;
+
     constructor() {
         //postgressql Config
         this.pool = new sql.ConnectionPool({
@@ -16,6 +18,13 @@ export class SqlServerAdapter implements IDatabaseAdapter {
             database: config.DB.NAME,
             port: config.DB.PORT
         });
+    }
+
+    public static getInstance(): SqlServerAdapter {
+        if (!SqlServerAdapter.instance) {
+            SqlServerAdapter.instance = new SqlServerAdapter();
+        }
+        return SqlServerAdapter.instance;
     }
 
     async getConnection(): Promise<ConnectionPool> {

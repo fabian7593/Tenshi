@@ -1,7 +1,7 @@
 import { IDatabaseAdapter } from './IDatabaseAdapter';
 
 // Generic function to execute a query using the provided database adapter
-export async function executeQuery<T>(
+export async function executeDatabaseQuery<T>(
     dbAdapter: IDatabaseAdapter,
     executeAction: (conn: any) => Promise<T>
 ): Promise<T | any> {
