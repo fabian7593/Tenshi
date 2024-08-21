@@ -407,7 +407,7 @@ To add a new role or modify an existing one:
 
 
 
-## Adding More Regex Patterns
+## Managing Regex Patterns
 
 To add additional regular expressions (regex) to the `regex.json` file, follow these steps:
 
@@ -435,6 +435,34 @@ Here's how to add a new regex pattern to validate phone numbers:
     }
 }
 ```
+<br><br>
+
+## Customizing and Adding Email Templates
+
+To customize existing email templates or add new ones, follow these guidelines:
+
+1. **Locate Existing Templates**:
+   - Find the current email templates in the `src/templates` directory.
+   - You can modify the HTML and CSS structure of these templates to fit your needs.
+
+2. **Use Replacement Tags**:
+   - Templates include various replacement tags, such as `{{ mainColor }}`, `{{ backgroundColor }}`, and `{{ companyName }}`, which pull values from the configuration file.
+   - Texts in the templates are dynamically replaced based on the user's language preferences. Common placeholders include `{{ nameTemplateTitle }}` and `{{ generalHello }}`.
+
+3. **Manage Language Files**:
+   - Language-specific texts are managed in `src/data/json/emailMessages`.
+   - By default, you will find `emailMessages.en.json` and `emailMessages.es.json`. You can add additional language files as needed.
+   - In these JSON files, include text entries using the template name followed by `Message`, such as:
+     ```json
+     "registerEmailSubject": "Account Verification",
+     "registerEmailTitle": "Welcome to {{ companyName }}",
+     ```
+
+4. **Create and Use New Templates**:
+   - You can create new templates as required, following the same rules for language and replacement tags.
+   - Send emails using these templates as needed in your code.
+
+
 <br><br>
 
 ## Dependencies
@@ -469,6 +497,8 @@ Here's how to add a new regex pattern to validate phone numbers:
 | typescript               | ^5.5.4       |
 
 <br><br>
+
+
 
 ## Contribution
 
