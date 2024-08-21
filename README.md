@@ -37,6 +37,11 @@ Tenshi is a modular and scalable backend REST API framework developed in Node.js
 - [Managing Roles](#managing-roles)
   - [How to Create and Modify Roles](#how-to-create-and-modify-roles)
 - [Managing Regex Patterns](#managing-regex-patterns)
+- [Customizing and Adding Email Templates](#customizing-and-adding-email-templates)
+- [Dependencies](#dependencies)
+- [Contribution](#contribution)
+  - [What is Needed for Tenshi](#what-is-needed-for-tenshi)
+- [License](#license)
 
 <br><br>
 
