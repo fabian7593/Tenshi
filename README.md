@@ -67,7 +67,7 @@ Tenshi is a highly flexible framework, not just a library. To get started:
 
 <br><br>
 
-## Start Backend server
+## Start Backend Server
 1. Scripts to start the server:
    you can see the package.json to see another scripts
    ```bash
