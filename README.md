@@ -564,6 +564,7 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - Add a payments methods module.
 - Add a subscriptions module.
 - Separate validation and error handling logic into middlewares.
+- Create testing environment, for implementation test and Unit Test as well.
 
 
 <br><br><br>
