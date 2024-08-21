@@ -4,7 +4,7 @@
 ## Overview
 Tenshi is a modular and scalable backend REST API framework developed in Node.js with TypeScript and Express.js. It is **completely open-source** and designed to facilitate the development of robust applications through a clean and modular architecture. Tenshi focuses on providing a structured environment to manage users, permissions, roles (via JSON format), documents, logs, emails, notifications, and other essential modules for backend development.
 
-
+<br><br>
 
 ## Key Features of TenshiJS
 
@@ -48,7 +48,7 @@ Tenshi is a modular and scalable backend REST API framework developed in Node.js
 - UDC (Unit Dynamic Central)
 - Document Management
 
-  
+<br><br>
 
 ## Installation
 Tenshi is a highly flexible framework, not just a library. To get started:
@@ -79,7 +79,7 @@ Tenshi is a highly flexible framework, not just a library. To get started:
    npm run start
    ```
 
-
+<br><br>
 
 ## Configuration:
 Tenshi allows intuitive project configuration via the `tenshi-config.json` file, which is divided into the following sections:
@@ -189,43 +189,7 @@ Configuration related to the email service used by the application.
 - **AUTH_PASSWORD**: Password used to authenticate with the email service.
 - **EMAIL_FROM**: Email address from which emails will be sent.
 
-
-
-
-## Database Management
-Tenshi utilizes TypeORM for database creation and management using a code-first approach, supporting databases like MariaDB, MySQL, SQL Server, Postgres, and SQLite. By default, Tenshi includes a logs table to store backend error logs, request logs, database logs, and critical application tracking information.
-
-
-## Response Structure
-
-Tenshi provides a response structure for each of its responses, which is as follows:
-
-- **status**: Provides information about the response of the request.
-  - **id**: An identifier for the status value.
-  - **message**: A message indicating the status, such as error, not found, success, etc.
-  - **http_code**: The HTTP request code of the response.
-  
-- **data**: Contains the information of the data, such as the information that was just updated, inserted, or the data needed from the GET requests in the application.
-
-- **info**: Provides a message with additional information required to understand what happened with the request.
-
-Example Response:
-```json
-{
-    "status": {
-        "id": 1,
-        "message": "Success",
-        "http_code": 200
-    },
-    "data": [
-        []
-    ],
-    "info": "Get Entries Successful"
-}
-```
-
-
-
+<br><br>
 
 ## PROJECT ARCHITECTURE
 
@@ -258,7 +222,42 @@ The `GenericController` class is a generic controller responsible for handling t
 - **Constructor**: Requires a `GenericController` and optionally a custom route name.
 
 
+<br><br>
 
+## Database Management
+Tenshi utilizes TypeORM for database creation and management using a code-first approach, supporting databases like MariaDB, MySQL, SQL Server, Postgres, and SQLite. By default, Tenshi includes a logs table to store backend error logs, request logs, database logs, and critical application tracking information.
+
+<br><br>
+
+## Response Structure
+
+Tenshi provides a response structure for each of its responses, which is as follows:
+
+- **status**: Provides information about the response of the request.
+  - **id**: An identifier for the status value.
+  - **message**: A message indicating the status, such as error, not found, success, etc.
+  - **http_code**: The HTTP request code of the response.
+  
+- **data**: Contains the information of the data, such as the information that was just updated, inserted, or the data needed from the GET requests in the application.
+
+- **info**: Provides a message with additional information required to understand what happened with the request.
+
+Example Response:
+```json
+{
+    "status": {
+        "id": 1,
+        "message": "Success",
+        "http_code": 200
+    },
+    "data": [
+        []
+    ],
+    "info": "Get Entries Successful"
+}
+```
+
+<br><br>
 
 ## Dependencies
 | Dependency               | Version      |
@@ -291,8 +290,7 @@ The `GenericController` class is a generic controller responsible for handling t
 | typeorm                  | ^0.3.20      |
 | typescript               | ^5.5.4       |
 
-
-
+<br><br>
 
 ## Contribution
 
