@@ -1,7 +1,11 @@
 [![alt tag](https://raw.githubusercontent.com/fabian7593/Tenshi/main/imgs/tenshi_background.png)]([https://github.com/fabian7593/MagicalCamera](https://github.com/fabian7593/Tenshi/tree/main))
 # Tenshi JS
 
-Tenshi is a modular and scalable backend REST API framework developed in Node.js with TypeScript and Express.js. It is **completely open-source** and designed to facilitate the development of robust applications through a clean and modular architecture. Tenshi focuses on providing a structured environment to manage users, permissions, roles (via JSON format), documents, logs, emails, notifications, and other essential modules for backend development.
+Tenshi is a modular and scalable backend REST API framework developed in Node.js with TypeScript and Express.js. It is **completely open-source** and designed to facilitate the development of robust applications through a clean and modular architecture.
+
+Tenshi focuses on providing a structured environment to manage security at endpoints, handle errors, log activities, validate requests, and speed up development. It offers flexible, easy-to-use, and dynamic control over various modules that users can add or customize. The framework comes with built-in modules for common tasks, including Users, Roles, Logs, Emails, Notifications, Unit Dynamic Central, and Document Management, making it easier to extend and adapt to specific needs.
+
+With Tenshi, developers benefit from a well-organized structure that enhances productivity and application reliability while allowing for a high degree of modularity and customization.
 
 <br><br>
 
