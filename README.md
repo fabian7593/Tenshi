@@ -223,6 +223,35 @@ The `GenericController` class is a generic controller responsible for handling t
 - **Routes**: The `GenericRouter` class is where the routes for each module are defined. By default, it includes standard CRUD routes. Users can add additional routes as needed, and versioning can be applied dynamically if required.
 - **Constructor**: Requires a `GenericController` and optionally a custom route name.
 
+           HTTP Request
+               │
+               ▼
+       ┌─────────────────┐
+       │   Router Class  │
+       │  (set Handler)  │
+       └─────────────────┘
+               │
+               ▼
+       ┌─────────────────┐
+       │  Handler Class  │
+       └─────────────────┘
+               │
+               ▼
+       ┌─────────────────┐
+       │ Controller Class│
+       └─────────────────┘
+               │
+               ▼
+       ┌─────────────────┐
+       │  Repository Class│
+       └─────────────────┘
+               │
+               ▼
+       ┌─────────────────┐
+       │     Entity      │
+       └─────────────────┘
+
+
 
 <br><br>
 
