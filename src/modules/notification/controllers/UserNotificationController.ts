@@ -178,7 +178,6 @@ export default  class UserNotificationController extends GenericController{
                 // Filtrar el OkPacket
                 const data = entities.filter((item: any) => !('affectedRows' in item));
 
-                //const entities = await this.getAllUserNotifications();
                 return httpExec.successAction(data, ConstHTTPRequest.GET_ALL_SUCCESS);
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 

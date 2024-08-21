@@ -34,7 +34,8 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .isLogicalDelete()
                                     .build();
         
-            this.getController().getByFilters(requestHandler);
+          //TODO JUST WORK AFTER RUN STORED PROCEDURE src\data\db_scripting\01_db_stored_procedures.sql
+          //this.getController().getByFilters(requestHandler);
         });
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {

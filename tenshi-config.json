@@ -1,13 +1,13 @@
 {
     "COMPANY": {
         "NAME" : "Tenshi",
-        "LOGO" : "https://raw.githubusercontent.com/fabian7593/EasyRestApiLand/main/00/logo_alone.png",
+        "LOGO" : "https://raw.githubusercontent.com/fabian7593/Tenshi/main/imgs/tenshi_background_2.png",
         "BACKEND_HOST": "http://localhost:3000/",
         "FRONT_END_HOST": "http://localhost:3000/",
         "LOGIN_URL": "http://localhost:3000/",
         "RESET_PASSWORD_URL" : "password_reset/",
         "MAIN_COLOR": "#679FEC",
-        "BACKGROUND_COLOR": "#F3F8FF",
+        "BACKGROUND_COLOR": "#FFFFFF",
         "LANDING_PAGE": "https://www.example.com"
     },
     "SERVER" : {
@@ -34,7 +34,7 @@
         "SAVE_LOGS":"../../logs",
         "TEMPLATES_PATH":"../../src/templates",
         "EMAIL_LANGUAGES_PATH":"../../src/data/json/emailMessages",
-        "REGEX_JSON":"./src/data/json/regex.json",
+        "REGEX_JSON":"/src/data/json/regex.json",
         "ROLES_JSON":"./src/data/json/roles.json"
     },
     "LOG": {
