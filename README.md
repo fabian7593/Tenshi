@@ -268,33 +268,33 @@ This method enables the validation of WHERE conditions in a query, ensuring that
 
 ### Application Flow Diagram
 
-                                                     HTTP Request
-                                                         │
-                                                         ▼
-                                                 ┌─────────────────┐
-                                                 │   Router Class  │
-                                                 │  (set Handler)  │
-                                                 └─────────────────┘
-                                                         │
-                                                         ▼
-                                                 ┌─────────────────┐
-                                                 │  Handler Class  │
-                                                 └─────────────────┘
-                                                         │
-                                                         ▼
-                                                 ┌─────────────────┐
-                                                 │ Controller Class│
-                                                 └─────────────────┘
-                                                         │
-                                                         ▼
-                                                 ┌─────────────────┐
-                                                 │  Repository Class│
-                                                 └─────────────────┘
-                                                         │
-                                                         ▼
-                                                 ┌─────────────────┐
-                                                 │     Entity      │
-                                                 └─────────────────┘
+                                               HTTP Request
+                                                   │
+                                                   ▼
+                                           ┌─────────────────┐
+                                           │   Router Class  │
+                                           │  (set Handler)  │
+                                           └─────────────────┘
+                                                   │
+                                                   ▼
+                                           ┌─────────────────┐
+                                           │  Handler Class  │
+                                           └─────────────────┘
+                                                   │
+                                                   ▼
+                                           ┌─────────────────┐
+                                           │ Controller Class│
+                                           └─────────────────┘
+                                                   │
+                                                   ▼
+                                           ┌─────────────────┐
+                                           │  Repository Class│
+                                           └─────────────────┘
+                                                   │
+                                                   ▼
+                                           ┌─────────────────┐
+                                           │     Entity      │
+                                           └─────────────────┘
 
 
 
