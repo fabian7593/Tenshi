@@ -5,6 +5,42 @@ Tenshi is a modular and scalable backend REST API framework developed in Node.js
 
 <br><br>
 
+## Navigation Menu
+
+- [Introduction](#introduction)
+- [Key Features](#key-features)
+  - [General](#general)
+  - [Security](#security)
+  - [Validations](#validations)
+  - [Document Management](#document-management)
+  - [Modules](#modules)
+- [Installation](#installation)
+- [Start Backend Server](#start-backend-server)
+- [Configuration](#configuration)
+  - [COMPANY](#company)
+  - [SERVER](#server)
+  - [DB](#db)
+  - [URL_FILES](#url_files)
+  - [LOG](#log)
+  - [HTTP_REQUEST](#http_request)
+  - [JWT](#jwt)
+  - [FILE_STORAGE](#file_storage)
+  - [EMAIL](#email)
+- [Project Architecture](#project-architecture)
+  - [GenericRepository](#genericrepository)
+  - [GenericController](#genericcontroller)
+  - [GenericRouter](#genericrouter)
+- [RequestHandler Builder Logic](#requesthandler-builder-logic)
+- [Application Flow Diagram](#application-flow-diagram)
+- [Database Management](#database-management)
+- [Response Structure](#response-structure)
+- [Managing Roles](#managing-roles)
+  - [How to Create and Modify Roles](#how-to-create-and-modify-roles)
+- [Managing Regex Patterns](#managing-regex-patterns)
+
+<br><br>
+
+
 ## Key Features of TenshiJS
 
 ### General
