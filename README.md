@@ -223,35 +223,6 @@ The `GenericController` class is a generic controller responsible for handling t
 - **Routes**: The `GenericRouter` class is where the routes for each module are defined. By default, it includes standard CRUD routes. Users can add additional routes as needed, and versioning can be applied dynamically if required.
 - **Constructor**: Requires a `GenericController` and optionally a custom route name.
 
-           HTTP Request
-               │
-               ▼
-       ┌─────────────────┐
-       │   Router Class  │
-       │  (set Handler)  │
-       └─────────────────┘
-               │
-               ▼
-       ┌─────────────────┐
-       │  Handler Class  │
-       └─────────────────┘
-               │
-               ▼
-       ┌─────────────────┐
-       │ Controller Class│
-       └─────────────────┘
-               │
-               ▼
-       ┌─────────────────┐
-       │  Repository Class│
-       └─────────────────┘
-               │
-               ▼
-       ┌─────────────────┐
-       │     Entity      │
-       └─────────────────┘
-
-
 
 <br><br>
 
@@ -292,6 +263,38 @@ This method flags the request to perform a logical delete instead of a physical 
 - #### `isValidateWhereByUserId()`
 
 This method enables the validation of WHERE conditions in a query, ensuring that the necessary validations by `UserId` are included. This is useful in situations where data needs to be specifically filtered for the user making the request.
+
+<br><br>
+
+### Application Flow Diagram
+
+                                                           HTTP Request
+                                                               │
+                                                               ▼
+                                                       ┌─────────────────┐
+                                                       │   Router Class  │
+                                                       │  (set Handler)  │
+                                                       └─────────────────┘
+                                                               │
+                                                               ▼
+                                                       ┌─────────────────┐
+                                                       │  Handler Class  │
+                                                       └─────────────────┘
+                                                               │
+                                                               ▼
+                                                       ┌─────────────────┐
+                                                       │ Controller Class│
+                                                       └─────────────────┘
+                                                               │
+                                                               ▼
+                                                       ┌─────────────────┐
+                                                       │  Repository Class│
+                                                       └─────────────────┘
+                                                               │
+                                                               ▼
+                                                       ┌─────────────────┐
+                                                       │     Entity      │
+                                                       └─────────────────┘
 
 
 
