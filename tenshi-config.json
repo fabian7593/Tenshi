@@ -34,7 +34,7 @@
         "SAVE_LOGS":"../../logs",
         "TEMPLATES_PATH":"../../src/templates",
         "EMAIL_LANGUAGES_PATH":"../../src/data/json/emailMessages",
-        "REGEX_JSON":"src/data/json/regex.json",
+        "REGEX_JSON":"./src/data/json/regex.json",
         "ROLES_JSON":"./src/data/json/roles.json"
     },
     "LOG": {
