@@ -335,6 +335,108 @@ Example Response:
 
 <br><br>
 
+## Managing Roles
+
+### How to Create and Modify Roles
+
+Roles are defined in the `src/data/json/roles.json` file. The structure of the JSON file is designed to manage user roles and their associated permissions effectively. Here’s a breakdown of the role structure:
+
+```json
+{
+  "roles": [
+    {
+      "id": 1,
+      "code": "ADMIN",
+      "name": "Administrator",
+      "description": "Administrator role with full access to all functionalities.",
+      "modules": [
+        {
+          "name": "DOCUMENT",
+          "function_list": [
+            "CREATE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        },
+        {
+          "name": "USER",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
+        }
+      ],
+      "screens": [
+        {
+          "name": "CREATE_NEW_PROJECT"
+        },
+        {
+          "name": "PRODUCTS"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Structure Breakdown
+
+- **id**: A unique identifier for the role.
+- **code**: A short code representing the role.
+- **name**: The display name of the role.
+- **description**: A brief description of the role’s permissions and capabilities.
+- **modules**: An array of modules associated with the role, where each module has:
+  - **name**: The name of the module.
+  - **function_list**: A list of functions or actions that can be performed within this module (e.g., CREATE, UPDATE, DELETE).
+- **screens**: An array of screens or views that are accessible by the role, where each screen has:
+  - **name**: The name of the screen.
+
+### Adding or Modifying Roles
+
+To add a new role or modify an existing one:
+
+1. **Edit the JSON file**: Add or update role objects in the `roles` array.
+2. **Define new modules and screens**: Ensure that any new modules or screens are properly defined and associated with the appropriate functions.
+3. **Save changes**: Ensure that the JSON structure remains valid and that all roles are correctly represented.
+
+
+<br><br>
+
+
+
+## Adding More Regex Patterns
+
+To add additional regular expressions (regex) to the `regex.json` file, follow these steps:
+
+1. **Open the `regex.json` File**: Locate the `regex.json` file in your project directory at `src/data/json/regex.json`.
+
+2. **Define the New Regex Pattern**:
+    - **Key**: Assign a unique key to identify the new regex pattern. This key will be used to reference the pattern in your application.
+    - **message**: Provide a descriptive message that will be shown when the regex validation fails. This message should clearly explain the validation error to the user.
+    - **regex**: Write the regular expression pattern that you want to apply. Make sure the pattern is valid and correctly captures the intended validation criteria.
+
+3. **Add the New Pattern to the JSON Structure**:
+    - Insert a new object into the JSON structure following the format of the existing patterns. Each object should include the `message` and `regex` fields.
+
+4. **Save and Validate**: After adding the new pattern, save the `regex.json` file. Ensure the JSON structure remains valid and that the new pattern is correctly integrated.
+
+### Example of Adding a New Regex Pattern
+
+Here's how to add a new regex pattern to validate phone numbers:
+
+```json
+{
+    "PHONE_REGEX": {
+        "message": "Incorrect Phone Number Format",
+        "regex": "^\\+?[1-9]\\d{1,14}$"
+    }
+}
+```
+<br><br>
+
 ## Dependencies
 | Dependency               | Version      |
 |--------------------------|--------------|
