@@ -231,35 +231,35 @@ The `RequestHandler` class is designed to handle HTTP requests within a web appl
 
 Each `set` method in this class allows for the configuration of a specific aspect of request handling. These methods follow the "Builder" pattern, enabling fluent chaining of configurations and returning the instance of the class for continued use.
 
-#### `setRequiredFiles(requiredFieldsList: Array<string>)`
+- #### `setRequiredFiles(requiredFieldsList: Array<string>)`
 
 This method configures a list of required fields in the body of the request, ensuring that all necessary fields are present before processing. This is primarily used in POST and PUT methods.
 
-#### `setFilters(filters: FindManyOptions)`
+- #### `setFilters(filters: FindManyOptions)`
 
 This method sets up the filters to be applied when performing a database query for multiple records using TypeORM. These filters help to limit or specify the data returned in the response. It is primarily utilized in GET requests that require filtering.
 
-#### `setMethod(method: string)`
+- #### `setMethod(method: string)`
 
 This method specifies the name of the method or operation being executed. This name is crucial for logging the operation in the application logs, aiding in tracking and auditing actions performed. It is also used for identification purposes, especially when generic classes are employed. This is used across all HTTP requests.
 
-#### `setAdapter(adapter: IAdapterFromBody)`
+- #### `setAdapter(adapter: IAdapterFromBody)`
 
 This method assigns an adapter responsible for transforming the request body data into a specific format that the entity can utilize. This adapter is crucial when the received data needs to be processed or structured before being used in business operations. A new DTO specific to the module is created here. This is primarily used in POST and PUT methods.
 
-#### `setRegexValidation(regexValidatorList: [string, string][])`
+- #### `setRegexValidation(regexValidatorList: [string, string][])`
 
 This method sets up a list of validations using regular expressions. Each entry in the list contains a field and a corresponding regular expression that will be used to validate the content of that field. This is useful for ensuring that the data conforms to certain formats or restrictions before processing. It is primarily used in POST and PUT methods.
 
-#### `isValidateRole(module: string)`
+- #### `isValidateRole(module: string)`
 
 This method enables role validation for the current request. If enabled, the system will verify whether the user has the appropriate role to perform the requested operation. The required parameter is the module setting from `roles.json`. This is used in all HTTP requests that require role validation.
 
-#### `isLogicalDelete()`
+- #### `isLogicalDelete()`
 
 This method flags the request to perform a logical delete instead of a physical delete. This means that the record will not be removed from the database but will be marked as deleted (e.g., setting an `isDeleted` field to `true`). This is used in almost all HTTP requests. For GET requests, this method considers whether a record is logically deleted (e.g., if `is_deleted = true`, the record will not be shown in the GET response).
 
-#### `isValidateWhereByUserId()`
+- #### `isValidateWhereByUserId()`
 
 This method enables the validation of WHERE conditions in a query, ensuring that the necessary validations by `UserId` are included. This is useful in situations where data needs to be specifically filtered for the user making the request.
 
