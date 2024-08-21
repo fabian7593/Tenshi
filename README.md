@@ -19,6 +19,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
   - [Document Management](#document-management)
   - [Modules](#modules)
 - [Installation](#installation)
+- [Versioning](#versioning)
 - [Start Backend Server](#start-backend-server)
 - [Configuration](#configuration)
   - [COMPANY](#company)
@@ -92,6 +93,12 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - UDC (Unit Dynamic Central)
 - Document Management
 
+<br><br>
+
+# Versioning 
+   ```bash
+Tenshi Framework - Version 1.0.9
+   ```
 <br><br>
 
 ## Installation
