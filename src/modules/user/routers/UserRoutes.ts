@@ -1,7 +1,7 @@
 import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
           GenericRoutes } from "@modules/index";
-import {  UserDTO, UserController, User, UserRepository,
+import {  UserDTO, UserController, 
           regexValidationList, requiredBodyList, 
           regexValidationRecoverUserAndPassList, requiredBodyRecoverUserAndPassList
         } from "@modules/user/index";
@@ -17,7 +17,7 @@ class UserRoutes extends GenericRoutes {
     constructor() {
         // Call the parent class constructor and pass in a new instance of the UserController
         // class, along with the User entity and UserRepository as parameters.
-        super(new UserController(User, new UserRepository));
+        super(new UserController());
     }
 
     protected initializeRoutes() {

@@ -5,7 +5,7 @@ import { Log, LogDTO, LogController } from '@modules/log/index';
 
 class LogRoutes extends GenericRoutes {
     constructor() {
-        super(new LogController(Log));
+        super(new LogController());
     }
 
     protected initializeRoutes() {

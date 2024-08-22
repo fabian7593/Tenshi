@@ -3,7 +3,8 @@ import { HttpAction, Validations, config} from "@index/index";
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
-        decryptPassword, JWTService, UserDTO } from "@modules/user";
+        decryptPassword, JWTService, UserDTO, 
+        User} from "@modules/user";
         
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
@@ -14,6 +15,9 @@ const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
     
+    constructor() {
+        super(User, new UserRepository);
+    }
    
     async update(reqHandler: RequestHandler) : Promise<any>{
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;

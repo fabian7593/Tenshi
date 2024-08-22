@@ -3,8 +3,13 @@ import { DBPersistanceFactory } from "@TenshiJS/persistance/DBPersistanceFactory
 import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
 import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
+import { Log } from "@TenshiJS/entity/Log";
 
 export default  class LogController extends GenericController{
+
+    constructor() {
+        super(Log);
+    }
 
      /**
       * Retrieves logs based on the provided filters and returns them as a success response.

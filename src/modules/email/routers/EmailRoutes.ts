@@ -7,7 +7,7 @@ import { User, EmailController, UserRepository } from '@modules/email/index';
 
 class EmailRoutes extends GenericRoutes {
     constructor() {
-        super(new EmailController(User, new UserRepository()), "/email");
+        super(new EmailController(), "/email");
     }
 
     /**

@@ -8,6 +8,10 @@ import { ConstTemplate } from "@index/consts/Const";
 
 export default  class EmailController extends GenericController{
 
+    constructor() {
+        super(User, new UserRepository());
+    }
+
     /**
      * Sends an email to a user based on the provided email address.
      * 
