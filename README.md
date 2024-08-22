@@ -45,7 +45,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - [Customizing and Adding Email Templates](#customizing-and-adding-email-templates)
 - [Dependencies](#dependencies)
 - [Contribution](#contribution)
-  - [What is Needed for Tenshi](#what-is-needed-for-tenshi)
+  - [TODO List for Tenshi](#todo-list-for-tenshi)
 - [License](#license)
 
 <br><br>
@@ -562,16 +562,18 @@ To customize existing email templates or add new ones, follow these guidelines:
 
 As time goes on, Tenshi will continue updating its list of modules that may be useful to those using it. If anyone wishes to contribute to the open-source code, the doors of Tenshi are wide open—whether it's for new developments or improving the current state of the project.
 
-### What is Needed for Tenshi
+### Todo List For Tenshi
 
-- Migrate all logic of Tenshi to a TypeScript library.
-- Implement logic for adding documents to other services such as Azure and/or local servers.
-- Develop OAuth implementation for Google.
-- Add a payments methods module.
-- Add a subscriptions module.
-- Separate validation and error handling logic into middlewares.
-- Create testing environment, for implementation test and Unit Test as well.
-- Create Devops Docker
+- **Library:** Migrate all logic of Tenshi to a TypeScript library.
+- **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
+- **Oauth:** Develop OAuth implementation for Google.
+- **Endpoint:** Implement Logout
+- **Endpoint:** Get all roles (just for admin)
+- **Module:** Add a payments methods.
+- **Module:** Add a subscriptions.
+- **Middleware:** Separate validation and error handling logic into middlewares.
+- **Testing:** Create testing environment, for Unit Test all endpoints.
+- **DevOps:** Create Devops Docker File and publish.
 
 
 <br><br><br>
