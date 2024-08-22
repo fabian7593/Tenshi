@@ -11,8 +11,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 
 ## Navigation Menu
 
-- [Introduction](#introduction)
-- [Key Features](#key-features)
+- [Key Features](#key-features-of-tenshijs)
   - [General](#general)
   - [Security](#security)
   - [Validations](#validations)
