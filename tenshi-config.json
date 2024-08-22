@@ -1,12 +1,12 @@
 {
     "COMPANY": {
         "NAME" : "Tenshi",
-        "LOGO" : "https://raw.githubusercontent.com/fabian7593/Tenshi/main/imgs/tenshi_background_2.png",
+        "LOGO" : "https://raw.githubusercontent.com/fabian7593/Tenshi/main/00_external_information/imgs/tenshi_background_2.png",
         "BACKEND_HOST": "http://localhost:3000/",
         "FRONT_END_HOST": "http://localhost:3000/",
         "LOGIN_URL": "http://localhost:3000/",
         "RESET_PASSWORD_URL" : "password_reset/",
-        "MAIN_COLOR": "#679FEC",
+        "MAIN_COLOR": "#0DA5FF",
         "BACKGROUND_COLOR": "#FFFFFF",
         "LANDING_PAGE": "https://www.example.com"
     },
@@ -86,8 +86,8 @@
     },
     "EMAIL" : {
         "SERVICE" : "gmail",
-        "AUTH_USER": "fabian7593@gmail.com",
-        "AUTH_PASSWORD": "feywuxkinvouisfg",
-        "EMAIL_FROM": "fabian7593@gmail.com"
+        "AUTH_USER": "tenshitest1@gmail.com",
+        "AUTH_PASSWORD": "xnqitxldphiymoov",
+        "EMAIL_FROM": "tenshitest1@gmail.com"
     }
 }

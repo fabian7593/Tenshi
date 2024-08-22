@@ -16,7 +16,7 @@
     "DONT_EXISTS": "Entry doesn't exists",
     "RESET_PASSWORD": "Change Password Success",
 
-    "INVALID_TOKEN": "Invalid Token",
+    "INVALID_TOKEN": "Invalid JWT",
     "INVALID_API_KEY": "Invalid Api Key",
     "VALID_TOKEN_SUCCESS": "Valid Token Successful",
     "REFRESH_TOKEN_SUCCESS": "Refresh Token Successful",
