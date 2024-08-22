@@ -564,16 +564,16 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 
 ### What is Needed for Tenshi
 
-- Library: Migrate all logic of Tenshi to a TypeScript library.
-- Factory Pattern Documents: Implement logic for adding documents to other services such as Azure and/or local servers.
-- Oauth: Develop OAuth implementation for Google.
-- Endpoint: Implement Logout
-- Endpoint: Get all roles (just for admin)
-- Module: Add a payments methods.
-- Module: Add a subscriptions.
-- Separate validation and error handling logic into middlewares.
-- Testing: Create testing environment, for Unit Test all endpoints.
-- DevOps: Create Devops Docker File and publish.
+- **Library:** Migrate all logic of Tenshi to a TypeScript library.
+- **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
+- **Oauth:** Develop OAuth implementation for Google.
+- **Endpoint:** Implement Logout
+- **Endpoint:** Get all roles (just for admin)
+- **Module:** Add a payments methods.
+- **Module:** Add a subscriptions.
+- **Middleware:** Separate validation and error handling logic into middlewares.
+- **Testing:** Create testing environment, for Unit Test all endpoints.
+- **DevOps:** Create Devops Docker File and publish.
 
 
 <br><br><br>
