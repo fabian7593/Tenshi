@@ -30,6 +30,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
   - [JWT](#jwt)
   - [FILE_STORAGE](#file_storage)
   - [EMAIL](#email)
+- [Import Postman](#import-postman)
 - [Project Architecture](#project-architecture)
   - [GenericRepository](#genericrepository)
   - [GenericController](#genericcontroller)
@@ -241,6 +242,12 @@ Configuration related to the email service used by the application.
 - **AUTH_USER**: Username or email address used to authenticate with the email service.
 - **AUTH_PASSWORD**: Password used to authenticate with the email service.
 - **EMAIL_FROM**: Email address from which emails will be sent.
+
+<br><br>
+
+## Import Postman:
+You need to import your [Postman collection for Tenshi](https://github.com/fabian7593/Tenshi/raw/main/00_external_information/Tenshi.postman_collection.json) to gain access to all the endpoints provided by the Tenshi modules.
+
 
 <br><br>
 
@@ -564,6 +571,7 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - Add a subscriptions module.
 - Separate validation and error handling logic into middlewares.
 - Create testing environment, for implementation test and Unit Test as well.
+- Create Devops Docker
 
 
 <br><br><br>
