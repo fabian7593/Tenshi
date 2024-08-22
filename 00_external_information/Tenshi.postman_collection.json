@@ -1,0 +1,1667 @@
+{
+	"info": {
+		"_postman_id": "4e631658-2d09-4afd-89e3-3950ab4a3a25",
+		"name": "Tenshi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "619775"
+	},
+	"item": [
+		{
+			"name": "Udcs",
+			"item": [
+				{
+					"name": "Insert UDC",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": \"CLUSTER777\",\r\n  \"name\": \"Cluster\",\r\n  \"type\": \"PROJECT_TYPE\",\r\n  \"description\": \"Proyecto Cluster\",\r\n  \"value1\": \"valor_del_value1\",\r\n  \"value2\": \"valor_del_value2\",\r\n  \"value3\": \"valor_del_value3\",\r\n  \"value4\": \"valor_del_value4\",\r\n  \"value5\": \"valor_del_value5\",\r\n  \"country_iso_code\": \"CRC\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update UDC",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Clusteqweqeqwr\",\r\n        \"type\": \"PROJECT_TYPE\",\r\n        \"description\": \"Proyecto Cluster prueba\",\r\n        \"value1\": \"valor_del_value1\",\r\n        \"value2\": \"valor_del_value2\",\r\n        \"value3\": \"valor_del_value3\",\r\n        \"value4\": \"valor_del_value4\",\r\n        \"value5\": \"valor_del_value5\",\r\n        \"created_date\": \"2024-04-26T06:36:09.000Z\",\r\n        \"updated_date\": null,\r\n        \"user_id\": 2\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/edit?id=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get UDC By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/udc/get?id=4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get UDCs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/get_all?page=1&size=3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"get_all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete UDC",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/delete?id=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register && Login",
+					"item": [
+						{
+							"name": "Login User Admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									},
+									{
+										"key": "device-info",
+										"value": "{\"userAgent\":\"Mozilla/5.0 (Linux; Android 10; SM-G973F Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.152 Mobile Safari/537.36\",\"platform\":\"Android\",\"environment\":\"Mobile\",\"language\":\"en-US\",\"screenResolution\":\"1080x2280\"}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\",\r\n  \"password\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User - ANALYST",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User - Customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register User Admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"first_name\":\"gege\",\r\n    \"last_name\":\"agevebtura\",\r\n    \"card_id\": 777777,\r\n    \"email\": \"fabian7593@gmail.com\",\r\n    \"password\": \"Fabian7593@gmail.com\",\r\n    \"gender\": \"M\",\r\n    \"country_iso_code\": \"CRC\",\r\n    \"role_code\": \"ADMIN\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register User  - ANALYST",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Dixie\",\r\n  \"last_name\": \"Castro\",\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\",\r\n  \"language\":\"es\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register User  - Customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Dixie\",\r\n  \"last_name\": \"Castro\",\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\",\r\n  \"language\":\"es\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recover User By Email",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/recover_user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"recover_user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Confirmation Register",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"limelandcompanycr@gmail.com\",\r\n  \"password\": \"limelandcompanycr\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/confirmation_register/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiZW1haWwiOiJmYWJpYW43NTkzQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcxNDYzMTgwOX0.YO7pkH6x0dLm_xp5i9E2x8tWir-gYeh1t09sKrD-kNA",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"confirmation_register",
+										"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiZW1haWwiOiJmYWJpYW43NTkzQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcxNDYzMTgwOX0.YO7pkH6x0dLm_xp5i9E2x8tWir-gYeh1t09sKrD-kNA"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tokens",
+					"item": [
+						{
+							"name": "Refresh Token",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"limelandcompanycr@gmail.com\",\r\n  \"password\": \"limelandcompanycr\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/refresh_token/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmYWJpYW43NTkzQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNDAwNjMyMiwiZXhwIjoxNzI0MDkyNzIyfQ._NbrttJ6KZCm02ak6QSFcRPrk8E1RKI27hlTW3H98d4",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"refresh_token",
+										"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmYWJpYW43NTkzQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNDAwNjMyMiwiZXhwIjoxNzI0MDkyNzIyfQ._NbrttJ6KZCm02ak6QSFcRPrk8E1RKI27hlTW3H98d4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Forgot Password",
+					"item": [
+						{
+							"name": "Forgot Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/forgot_password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"forgot_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"password\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/reset_password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhYmlhbjc1OTNAZ21haWwuY29tIiwiaWF0IjoxNzI0MDA2NTAxLCJleHAiOjE3MjQwMDc0MDF9.b74T-aor18nIWSC05f_bMoxVrUBGcLMErqUcV2B7iEM",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"reset_password",
+										"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhYmlhbjc1OTNAZ21haWwuY29tIiwiaWF0IjoxNzI0MDA2NTAxLCJleHAiOjE3MjQwMDc0MDF9.b74T-aor18nIWSC05f_bMoxVrUBGcLMErqUcV2B7iEM"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Token Forgot Password",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"limelandcompanycr@gmail.com\",\r\n  \"password\": \"limelandcompanycr\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/verify_forgot_password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhYmlhbjc1OTNAZ21haWwuY29tIiwiaWF0IjoxNzIxOTU3NDg5LCJleHAiOjE3MjE5NTgzODl9.qBh4l0pXJqun0fji8dYNVs4j8sIZdCJ58pQOamkcWAs",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"verify_forgot_password",
+										"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhYmlhbjc1OTNAZ21haWwuY29tIiwiaWF0IjoxNzIxOTU3NDg5LCJleHAiOjE3MjE5NTgzODl9.qBh4l0pXJqun0fji8dYNVs4j8sIZdCJ58pQOamkcWAs"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CRUD Users",
+					"item": [
+						{
+							"name": "Insert User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Dixie\",\r\n  \"last_name\": \"Castro\",\r\n  \"email\": \"limeland@gmail.com\",\r\n  \"password\": \"limeland@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 7777,\r\n  \"first_name\": \"Test new user\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/edit?id=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user/get?id=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user/get_all",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"get_all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user/delete?id=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": [
+				{
+					"name": "Insert Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/johan/OneDrive/Desktop/13343461.jfif"
+								},
+								{
+									"key": "fields",
+									"value": "{\"name\":\"name test\",\"type\": \"DOC\", \"description\": \"Descripción del documento\", \"id_for_table\": 2, \"table\": \"users\",  \"action_type\":  \"DOCUMENT_INTERVIEW\", \"user_id\": 5, \"is_public\":0}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/document/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Document by Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/document/get_by_code?code=NAME_TEST__DOC__1882024132529",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"get_by_code"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "NAME_TEST__DOC__1882024132529"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documents",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/document/get_all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"get_all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documents By Some Params",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/document/get_by_some_params?table=users&user_id=5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"get_by_some_params"
+							],
+							"query": [
+								{
+									"key": "table",
+									"value": "users"
+								},
+								{
+									"key": "user_id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/document/delete?id=7",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Document",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/johan/OneDrive/Desktop/CURSO ANDROID.txt"
+								},
+								{
+									"key": "fields",
+									"value": "{\"type\": \"DOC\", \"description\": \"Descripción del documento\", \"id_for_table\": 20, \"table\": \"doctors\",  \"action_type\":  \"DOCUMENT_TESTING\", \"user_id\": 2}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/document/edit?id=3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"document",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Emails",
+			"item": [
+				{
+					"name": "Send Email By User Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"subject\": \"This is an email test\",\r\n  \"body_message\": \"Body message, remember this use the emails template\",\r\n  \"email\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/email/send_email",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"email",
+								"send_email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Email All Users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"subject\": \"Esto es una prueba desde postman\",\r\n  \"body_message\": \"El ciego imagina todo aquello que no puede ver...\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/email/send_email_all_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"email",
+								"send_email_all_users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "User Notifications",
+					"item": [
+						{
+							"name": "Insert User Notification",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"notification_code\": \"NOT_01\",\r\n  \"id_user_send\": 4,\r\n  \"id_user_receive\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user_notification/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_notification",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Notification Is Read",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user_notification/is_read?id=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_notification",
+										"is_read"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Notification by Filters",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user_notification/get_by_filters",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_notification",
+										"get_by_filters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User Notification",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "{{auth_jwt}}",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user_notification/delete?id=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_notification",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Insert Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": \"NOT_02\",\r\n  \"type\": \"DEVELOPMENT\",\r\n  \"subject\": \"New Development Test\",\r\n  \"message\": \"New email from notifications\",\r\n  \"required_send_email\": true,\r\n  \"is_delete_after_read\": true,\r\n  \"action_url\": \"https://tusitio.com/mis-documentos\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Notification",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"subject\": \"Documento modificado\",\r\n  \"message\": \"Test update document\",\r\n  \"required_send_email\":1\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/edit?id=3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/get?id=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification By Code",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/get_by_code?code=NOT_02",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"get_by_code"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "NOT_02"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notifications",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/get_all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"get_all"
+							],
+							"query": [
+								{
+									"key": "x-api-key",
+									"value": "{{secret_api_key}}",
+									"disabled": true
+								},
+								{
+									"key": "authorization",
+									"value": "{{auth_jwt}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"card_id\": 7777,\r\n  \"email\": \"limelandcompanycr1@gmail.com\",\r\n  \"password\": \"limelandcompanycr1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/notification/delete?id=3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"notification",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logs",
+			"item": [
+				{
+					"name": "Insert Logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"method\": \"login\",\r\n    \"class\": \"UserController\",\r\n    \"type\": \"Error\", \r\n    \"action\": \"Log Error\", \r\n    \"https\": 400,\r\n    \"message\": \"Error DB: Duplicate entry\",\r\n    \"description\": \"Desc\",\r\n    \"environment\": \"backend\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/log/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"log",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/log/get_by_filters",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"log",
+								"get_by_filters"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
