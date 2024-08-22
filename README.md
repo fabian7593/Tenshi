@@ -246,7 +246,8 @@ Configuration related to the email service used by the application.
 <br><br>
 
 ## Import Postman:
-You need to import your Postman collection for Tenshi to gain access to all the endpoints provided by the Tenshi modules. 
+You need to import your [Postman collection for Tenshi](https://github.com/fabian7593/Tenshi/raw/main/00_external_information/Tenshi.postman_collection.json) to gain access to all the endpoints provided by the Tenshi modules.
+
 
 <br><br>
 
