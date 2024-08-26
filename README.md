@@ -571,9 +571,11 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Endpoint:** Get all roles (just for admin)
 - **Module:** Add a payments methods.
 - **Module:** Add a subscriptions.
+- **Generics:** Create Generics methods for GenericRouters class (Just send the handle request by prameter).
 - **Middleware:** Separate validation and error handling logic into middlewares.
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
+- **Documentation:** Create Postman Endpoints Documentation.
 
 
 <br><br><br>
