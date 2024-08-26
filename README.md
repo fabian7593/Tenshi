@@ -576,6 +576,7 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
 - **Documentation:** Create Postman Endpoints Documentation.
+- **Videos:** Create some explanation video tutorials for explain how to use tenshi version 1.0.9
 
 
 <br><br><br>
