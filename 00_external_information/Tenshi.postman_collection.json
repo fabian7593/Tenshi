@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4e631658-2d09-4afd-89e3-3950ab4a3a25",
+		"_postman_id": "5593391d-51c0-4a8c-a9a8-724597f9e75c",
 		"name": "Tenshi",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "619775"
@@ -247,40 +247,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\",\r\n  \"password\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/user/login",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"user",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Login User - ANALYST",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "x-api-key",
-										"value": "{{secret_api_key}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest1@gmail.com\",\r\n  \"password\": \"tenshitest1@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -313,7 +280,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest3@gmail.com\",\r\n  \"password\": \"tenshitest3@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -346,40 +313,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"first_name\":\"gege\",\r\n    \"last_name\":\"agevebtura\",\r\n    \"card_id\": 777777,\r\n    \"email\": \"fabian7593@gmail.com\",\r\n    \"password\": \"Fabian7593@gmail.com\",\r\n    \"gender\": \"M\",\r\n    \"country_iso_code\": \"CRC\",\r\n    \"role_code\": \"ADMIN\"\r\n}\r\n\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/user/register",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"user",
-										"register"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register User  - ANALYST",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "x-api-key",
-										"value": "{{secret_api_key}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Dixie\",\r\n  \"last_name\": \"Castro\",\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\",\r\n  \"language\":\"es\"\r\n}\r\n\r\n",
+									"raw": "{\r\n    \"first_name\":\"Tenshi\",\r\n    \"last_name\":\"Test\",\r\n    \"card_id\": 777777,\r\n    \"email\": \"tenshitest1@gmail.com\",\r\n    \"password\": \"tenshitest1@gmail.com\",\r\n    \"gender\": \"O\",\r\n    \"country_iso_code\": \"CRC\",\r\n    \"role_code\": \"ADMIN\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -412,7 +346,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Dixie\",\r\n  \"last_name\": \"Castro\",\r\n  \"email\": \"fabianr7593@gmail.com\",\r\n  \"password\": \"fabianr7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\",\r\n  \"language\":\"es\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"tenshitest3@gmail.com\",\r\n  \"password\": \"tenshitest3@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"role_code\": \"CUSTOMER\",\r\n  \"language\":\"es\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -445,7 +379,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest1@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -554,7 +488,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest1@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -586,7 +520,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"password\": \"fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"password\": \"tenshitest1@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -622,7 +556,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"limelandcompanycr@gmail.com\",\r\n  \"password\": \"limelandcompanycr\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest1@gmail.com\",\r\n  \"password\": \"tenshitest1@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
