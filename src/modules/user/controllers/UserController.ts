@@ -1,6 +1,6 @@
 import { HttpAction, Validations, config} from "@index/index";
 
-import { GenericController, RequestHandler, JWTObject } from "@modules/index";
+import { GenericController, RequestHandler, JWTObject, RoleRepository } from "@modules/index";
 
 import { UserRepository, encryptPassword, 
         decryptPassword, JWTService, UserDTO, 
@@ -209,7 +209,8 @@ export default class UserController extends GenericController{
                 }
     
                 if(isSuccess){
-                    const screens = await this.getRoleRepository().getScreensByRole(user.role_code);
+                    const roleRepository : RoleRepository = RoleRepository.getInstance();
+                    const screens = await  roleRepository.getScreensByRole(user.role_code);
                     
                     const jwtObj : JWTObject = {
                         id: user.id,

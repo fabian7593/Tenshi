@@ -14,7 +14,8 @@ import ControllerObject from 'tenshi/objects/ControllerObject';
 
 import { createControllerObject } from 'tenshi/services/ControllerObjectFactory';
 
-import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson, ConstRoles, ConstGeneral } from "tenshi/consts/Const";
+import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson } from "tenshi/consts/Const";
+import GenericValidationController from './GenericValidationController';
 
 /*
     This class have the necessary methods (CRUDS) to send into the routing
@@ -22,12 +23,9 @@ import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson, ConstRoles, Const
     Then you send the controller object, with all the specific names of the specific entity
     PD: IF YOU NEED TO OVERRIDE OR ADDED MORE METHODS, YOU NEED TO CREATE ANOTHER CONTROLLER AND EXTEND THIS
 */7
-export default  class GenericController implements IGenericController{
+export default  class GenericController extends GenericValidationController implements IGenericController {
     private controllerObj: ControllerObject;
     private entityType : EntityTarget<any>;
-    private roleRepository : RoleRepository;
-    private repository : IGenericRepository;
-
     /**
      * Constructor of the GenericController class.
      * This class needs the type of the entity of the ORM, and the controller object.
@@ -36,22 +34,20 @@ export default  class GenericController implements IGenericController{
      *                                                      If it's not passed, a new instance of GenericRepository will be created.
      */
     constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null) {
+        super();
         // Create the controller object using the entity type.
         this.controllerObj = createControllerObject(entityType);
 
         // Set the entity type.
         this.entityType = entityType;
 
-        // Get the instance of the RoleRepository.
-        this.roleRepository = RoleRepository.getInstance();
-
         // Check if the repository class is passed.
         // If not, create a new instance of GenericRepository using the entity type.
         // Otherwise, set the repository class.
         if(repositoryClass == null){
-            this.repository = new GenericRepository(this.entityType);
+            this.setRepository(new GenericRepository(this.entityType));
         }else{
-            this.repository = repositoryClass;
+            this.setRepository(repositoryClass);
         }
     }
    
@@ -63,12 +59,8 @@ export default  class GenericController implements IGenericController{
         return this.controllerObj;
     }
 
-    public getRoleRepository(): RoleRepository {
-        return this.roleRepository;
-    }
-
     public getRepository(): IGenericRepository {
-        return this.repository;
+        return this.getValidationRepository();
     }
 
 
@@ -110,7 +102,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 // Insert the entity into the database
-                const createdEntity = await this.repository.add(body);
+                const createdEntity = await this.getRepository().add(body);
 
                 // Return the success response
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(createdEntity), ConstHTTPRequest.INSERT_SUCESS);
@@ -166,7 +158,7 @@ export default  class GenericController implements IGenericController{
 
             try {
                 // Execute the update action in the database
-                const updateEntity = await this.repository.update(id, body,
+                const updateEntity = await this.getRepository().update(id, body,
                                                              reqHandler.getLogicalDelete());
                 // Return the success response
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), ConstHTTPRequest.UPDATE_SUCCESS);
@@ -212,11 +204,11 @@ export default  class GenericController implements IGenericController{
                 // Execute the delete action in the database
                 if(reqHandler.getLogicalDelete()){
                     // Logically remove the entity from the database
-                    const deletedEntity = await this.repository.logicalRemove(id);
+                    const deletedEntity = await this.getRepository().logicalRemove(id);
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), ConstHTTPRequest.DELETE_SUCCESS);
                 }else{
                     // Remove the entity from the database
-                    const deletedEntity = await this.repository.remove(id);
+                    const deletedEntity = await this.getRepository().remove(id);
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), ConstHTTPRequest.DELETE_SUCCESS);
                 }
                 
@@ -258,7 +250,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 // Execute the get by id action in the database
-                const entity = await this.repository.findById(id, reqHandler.getLogicalDelete());
+                const entity = await this.getRepository().findById(id, reqHandler.getLogicalDelete());
 
                 if(entity != null && entity != undefined){
                     // Return the success response
@@ -306,7 +298,7 @@ export default  class GenericController implements IGenericController{
 
             try{
                 // Execute the get by code action in the database
-                const entity = await this.repository.findByCode(code, reqHandler.getLogicalDelete());
+                const entity = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
                 if(entity != null && entity != undefined){
                     // Return the success response
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
@@ -356,7 +348,7 @@ export default  class GenericController implements IGenericController{
                     config.HTTP_REQUEST.PAGE_SIZE;
 
                 // Execute the get all action in the database
-                const entities = await this.repository.findAll(reqHandler.getLogicalDelete(), page, size);
+                const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), page, size);
                 if(entities != null && entities != undefined){
                     // Return the success response
                     return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
@@ -411,7 +403,7 @@ export default  class GenericController implements IGenericController{
                     config.HTTP_REQUEST.PAGE_SIZE;
 
                 // Execute the find by filters action in the database
-                const entities = await this.repository.findByFilters(reqHandler.getFilters()!,
+                const entities = await this.getRepository().findByFilters(reqHandler.getFilters()!,
                     reqHandler.getLogicalDelete(), page, size);
 
                 if(entities != null && entities != undefined){
@@ -431,200 +423,4 @@ export default  class GenericController implements IGenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
         }
     }
-
-    
-
-
-     /**
-      * This function validates the role of the user.
-      * 
-      * @param {RequestHandler} reqHandler - The request handler object.
-      * @param {string} role - The role of the user.
-      * @param {string} action - The action to be performed.
-      * @param {HttpAction} httpAction - The HTTP action object.
-      * @return {Promise<any>} - A promise that resolves to the result of the validation.
-      */
-     protected async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
-        /**
-         * Validates the role of the user.
-         * If the user's role is required to be validated, it checks if the user has the permission for the specified action.
-         * If the user does not have the permission, it returns an unauthorized error.
-         * 
-         * @returns {Promise<any>} A promise that resolves to the result of the validation.
-         */
-        if(reqHandler.getRoleValidation()){
-
-            // If the module is empty, return an error.
-            if(reqHandler.getModule() == ""){
-                return httpAction.dynamicError(ConstStatusJson.ERROR, ConstMessagesJson.ROLE_MODULE_ERROR);
-            }
-
-            // Get the permission for the specified action and role from the role repository.
-            const roleFunc = await this.roleRepository.getPermissionByFuncAndRole(role, reqHandler.getModule(), action);
-            // If the user does not have the permission, return an unauthorized error.
-            if (roleFunc == false) {
-                return httpAction.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Validates the required fields of the body JSON.
-     * 
-     * @param {RequestHandler} reqHandler - The request handler object.
-     * @param {Validations} validation - The validations object.
-     * @return {boolean} - Returns true if all the required fields are present, false otherwise.
-     */
-    protected validateRequiredFields(reqHandler: RequestHandler, validation: Validations): boolean {
-        // Check if the required fields list is not null
-        if (reqHandler.getRequiredFieldsList() != null) {
-            // Validate the required fields
-            if (!validation.validateRequiredFields(reqHandler.getRequiredFieldsList())) {
-                // If any of the required fields are missing, return false
-                return false;
-            }
-        }
-
-        // If all the required fields are present, return true
-        return true;
-    }
-
-    /**
-     * Validates the regex of any fields.
-     * It checks if the request handler object contains a list of regex validators.
-     * If it does, it validates the multiple regex using the validation object.
-     * 
-     * @param {RequestHandler} reqHandler - The request handler object.
-     * @param {Validations} validation - The validations object.
-     * @returns {boolean} - Returns true if all the regex validations pass, false otherwise.
-     */
-    protected validateRegex(reqHandler: RequestHandler, validation: Validations): boolean {
-        // Check if the request handler object contains a list of regex validators
-        if (reqHandler.getRegexValidatorList() != null) {
-            // Validate the multiple regex using the validation object
-            if (validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null) {
-                // If any of the regex validations fail, return false
-                return false;
-            }
-        }
-
-        // If all the regex validations pass, return true
-        return true;
-    }
-
-    /**
-     * Sets the user ID in the body object if the ID is not present.
-     * This function checks if the user ID is present in the body object.
-     * If it is not present, it sets the user ID with the provided ID.
-     *
-     * @param {any} body - The body object containing the user ID
-     * @param {number} id - The ID to set in the user ID field if it is not present in the body object
-     * @return {any} - The modified body object with the user ID field set
-     */
-    protected setUserId(body: any, id: number): any {
-        // Check if the user ID is not present in the body object
-        if (!(ConstGeneral.USER_ID in body)) {
-            // If the user ID is not present, set the user ID with the provided ID
-            body.userId = id;
-        }
-
-        // Return the modified body object with the user ID field set
-        return body;
-    }
-   
-    /**
-     * Validates the user ID by ID or code entity.
-     * This function checks if the request handler object requires validation of the where clause by user ID.
-     * If it does, it checks the role of the JWT and sets the user ID accordingly.
-     * Then, it calls the appropriate entity retrieval function based on the type of the ID or code.
-     * Finally, it checks if the entity exists and if the user ID of the entity is different from the user ID of the JWT.
-     * If any of these conditions are not met, it returns an unauthorized error.
-     *
-     * @async
-     * @param {RequestHandler} reqHandler - The request handler object.
-     * @param {HttpAction} httpExec - The HTTP action object.
-     * @param {JWTObject} jwtData - The JWT object.
-     * @param {number | string} idOrCode - The ID or code of the entity.
-     * @return {Promise<any>} - Returns a promise that resolves to the result of the HTTP action object.
-     */
-    protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
-        let userId: number | null = null; // Initialize user ID
-
-        // Check if the request handler object requires validation of the where clause by user ID
-        if (reqHandler.getRequireValidWhereByUserId()) {
-            // Check if the role of the JWT is not admin
-            if (jwtData.role != ConstRoles.ADMIN) {
-                userId = jwtData.id; // Set the user ID with the ID of the JWT
-            }
-
-            // Call the appropriate entity retrieval function based on the type of the ID or code
-            let entity: any = null; // Initialize entity
-            if (typeof idOrCode === 'number') {
-                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete()); // Call findById function
-            } else {
-                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete()); // Call findByCode function
-            }
-
-            // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
-            if (entity != undefined && entity != null ) {
-                if (userId != null && entity.user_id != userId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
-                    return false;
-                }
-                
-            } else {
-                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
-                return false;
-            }
-        }
-
-        return true;
-    }
-  
-    /**
-     * Retrieves the ID from the query parameters.
-     * 
-     * @param {Validations} validation - The validation object.
-     * @param {HttpAction} httpExec - The HTTP action object.
-     * @return {number | null} - The ID from the query parameters or null if validation fails.
-     */
-    protected getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
-        // Validate the ID from the query parameters
-        const id = validation.validateIdFromQuery();
-
-        // If the ID is null (validation failed), return a parameter error
-        if(id == null){
-            httpExec.paramsError();
-            return null;
-        }
-
-        // Return the ID from the query parameters
-        return id;
-    }
- 
-
-    /**
-     * Retrieves the code from the query parameters.
-     * 
-     * @param {Validations} validation - The validation object.
-     * @param {HttpAction} httpExec - The HTTP action object.
-     * @return {string | null} - The code from the query parameters or null if validation fails.
-     */
-    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
-        // Validate the code from the query parameters
-        const code = validation.validateCodeFromQuery();
-
-        // If the code is null (validation failed), return a parameter error
-        if(code == null){
-            // Return a parameter error
-            httpExec.paramsError();
-            return null;
-        }
-
-        // Return the code from the query parameters
-        return code;
-    }
-  
 }
