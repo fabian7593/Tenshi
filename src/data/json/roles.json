@@ -61,6 +61,12 @@
           "function_list": [
             "CREATE"
           ]
+        },
+        {
+          "name": "ROLE",
+          "function_list": [
+            "GET_ALL"
+          ]
         }
       ],
       "screens": [
@@ -103,7 +109,7 @@
     },
     {
       "id": 3,
-      "code": "USER",
+      "code": "CUSTOMER",
       "name": "Customer",
       "description": "Customer role with access to customer-specific functionalities.",
       "modules": [

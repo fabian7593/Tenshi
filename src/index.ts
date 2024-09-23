@@ -34,6 +34,7 @@ import { default as bodyParser } from 'body-parser';
 
 //Import Routes
 import UserRoutes from '@modules/user/routers/UserRoutes';
+import RoleRoutes from '@modules/role/routers/RoleRoutes';
 import UdcRoutes from '@modules/udc/routers/UdcRoutes';
 import NotificationRoutes from '@modules/notification/routers/NotificationRoutes';
 import UserNotificationRoutes from '@modules/notification/routers/UserNotificationRoutes';
@@ -102,6 +103,7 @@ app.use(StartMiddleware);
 //*************************************** */
 //Add Routers
 app.use(new UserRoutes().getRouter());
+app.use(new RoleRoutes().getRouter());
 app.use(new UdcRoutes().getRouter());
 app.use(new NotificationRoutes().getRouter());
 app.use(new UserNotificationRoutes().getRouter());

@@ -106,4 +106,10 @@ export default  class UserDTO implements IAdapterFromBody{
     
         return userLogin;
     }
+
+    rolesToResponse(accessToken: string, refreshToken: string, screens : string[] | null) : any{
+        return  {
+            roles : [accessToken, refreshToken, screens]
+        };
+    }
 }

@@ -152,6 +152,26 @@ export default class RoleRepository {
     // Return the array of screen names.
     return screenNames;
   }
- 
+
+
+  /**
+   * Retrieves the list of roles with their IDs, names, and codes.
+   *
+   * @return {Promise<{ id: number, name: string, code: string }[]>} - A promise that resolves to an array of role objects with their IDs, names, and codes.
+   */
+  public async getRoles(): Promise<{ id: number, name: string, code: string }[]> {
+    
+    if (!this.roles || this.roles.length === 0) {
+      // If there are no roles, return an empty array.
+      return [];
+    }
+
+    // Map the roles to an array of objects with their IDs, names, and codes.
+    return this.roles.map(role => ({
+      id: role.id,
+      name: role.name,
+      code: role.code
+    }));
+  }
 }
 

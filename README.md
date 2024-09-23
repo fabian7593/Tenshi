@@ -568,7 +568,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
 - **Oauth:** Develop OAuth implementation for Google.
 - **Endpoint:** Implement Logout
-- **Endpoint:** Get all roles (just for admin)
 - **Module:** Add a payments methods.
 - **Module:** Add a subscriptions.
 - **Generics:** Create Generics methods for GenericRouters class (Just send the handle request by prameter).

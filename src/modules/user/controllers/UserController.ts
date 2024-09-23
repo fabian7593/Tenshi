@@ -244,6 +244,27 @@ export default class UserController extends GenericController{
 
 
 
+    async logoutUser(reqHandler: RequestHandler){
+
+        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
+    
+        try{
+            const accessToken = reqHandler.getRequest().params.accessToken;
+            let verify = null;
+            try {
+                verify =  jwt.verify(accessToken, config.JWT.MAIN_TOKEN.SECRET_KEY);
+            } catch (error) {
+                return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+            }
+    
+        }catch(error : any){
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+        }
+    }
+
+
+
+
     //Logic to refresh token
     async refreshToken(reqHandler: RequestHandler){
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
@@ -463,4 +484,5 @@ export default class UserController extends GenericController{
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }
     }
+
 }
