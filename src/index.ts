@@ -12,7 +12,7 @@ const config = configManager.getConfig();
 //          Entities and Database
 //*************************************** */
 import { Database } from "@TenshiJS/persistance/TypeORMConnection";
-import { User } from '@entity/User';
+import { User } from '@TenshiJS/entity/User';
 import { Document } from '@entity/Document';
 import { Notification } from '@entity/Notification';
 import { UnitDynamicCentral } from '@entity/UnitDynamicCentral';

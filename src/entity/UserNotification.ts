@@ -1,6 +1,6 @@
 // src/entity/UserNotification.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "./User";
+import { User } from "../../tenshi/entity/User";
 import { Notification } from "./Notification";
 
 @Entity("user_notifications")

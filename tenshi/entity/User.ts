@@ -1,5 +1,5 @@
 // src/entity/User.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn({ type: "int", unsigned: true })
@@ -16,6 +16,9 @@ export class User {
 
   @Column({ type: "varchar", length: 250, unique: true })
   email: string;
+
+  @Column({ type: "varchar", length: 250, unique: true, nullable: true, default: null })
+  user_name: string;
 
   @Column({ type: "varchar", length: 250, nullable: true, default: null })
   phone_number: string | null;

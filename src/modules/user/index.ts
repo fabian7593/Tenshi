@@ -4,7 +4,7 @@ export { encryptPassword, decryptPassword } from "@TenshiJS/utils/encryptionUtil
 
 //user
 export { default as UserController } from "@modules/user/controllers/UserController";
-export { User } from "@entity/User";
+export { User } from "@TenshiJS/entity/User";
 export { default as UserDTO } from "@modules/user/dtos/UserDTO";
 export { default as UserRepository } from "@modules/user/repositories/UserRepository";
 

@@ -107,22 +107,21 @@ export default class UserController extends GenericController{
             if(!this.validateRequiredFields(reqHandler, validation)){ return; }
             if(!this.validateRegex(reqHandler, validation)){ return; }
     
+            //Password encryption
+            userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
+
+            const jwtObj : JWTObject = {
+                id: 0,
+                email: userBody!.email,
+                role: config.SERVER.CUSTOMER_REGULAR_ROLE
+            }
             
-                //Password encryption
-                userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
+            const registerToken = JWTService.generateRegisterToken(jwtObj); 
+            userBody.active_register_token = registerToken;
 
-                const jwtObj : JWTObject = {
-                    id: 0,
-                    email: userBody!.email,
-                    role: userBody!.role_code
-                }
-                
-                const registerToken = JWTService.generateRegisterToken(jwtObj); 
-                userBody.active_register_token = registerToken;
-
-                //set the language
-                userBody.language = userBody.language == null ? reqHandler.getRequest().headers[ConstGeneral.HEADER_LANGUAGE] : userBody.language
-           
+            //set the language
+            userBody.language = userBody.language == null ? reqHandler.getRequest().headers[ConstGeneral.HEADER_LANGUAGE] : userBody.language
+        
             try{
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);

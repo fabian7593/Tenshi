@@ -1,6 +1,6 @@
 export { Notification } from "@entity/Notification";
 export { UserNotification } from "@entity/UserNotification";
-export { User } from "@entity/User";
+export { User } from "@TenshiJS/entity/User";
 export { default as NotificationDTO } from "@modules/notification/dtos/NotificationDTO";
 export { default as UserNotificationDTO } from "@modules/notification/dtos/UserNotificationDTO";
 export { default as UserNotificationController } from "@modules/notification/controllers/UserNotificationController";

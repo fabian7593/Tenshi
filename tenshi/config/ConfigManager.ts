@@ -31,6 +31,7 @@ interface ServerConfig {
     DEFAULT_LANGUAGE: string;
     FORMAT_DATE: string;
     MAX_REQUEST_PER_SECOND: number;
+    CUSTOMER_REGULAR_ROLE: string;
 }
 
 interface DbConfig {
@@ -95,6 +96,15 @@ interface UrlFilesConfig {
     ROLES_JSON: string;
 }
 
+interface SuperAdminConfig {
+    USER_EMAIL: string;
+    PASSWORD: string;
+    FIRST_NAME: string;
+    LAST_NAME: string;
+    USERNAME: string;
+}
+
+
 interface AppConfig {
     COMPANY: CompanyConfig;
     SERVER: ServerConfig;
@@ -105,6 +115,7 @@ interface AppConfig {
     FILE_STORAGE: FileStorageConfig;
     EMAIL: EmailConfig;
     URL_FILES: UrlFilesConfig;
+    SUPER_ADMIN: SuperAdminConfig;
 }
 
 class ConfigManager {

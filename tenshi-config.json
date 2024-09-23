@@ -19,7 +19,15 @@
         "IS_DEBUGGING": true,
         "FAIL_LOGIN_MAX_NUMBER": 3,
         "DEFAULT_LANGUAGE" : "en",
-        "FORMAT_DATE" : "es-ES"
+        "FORMAT_DATE" : "es-ES",
+        "CUSTOMER_REGULAR_ROLE" : "USER"
+    },
+    "SUPER_ADMIN":{
+        "USER_EMAIL":"tenshitest1@gmail.com",
+        "PASSWORD":"tenshitest1",
+        "FIRST_NAME":"Tenshi",
+        "LAST_NAME":"Test",
+        "USERNAME":"tenshitest1"
     },
     "DB": {
         "TYPE": "mariadb",

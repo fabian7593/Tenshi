@@ -14,8 +14,7 @@ export const requiredBodyList = (req: Request): string[] => {
         req.body.first_name, 
         req.body.last_name, 
         req.body.email, 
-        req.body.password, 
-        req.body.role_code
+        req.body.password
     ];
 }
          

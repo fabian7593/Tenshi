@@ -1,5 +1,6 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { User } from "@entity/User";
+import { User } from "@TenshiJS/entity/User";
+import { config } from "@index/index";
 
 export default  class UserDTO implements IAdapterFromBody{
     req: Request;
@@ -23,7 +24,7 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.gender = this.req.body.gender || null;
         entity.birth_date = this.req.body.birth_date || null;
         entity.country_iso_code = this.req.body.country_iso_code || null;
-        entity.role_code = this.req.body.role_code;
+        entity.role_code = this.req.body.role_code || config.SERVER.CUSTOMER_REGULAR_ROLE;
         entity.language = this.req.body.language || null;
         return entity;
     }

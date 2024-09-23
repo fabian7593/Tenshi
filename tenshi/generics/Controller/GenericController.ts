@@ -5,7 +5,6 @@ import HttpAction from 'tenshi/helpers/HttpAction';
 import ConfigManager  from "tenshi/config/ConfigManager";
 import { EntityTarget, RequestHandler } from 'tenshi/generics/index';
 
-import RoleRepository from "tenshi/generics/Role/RoleRepository"
 import IGenericRepository from 'tenshi/generics/Repository/IGenericRepository';
 import GenericRepository from 'tenshi/generics/Repository/GenericRepository';
 

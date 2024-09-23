@@ -1,5 +1,5 @@
 import { FindOneOptions, GenericRepository } from "@modules/index";
-import { User } from "@entity/User";
+import { User } from "@TenshiJS/entity/User";
 
 export default class UserRepository extends GenericRepository{
 

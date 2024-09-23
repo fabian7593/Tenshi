@@ -103,7 +103,7 @@
     },
     {
       "id": 3,
-      "code": "CUSTOMER",
+      "code": "USER",
       "name": "Customer",
       "description": "Customer role with access to customer-specific functionalities.",
       "modules": [
