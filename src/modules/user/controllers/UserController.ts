@@ -6,6 +6,7 @@ import { UserRepository, encryptPassword,
         decryptPassword, JWTService, UserDTO, 
         User} from "@modules/user";
         
+import { blockToken } from "@TenshiJS/utils/nodeCacheUtils";
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
@@ -247,16 +248,20 @@ export default class UserController extends GenericController{
     async logoutUser(reqHandler: RequestHandler){
 
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
-    
+        const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
+
         try{
-            const accessToken = reqHandler.getRequest().params.accessToken;
-            let verify = null;
             try {
-                verify =  jwt.verify(accessToken, config.JWT.MAIN_TOKEN.SECRET_KEY);
+               const jwtAuth = reqHandler.getRequest().headers[ConstGeneral.HEADER_AUTH];
+               if (typeof jwtAuth === 'string') {
+                   await blockToken(jwtAuth);
+                   await insertLogTracking(reqHandler, `Logout ${jwtData.email}`, ConstStatusJson.SUCCESS,
+                    null, String(jwtData.id), ConstLogs.LOGIN_TRACKING);
+                   return httpExec.successAction(null, ConstHTTPRequest.LOGOUT_SUCCESS);
+               } 
             } catch (error) {
                 return httpExec.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
             }
-    
         }catch(error : any){
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
         }

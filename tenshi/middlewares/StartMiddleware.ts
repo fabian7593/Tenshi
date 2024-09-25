@@ -18,7 +18,7 @@ import { getIpAddress } from 'tenshi/utils/httpUtils';
  * @param {Response} res - The express response object.
  * @param {NextFunction} next - The next middleware function.
  */
-function StartMiddleware(req : Request, res: Response, next: NextFunction) {
+async function StartMiddleware(req : Request, res: Response, next: NextFunction) {
 
     const config = ConfigManager.getInstance().getConfig();
     // Create HttpAction object to handle the response
@@ -39,7 +39,7 @@ function StartMiddleware(req : Request, res: Response, next: NextFunction) {
 
     // Validate JWT if the request path is not excluded
     if (!isPageOutJwt) {
-        jwtData = validation.validateRequireJWT();
+        jwtData = await validation.validateRequireJWT();
 
         // If JWT validation fails, send the response and stop the execution
         if (jwtData == null) { 

@@ -9,6 +9,7 @@ export class ConstFunctions {
 
 export class ConstHTTPRequest {
     public static readonly LOGIN_SUCCESS: string = "LOGIN_SUCCESS";
+    public static readonly LOGOUT_SUCCESS: string = "LOGOUT_SUCCESS";
     public static readonly REFRESH_TOKEN_SUCCESS: string = "REFRESH_TOKEN_SUCCESS";
     public static readonly INSERT_SUCESS: string = "INSERT_SUCCESS";
     public static readonly UPDATE_SUCCESS: string = "UPDATE_SUCCESS";

@@ -30,6 +30,7 @@
     "GET_SUCCESS": "Get Entries Successful",
     "GET_BY_ID_SUCCESS": "Get Entry Successful",
     "LOGIN_SUCCESS": "Login Successful",
+    "LOGOUT_SUCCESS": "Logout Successful",
     "SEND_MAIL_SUCCESS": "Send Mail Successful",
 
     "ERROR_GENERAL" : "Internal Server Error"

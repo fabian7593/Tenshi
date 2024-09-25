@@ -85,7 +85,7 @@ class UserRoutes extends GenericRoutes {
         });
 
         
-        this.router.get(`${this.getRouterName()}/logout/:accessToken`, async (req: Request, res: Response) => {
+        this.router.post(`${this.getRouterName()}/logout`, async (req: Request, res: Response) => {
             const requestHandler: RequestHandler = 
                 new RequestHandlerBuilder(res, req)
                     .setMethod("logoutUser")

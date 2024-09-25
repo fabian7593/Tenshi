@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import JWTObject  from 'tenshi/objects/JWTObject';
 import HttpAction from 'tenshi/helpers/HttpAction';
+import { isTokenBlocked } from "@TenshiJS/utils/nodeCacheUtils";
 
 import ConfigManager  from "tenshi/config/ConfigManager";
 import { getRegex } from "tenshi/utils/jsonUtils";
@@ -133,9 +134,9 @@ export default class Validations{
      *
      * @return {JWTObject | null} The decoded JWT object if the validation is successful, otherwise null.
      */
-    public validateRequireJWT(): JWTObject | null {
+    public async validateRequireJWT(): Promise<JWTObject | null> {
         const config = ConfigManager.getInstance().getConfig();
-        let returnJwt = null; 
+        let returnJwt : JWTObject | null = null; 
 
         try {
             // Check if the request headers exist
@@ -150,14 +151,29 @@ export default class Validations{
                 } else {
                     // Validate assigned secret key with the database
                     const jwtAuth = this.req.headers[ConstGeneral.HEADER_AUTH];
+                    let isInvalidToken = false;
 
-                    try {
-                        // Verify the token using the secret key from the configuration
-                        const decoded = jwt.verify(jwtAuth, config.JWT.MAIN_TOKEN.SECRET_KEY);
-                        returnJwt = decoded;
-                    } catch (error) {
-                        // If the token is invalid, return an unauthorized error
-                        this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                    if (typeof jwtAuth === 'string') {
+                        if(await isTokenBlocked(jwtAuth)){
+                            isInvalidToken = true;
+                            // If the token is invalid, return an unauthorized error
+                            this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                        }
+                    }else{
+                        isInvalidToken = true;
+                         // If the token is invalid, return an unauthorized error
+                         this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                    } 
+
+                    if(!isInvalidToken){
+                        try {
+                            // Verify the token using the secret key from the configuration
+                            const decoded = jwt.verify(jwtAuth, config.JWT.MAIN_TOKEN.SECRET_KEY);
+                            returnJwt = decoded;
+                        } catch (error) {
+                            // If the token is invalid, return an unauthorized error
+                            this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                        }
                     }
                 }
             }

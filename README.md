@@ -570,7 +570,7 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Endpoint:** Implement Logout
 - **Module:** Add a payments methods.
 - **Module:** Add a subscriptions.
-- **Generics:** Create Generics methods for GenericRouters class (Just send the handle request by prameter).
+- **Generics:** Create Generics Service to avoid repeat your code in controllers.
 - **Middleware:** Separate validation and error handling logic into middlewares.
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
