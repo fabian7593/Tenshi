@@ -69,6 +69,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - API key validation.
 - Request throttling to prevent DDoS attacks.
 - Security headers via Helmet.
+- JWT storage in memory cache for logout implementation.
 
 ### Validations
 - JWT validation.
@@ -567,7 +568,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Library:** Migrate all logic of Tenshi to a TypeScript library.
 - **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
 - **Oauth:** Develop OAuth implementation for Google.
-- **Endpoint:** Implement Logout
 - **Module:** Add a payments methods.
 - **Module:** Add a subscriptions.
 - **Generics:** Create Generics Service to avoid repeat your code in controllers.
