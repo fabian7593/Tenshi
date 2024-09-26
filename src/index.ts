@@ -27,6 +27,7 @@ Database.getInstance([User, Document, Notification, UnitDynamicCentral, UserNoti
 //Import general libraries 
 import 'module-alias/register';
 import 'reflect-metadata';
+import http from 'http';
 import { default as express } from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import { default as cors } from 'cors';
@@ -71,61 +72,85 @@ export { debuggingMessage, insertLogBackend, insertLogTracking, config };
 
 
 //*************************************** */
-//              VARIABLES
+//           Started Variables
 //*************************************** */
 //add necessary variables
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
+export let httpServer: ReturnType<typeof http.createServer>;
 
 
 //*************************************** */
-//              MIDDLEWARES
+//           Started FUNCTION
 //*************************************** */
-//MiddleWare to set content type to json
-app.use((req : Request, res : Response, next : NextFunction) => {
-  res.setHeader(ConstGeneral.HEADER_TYPE, ConstGeneral.HEADER_JSON);
-  next();
-});
+export const TenshiMain = () => {
 
-if(config.SERVER.IS_DEBUGGING === false) {
-  //security helmet headers middleware
-  app.use(helmet());
-  //rate limit fo dos attack middleware
-  app.use(RateLimitMiddleware);
-}
+    //Cors handler middle ware
+    app.use(CorsHandlerMiddleware);
+    app.use(cors());
+    app.use(bodyParser.json());
 
-//Cors handler middle ware
-app.use(CorsHandlerMiddleware);
-//middleware to validate JWT and secret key
-app.use(StartMiddleware);
 
-//logging handler 
-app.use(LoggingHandlerMiddleware);
+    //*************************************** */
+    //              MIDDLEWARES
+    //*************************************** */
+    //MiddleWare to set content type to json
+    app.use((req : Request, res : Response, next : NextFunction) => {
+      res.setHeader(ConstGeneral.HEADER_TYPE, ConstGeneral.HEADER_JSON);
+      next();
+    });
 
-//*************************************** */
-//              ROUTES
-//*************************************** */
-//Add Routers
-app.use(new UserRoutes().getRouter());
-app.use(new RoleRoutes().getRouter());
-app.use(new UdcRoutes().getRouter());
-app.use(new NotificationRoutes().getRouter());
-app.use(new UserNotificationRoutes().getRouter());
-app.use(new LogRoutes().getRouter());
-app.use(new EmailRoutes().getRouter());
-app.use(new DocumentRoutes().getRouter());
+    if(config.SERVER.IS_DEBUGGING === false) {
+      //security helmet headers middleware
+      app.use(helmet());
+      //rate limit fo dos attack middleware
+      app.use(RateLimitMiddleware);
+    }
 
-//*************************************** */
-//      ROUTE NOT FOUND MIDDLEWARE
-//*************************************** */
-app.use(RouteNotFoundMiddleware);
+    //middleware to validate JWT and secret key
+    app.use(StartMiddleware);
+    //logging handler 
+    app.use(LoggingHandlerMiddleware);
 
-//*************************************** */
-//              LISTENER
-//*************************************** */
-//Open port and listen API
-app.listen(config.SERVER.PORT, () => {
-  debuggingMessage(`${config.COMPANY.NAME} - TenshiJS Service Start in Port ${config.SERVER.PORT}`);
-});
+
+
+    //*************************************** */
+    //              ROUTES
+    //*************************************** */
+    //Add Routers
+    app.use(new UserRoutes().getRouter());
+    app.use(new RoleRoutes().getRouter());
+    app.use(new UdcRoutes().getRouter());
+    app.use(new NotificationRoutes().getRouter());
+    app.use(new UserNotificationRoutes().getRouter());
+    app.use(new LogRoutes().getRouter());
+    app.use(new EmailRoutes().getRouter());
+    app.use(new DocumentRoutes().getRouter());
+
+    //*************************************** */
+    //       NOT FOUND ROUTE MIDDLEWARE
+    //*************************************** */
+    app.use(RouteNotFoundMiddleware);
+
+
+    //*************************************** */
+    //              LISTENER
+    //*************************************** */
+    httpServer = http.createServer(app);
+    httpServer.listen(config.SERVER.PORT, () => {
+      debuggingMessage(`${config.COMPANY.NAME} - TenshiJS Service Start in Port ${config.SERVER.PORT}`);
+    });
+};
+  
+
+//When the application is closed, close the db conection.
+export const Shutdown = (callback: any) => {
+  if (httpServer) {
+      httpServer.close(() => {
+          Database.closeConnection();
+      });
+  } else {
+      Database.closeConnection();
+  }
+};
+
+TenshiMain();

@@ -74,4 +74,13 @@ export class Database {
 
         return Database.instance; // Return the singleton instance
     }
+
+
+
+    public static closeConnection() {
+        // Close connection
+        if (Database.instance) {
+            Database.instance.destroy();
+        }
+    }
 }
