@@ -17,6 +17,7 @@ export const requiredBodyList = (req: Request): string[] => {
         req.body.password
     ];
 }
+
          
 export const regexValidationRecoverUserAndPassList = (req: Request): [string, string][] => {
     return [

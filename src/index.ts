@@ -48,6 +48,9 @@ import RateLimitMiddleware from '@TenshiJS/middlewares/RateLimitMiddleware';
 import { debuggingMessage, insertLogBackend, insertLogTracking } from '@TenshiJS/utils/logsUtils';
 import helmet from 'helmet';
 import { ConstGeneral } from '@TenshiJS/consts/Const';
+import RouteNotFoundMiddleware from '@TenshiJS/middlewares/RouteNotFoundMiddleware';
+import { CorsHandlerMiddleware } from '@TenshiJS/middlewares/CorsHandlerMiddleware';
+import LoggingHandlerMiddleware from '@TenshiJS/middlewares/LoggingHandlerMiddleware';
 
 
 //*************************************** */
@@ -78,7 +81,7 @@ app.use(bodyParser.json());
 
 
 //*************************************** */
-//              MIDDLEWARE
+//              MIDDLEWARES
 //*************************************** */
 //MiddleWare to set content type to json
 app.use((req : Request, res : Response, next : NextFunction) => {
@@ -93,10 +96,13 @@ if(config.SERVER.IS_DEBUGGING === false) {
   app.use(RateLimitMiddleware);
 }
 
+//Cors handler middle ware
+app.use(CorsHandlerMiddleware);
 //middleware to validate JWT and secret key
 app.use(StartMiddleware);
 
-
+//logging handler 
+app.use(LoggingHandlerMiddleware);
 
 //*************************************** */
 //              ROUTES
@@ -111,6 +117,10 @@ app.use(new LogRoutes().getRouter());
 app.use(new EmailRoutes().getRouter());
 app.use(new DocumentRoutes().getRouter());
 
+//*************************************** */
+//      ROUTE NOT FOUND MIDDLEWARE
+//*************************************** */
+app.use(RouteNotFoundMiddleware);
 
 //*************************************** */
 //              LISTENER

@@ -35,7 +35,9 @@ export class ConstStatusJson {
 
 export class ConstMessagesJson {
     public static readonly DONT_EXISTS: string = "DONT_EXISTS";
+    public static readonly ROUTE_DONT_EXISTS: string = "ROUTE_DONT_EXISTS";
     public static readonly DATA_BASE_ERROR: string = "DATA_BASE_ERROR";
+    public static readonly LOGGING_MIDDLEWARE: string = "LOGGING_MIDDLEWARE";
     public static readonly ERROR_GENERAL: string = "ERROR_GENERAL";
     public static readonly REQUIRED_URL_PARAMS: string = "REQUIRED_URL_PARAMS";
     public static readonly INCOMPLETE_BODY_REQUEST: string = "INCOMPLETE_BODY_REQUEST";

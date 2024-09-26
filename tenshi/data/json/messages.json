@@ -14,6 +14,7 @@
     "THERE_ARE_NOT_INFO": "There are not information to show",
     "DONT_DELETE": "It was not eliminated any entry",
     "DONT_EXISTS": "Entry doesn't exists",
+    "ROUTE_DONT_EXISTS": "Route doesn't exists",
     "RESET_PASSWORD": "Change Password Success",
 
     "INVALID_TOKEN": "Invalid JWT",
@@ -23,6 +24,8 @@
     "INVALID_REFRESH_TOKEN": "Invalid Refresh Token",
 
     "DATA_BASE_ERROR": "Data Base Error",
+
+    "LOGGING_MIDDLEWARE": "Logging Middleware",
 
     "INSERT_SUCCESS": "Insert Entry Successful",
     "UPDATE_SUCCESS": "Update Entry Successful",

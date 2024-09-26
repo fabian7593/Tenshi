@@ -19,7 +19,6 @@ class RoleRoutes extends GenericRoutes {
 
 
     protected initializeRoutes() {
-        console.log(this.getRouterName());
         // Get all the roles of the users
         this.router.get(`${this.getRouterName()}/get_all`, async (req: Request, res: Response) => {
         

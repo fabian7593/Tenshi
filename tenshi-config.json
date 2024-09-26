@@ -49,7 +49,8 @@
         "LOG_SERVER":true,
         "LOG_TRACEABILLITY":true,
         "LOG_DATABASE":true,
-        "LOG_FILE":true
+        "LOG_FILE":true,
+        "LOG_MIDDLEWARE":false
     },
     "HTTP_REQUEST":{
         "PAGE_SIZE": 3000,

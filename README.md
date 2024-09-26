@@ -61,6 +61,8 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - Role management through a JSON file.
 - Email module supporting individual or bulk email sending.
 - Multi-language support for emails and notifications.
+- Correctly management of CORS.
+- Route not found middleware validation.
 
 ### Security
 - Password encryption and protection of critical data.
@@ -166,8 +168,18 @@ Configuration related to the server.
 - **FAIL_LOGIN_MAX_NUMBER**: Maximum number of failed login attempts before blocking or taking action.
 - **DEFAULT_LANGUAGE**: (2 letters language) Default language of the server.
 - **FORMAT_DATE**: Date format used for localization, e.g., "es-ES" for Spanish (Spain).
+- **CUSTOMER_REGULAR_ROLE**: Set the name of the role when a regular user register, this will be used on register endpoint. If you need a differnt role, you need to insert from admin user. in Post "user/add".
 
-### 3. **DB**
+### 3. **SUPER_ADMIN**
+Configuration of the first master user. This user is inserted in the first time open server.
+
+- **USER_EMAIL**: The email address associated with the super admin account. This is typically used for authentication and communication.
+- **PASSWORD**: The password for the super admin account. This is required for logging into the system and should be kept secure.
+- **FIRST_NAME**: The first name of the super admin user. 
+- **LAST_NAME**: The last name of the super admin user. 
+- **USERNAME**: A unique identifier for the super admin account. This is used for logging in.
+
+### 4. **DB**
 Configuration related to the database.
 
 - **TYPE**: Type of database being used. Options include "mysql" | "mariadb" | "postgres" | "mssql".
@@ -178,7 +190,7 @@ Configuration related to the database.
 - **NAME**: Name of the database to connect to.
 - **CONNECTION_LIMIT**: Maximum number of simultaneous connections allowed to the database.
 
-### 4. **URL_FILES**
+### 5. **URL_FILES**
 Specific paths related to file management and templates. (These paths are within the project's `src` folder.)
 
 - **SAVE_LOGS**: Path where system logs are stored.
@@ -187,15 +199,16 @@ Specific paths related to file management and templates. (These paths are within
 - **REGEX_JSON**: Path to the JSON file containing regular expressions used in the application.
 - **ROLES_JSON**: Path to the JSON file defining roles within the system.
 
-### 5. **LOG**
+### 6. **LOG**
 Configuration related to log management within the system.
 
 - **LOG_SERVER**: Indicates whether server-level logging should be enabled.
 - **LOG_TRACEABILITY**: Indicates whether traceability should be enabled in logs to track actions or events.
 - **LOG_DATABASE**: Indicates whether database-related logs should be recorded.
 - **LOG_FILE**: Indicates whether logs should be saved to a file.
+- **LOG_MIDDLEWARE**: Indicates whether middleware logging should be enabled. **We recommended use it just for development.**
 
-### 6. **HTTP_REQUEST**
+### 7. **HTTP_REQUEST**
 Configuration related to HTTP requests handled by the application.
 
 - **PAGE_SIZE**: Default page size for pagination of results.
@@ -203,7 +216,7 @@ Configuration related to HTTP requests handled by the application.
 - **REQUEST_WITHOUT_JWT**: List of routes that do not require a JWT token to be accessed.
 - **REQUEST_WITHOUT_API_KEY**: List of routes that do not require an API key to be accessed.
 
-### 7. **JWT**
+### 8. **JWT**
 Configuration related to JWT tokens used for authentication and authorization.
 
 - **MAIN_TOKEN**:
@@ -222,7 +235,7 @@ Configuration related to JWT tokens used for authentication and authorization.
   - **EXPIRE**: Expiration time for the user registration token.
   - **SECRET_KEY**: Secret key used to sign this token.
 
-### 8. **FILE_STORAGE**
+### 9. **FILE_STORAGE**
 Configuration related to file storage.
 
 - **GENERAL**:
@@ -236,7 +249,7 @@ Configuration related to file storage.
   - **MINUTES_LIMIT_PRIVATE_FILE**: Time limit in minutes for accessing private files.
   - **PUBLIC_FOLDER**: Public folder within the bucket for storing publicly accessible files.
 
-### 9. **EMAIL**
+### 10. **EMAIL**
 Configuration related to the email service used by the application.
 
 - **SERVICE**: Email service used, e.g., "gmail" | "outlook" | "sendgrid".
@@ -565,13 +578,15 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 
 ### Todo List For Tenshi
 
-- **Library:** Migrate all logic of Tenshi to a TypeScript library.
+- **Library:** Migrate all logic of Tenshi to a TypeScript library. ***URGENT***
 - **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
 - **Oauth:** Develop OAuth implementation for Google.
-- **Module:** Add a payments methods.
-- **Module:** Add a subscriptions.
+- **Functionallity:** Add Login with username.
+- **Security:** Add Two Factor Authentication into login.
+- **Module:** Add payments methods module.
+- **Module:** Add subscriptions module.
 - **Generics:** Create Generics Service to avoid repeat your code in controllers.
-- **Middleware:** Separate validation and error handling logic into middlewares.
+- **Middleware:** Separate Error handling logic into middlewares.
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
 - **Documentation:** Create Postman Endpoints Documentation.

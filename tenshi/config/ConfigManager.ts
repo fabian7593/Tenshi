@@ -79,6 +79,7 @@ interface LogConfig {
     LOG_TRACEABILLITY: boolean;
     LOG_DATABASE: boolean;
     LOG_FILE: boolean;
+    LOG_MIDDLEWARE: boolean;
 }
 
 interface EmailConfig {
