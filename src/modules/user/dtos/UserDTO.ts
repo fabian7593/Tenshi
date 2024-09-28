@@ -95,6 +95,7 @@ export default  class UserDTO implements IAdapterFromBody{
     userFromBodyLogin(): User{
         const userLogin = new User();
         userLogin.email = this.req.body.email;
+        userLogin.user_name = this.req.body.user_name;
         userLogin.password = this.req.body.password;
     
         return userLogin;

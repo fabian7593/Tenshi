@@ -62,16 +62,15 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - Email module supporting individual or bulk email sending.
 - Multi-language support for emails and notifications.
 - Correctly management of CORS.
-- Route not found middleware validation.
 
 ### Security
-- Password encryption and protection of critical data.
-- Privacy management for specific files.
-- JWT management with expiration limits and separate handling for different requests like user registration or password reset.
+- Password encryption and protection of critical data with BCrypt.
+- Privacy management for specific files in file storage module (document module).
+- JWT management with expiration limits.
 - API key validation.
 - Request throttling to prevent DDoS attacks.
 - Security headers via Helmet.
-- JWT storage in memory cache for logout implementation.
+- JWT storage in memory cache (node-cache library) for logout implementation.
 
 ### Validations
 - JWT validation.
@@ -81,6 +80,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - Query parameters validation.
 - DTOs for body validation and response data.
 - Role and user permissions validation for executing requests.
+- Route not found middleware validation.
 
 ### Document Management
 - Administration of documents (currently supports AWS).
@@ -581,7 +581,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Library:** Migrate all logic of Tenshi to a TypeScript library. ***URGENT***
 - **Factory Pattern Documents:** Implement logic for adding documents to other services such as Azure and/or local servers.
 - **Oauth:** Develop OAuth implementation for Google.
-- **Functionallity:** Add Login with username.
 - **Security:** Add Two Factor Authentication into login.
 - **Module:** Add payments methods module.
 - **Module:** Add subscriptions module.

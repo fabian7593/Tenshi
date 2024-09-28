@@ -25,7 +25,6 @@ interface ServerConfig {
     PORT: number;
     SECRET_API_KEY: string;
     VALIDATE_API_KEY: boolean;
-    PASSWORD_SALT: string;
     IS_DEBUGGING: boolean;
     FAIL_LOGIN_MAX_NUMBER: number;
     DEFAULT_LANGUAGE: string;

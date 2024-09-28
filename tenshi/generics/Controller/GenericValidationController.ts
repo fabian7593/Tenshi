@@ -43,7 +43,7 @@ export default  class GenericValidationController{
                 return httpAction.dynamicError(ConstStatusJson.ERROR, ConstMessagesJson.ROLE_MODULE_ERROR);
             }
 
-            const roleRepository : RoleRepository = RoleRepository.getInstance();
+            const roleRepository : RoleRepository = await RoleRepository.getInstance();
             // Get the permission for the specified action and role from the role repository.
             const roleFunc = await roleRepository.getPermissionByFuncAndRole(role, reqHandler.getModule(), action);
             // If the user does not have the permission, return an unauthorized error.

@@ -70,7 +70,6 @@ export class ConstMessages {
     
 }
 
-
 export class ConstGeneral {
     public static readonly GMAIL: string = "gmail";
    

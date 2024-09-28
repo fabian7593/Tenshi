@@ -17,7 +17,7 @@ export default class RoleController extends GenericController{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
             if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().getAll, httpExec) !== true){ return; }
     
-            const roleRepository : RoleRepository = RoleRepository.getInstance();
+            const roleRepository : RoleRepository = await RoleRepository.getInstance();
             const roles = await  roleRepository.getRoles();
             return httpExec.successAction(roles, ConstHTTPRequest.GET_ALL_SUCCESS);
             

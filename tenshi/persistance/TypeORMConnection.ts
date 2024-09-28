@@ -6,7 +6,7 @@ import { User } from "tenshi/entity/User";
 
 import ConfigManager  from "tenshi/config/ConfigManager";
 import { ConstMessages, ConstRoles } from "tenshi/consts/Const";
-import { encryptPassword } from "@TenshiJS/utils/encryptionUtils";
+import { hashPassword } from "@TenshiJS/utils/encryptionUtils";
 
 export class Database {
 
@@ -55,12 +55,13 @@ export class Database {
                         
                         const adminUser = new User();
                         adminUser.email = config.SUPER_ADMIN.USER_EMAIL;
-                        adminUser.password = encryptPassword(config.SUPER_ADMIN.PASSWORD, config.SERVER.PASSWORD_SALT)!;
+                        adminUser.password = await hashPassword(config.SUPER_ADMIN.PASSWORD)!;
                         adminUser.first_name = config.SUPER_ADMIN.FIRST_NAME;
                         adminUser.last_name = config.SUPER_ADMIN.LAST_NAME;
                         adminUser.user_name = config.SUPER_ADMIN.USERNAME;
                         adminUser.role_code = ConstRoles.ADMIN; 
-                        adminUser.is_active = true;
+                        adminUser.is_active_from_email = true;
+                        adminUser.account_status = "active";
 
                         await userRepository.save(adminUser);
                     }

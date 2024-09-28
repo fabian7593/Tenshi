@@ -142,15 +142,32 @@ export const TenshiMain = () => {
 };
   
 
-//When the application is closed, close the db conection.
+/**
+ * Function to close the TenshiJS service. This function is
+ * useful when you want to close the service programmatically.
+ * @param callback - Callback function that will be executed
+ * when the service is closed.
+ */
 export const Shutdown = (callback: any) => {
   if (httpServer) {
-      httpServer.close(() => {
-          Database.closeConnection();
-      });
-  } else {
+    /**
+     * Close the http server and then close the database
+     * connection.
+     */
+    httpServer.close(() => {
       Database.closeConnection();
+    });
+  } else {
+    /**
+     * If there is no http server, then just close the database
+     * connection.
+     */
+    Database.closeConnection();
   }
 };
 
+
+//*************************************** */
+//              START SERVER
+//*************************************** */
 TenshiMain();

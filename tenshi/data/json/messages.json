@@ -5,7 +5,7 @@
     "REQUIRED_URL_PARAMS": "Missed Required URL Params",
     "REQUIRED_FILE": "Missed Required File",
 
-    "EMAIL_NOT_EXISTS_ERROR": "Email doesn't exist",
+    "EMAIL_NOT_EXISTS_ERROR": "Email or Username doesn't exist",
     "EMAIL_SENT_SUCCESS": "Email Sent Successfull",
     "USER_PASS_ERROR": "Incorrect Password",
     "USER_FAIL_LOGIN_ERROR": "Your user is inactive due to multiple login attempts.",

@@ -19,3 +19,9 @@ export class ConstTemplate{
     public static readonly GENERIC_TEMPLATE_EMAIL: string = "genericTemplateEmail";
     public static readonly ACTIVE_ACCOUNT_PAGE: string = "activeAccountPage";
 }
+
+export class ConstEnums{
+    public static readonly DOC_TYPE_DOC: string = "DOC";
+    public static readonly DOC_TYPE_IMG: string = "IMG";
+    public static readonly DOC_TYPE_OTHER: string = "OTHER";
+}

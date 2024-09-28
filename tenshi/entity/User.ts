@@ -42,7 +42,10 @@ export class User {
   is_deleted: boolean;
 
   @Column({ type: "tinyint", default: 0 })
-  is_active: boolean;
+  is_active_from_email: boolean;
+
+  @Column({ type: "enum", enum: ["active", "pending", "suspended", "closed"], default: "pending" })
+  account_status: "active" | "pending" | "suspended" | "closed";
 
   @Column({ type: "int", unsigned: true, default: 0 })
   fail_login_number: number;
@@ -61,4 +64,22 @@ export class User {
 
   @Column({ type: "varchar", length: 10, nullable: true, default: "en" })
   language: string | null;
+
+  @Column({ type: "varchar", length: 500, nullable: true, default: null })
+  profile_picture_url: string | null;
+
+  @Column({ type: "datetime", nullable: true, default: null })
+  last_login_at: Date | null;
+
+  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  created_at: Date;
+
+  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
+  updated_at: Date;
+
+  @Column({ type: "varchar", length: 45, nullable: true, default: null })
+  login_ip_address: string | null;
+
+  @Column({ type: "datetime", nullable: true, default: null })
+  verified_at: Date | null;
 }

@@ -2,8 +2,8 @@ import { HttpAction, Validations, config} from "@index/index";
 
 import { GenericController, RequestHandler, JWTObject, RoleRepository } from "@modules/index";
 
-import { UserRepository, encryptPassword, 
-        decryptPassword, JWTService, UserDTO, 
+import { UserRepository, hashPassword, 
+        verifyPassword, JWTService, UserDTO, 
         User} from "@modules/user";
         
 import { blockToken } from "@TenshiJS/utils/nodeCacheUtils";
@@ -12,6 +12,8 @@ import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateU
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate, ConstUrls } from "@index/consts/Const";
+import { AccountStatusEnum } from "@TenshiJS/enums/AccountStatusEnum";
+import { getIpAddress } from "@TenshiJS/utils/httpUtils";
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
@@ -45,7 +47,7 @@ export default class UserController extends GenericController{
 
                 if(userBody.password != undefined && userBody.password != null){
                     //Password encryption
-                    userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
+                    userBody.password = await hashPassword(userBody.password);
                 }
                 
                 //Execute Action DB
@@ -78,7 +80,7 @@ export default class UserController extends GenericController{
     
             try{
                 //Password encryption
-                userBody.password = encryptPassword(userBody.password,  config.SERVER.PASSWORD_SALT);
+                userBody.password = await hashPassword(userBody.password);
                 userBody.isActive = 1;
     
                 //Execute Action DB
@@ -109,7 +111,7 @@ export default class UserController extends GenericController{
             if(!this.validateRegex(reqHandler, validation)){ return; }
     
             //Password encryption
-            userBody.password = encryptPassword(userBody.password, config.SERVER.PASSWORD_SALT);
+            userBody.password = await hashPassword(userBody.password);
 
             const jwtObj : JWTObject = {
                 id: 0,
@@ -180,19 +182,22 @@ export default class UserController extends GenericController{
 
                 if(user != null){
 
-                    //fail login validation
-                    if(config.SERVER.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active == false){
+                    //fail login validation, suspendend account and send unathorized message
+                    if(config.SERVER.FAIL_LOGIN_MAX_NUMBER <= user.fail_login_number || user.is_active_from_email == false){
+                        user.account_status = AccountStatusEnum.Suspended;
+                        user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
+
+                        await insertLogTracking(reqHandler, `Trying to Start Session In Suspended Mode ${userBody.email}`, ConstStatusJson.UNAUTHORIZED,
+                            null, user.id, ConstLogs.LOGIN_TRACKING);
+
                         return httpExec.dynamicError(ConstStatusJson.UNAUTHORIZED, ConstMessagesJson.USER_FAIL_LOGIN_ERROR);
                     }
                     
                     //decrypt password with server salt
-                    const decryptedPass = decryptPassword(user.password, config.SERVER.PASSWORD_SALT);
+                    isSuccess = await verifyPassword(userBody.password, user.password);
                     
                     //validate the decrypted pass to the pass in the body json
-                    if(decryptedPass == userBody.password){
-                        isSuccess = true;
-                    }else{
-
+                    if(!isSuccess){
                         user.fail_login_number += 1;
                         user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
 
@@ -202,15 +207,15 @@ export default class UserController extends GenericController{
                         return httpExec.dynamicError(ConstStatusJson.UNAUTHORIZED, ConstMessagesJson.USER_PASS_ERROR);
                     }
                 }else{
-                    await insertLogTracking(reqHandler, `Email ${userBody.email} not found`, ConstStatusJson.NOT_FOUND, null,
+                    await insertLogTracking(reqHandler, `Email or Username ${userBody.email} not found`, ConstStatusJson.NOT_FOUND, null,
                                       null, ConstLogs.LOGIN_TRACKING);
                     //email not exist
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.EMAIL_NOT_EXISTS_ERROR);
                 }
     
                 if(isSuccess){
-                    const roleRepository : RoleRepository = RoleRepository.getInstance();
-                    const screens = await  roleRepository.getScreensByRole(user.role_code);
+                    const roleRepository : RoleRepository = await RoleRepository.getInstance();
+                    const screens = await roleRepository.getScreensByRole(user.role_code);
                     
                     const jwtObj : JWTObject = {
                         id: user.id,
@@ -219,7 +224,10 @@ export default class UserController extends GenericController{
                     }
 
                     user.fail_login_number = 0;
-                    user.is_active = true;
+                    user.is_active_from_email = true;
+                    user.account_status = AccountStatusEnum.Active;
+                    user.last_login_at = new Date();
+                    user.login_ip_address = getIpAddress(reqHandler.getRequest());
                     user = await this.getRepository().update(user.id, user, reqHandler.getLogicalDelete());
 
                     const token = JWTService.generateToken(jwtObj); 
@@ -317,8 +325,10 @@ export default class UserController extends GenericController{
 
             if(user != undefined && user != null){
 
-                user.is_active = true;
+                user.is_active_from_email = true;
+                user.account_status = AccountStatusEnum.Active;
                 user.fail_login_number = 0;
+                user.verified_at = new Date();
                 await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
 
 
@@ -474,7 +484,7 @@ export default class UserController extends GenericController{
 
                 if(user != undefined && user != null){
 
-                    user.password = encryptPassword(password, config.SERVER.PASSWORD_SALT)!;
+                    user.password = await hashPassword(password)!;
                     await (this.getRepository() as UserRepository).update(user.id, user, reqHandler.getLogicalDelete());
                     return httpExec.successAction(user.email, ConstMessagesJson.RESET_PASSWORD);
                 }else{

@@ -26,16 +26,9 @@ export default class RoleRepository {
    * The roles data is stored in the roles array.
    * The roles file path is './src/data/json/roles.json'.
    */
-  private constructor() {
-    const config = ConfigManager.getInstance().getConfig();
-
-    // Initialize the roles array.
-    this.roles = [];
-
-    // Load the roles data from the JSON file.
-    this.loadRolesFromFile(config.URL_FILES.ROLES_JSON);
-  }
+  private constructor() {}
   
+
 
   /**
    * Returns the instance of the RoleRepository class.
@@ -45,11 +38,14 @@ export default class RoleRepository {
    *
    * @return {RoleRepository} The instance of the RoleRepository class.
    */
-  public static getInstance(): RoleRepository {
+  public static async getInstance(): Promise<RoleRepository> {
     // Check if the instance already exists
     if (!RoleRepository.instance) {
       // If not, create a new instance
       RoleRepository.instance = new RoleRepository();
+      RoleRepository.instance.roles = [];
+      const config = ConfigManager.getInstance().getConfig();
+      await RoleRepository.instance.loadRolesFromFile(config.URL_FILES.ROLES_JSON);
     }
 
     // Return the instance
