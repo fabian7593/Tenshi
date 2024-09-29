@@ -71,14 +71,23 @@ export class User {
   @Column({ type: "datetime", nullable: true, default: null })
   last_login_at: Date | null;
 
+  @Column({ type: "varchar", length: 45, nullable: true, default: null })
+  login_ip_address: string | null;
+
+  @Column({ type: "tinyint", default: 0 })
+  two_factor_enabled: boolean;
+
+  @Column({ type: "enum", enum: ["SMS", "EMAIL", "TOTP", null], nullable: true, default: null })
+  two_factor_type: "SMS" | "EMAIL" | "TOTP" | null;
+
+  @Column({ type: "varchar", length: 250, nullable: true, default: null })
+  two_factor_secret: string | null;
+
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updated_at: Date;
-
-  @Column({ type: "varchar", length: 45, nullable: true, default: null })
-  login_ip_address: string | null;
 
   @Column({ type: "datetime", nullable: true, default: null })
   verified_at: Date | null;

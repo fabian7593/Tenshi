@@ -16,11 +16,11 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.card_id = this.req.body.card_id;
         entity.first_name = this.req.body.first_name;
         entity.last_name = this.req.body.last_name;
-        entity.user_name = this.req.body.user_name;
+        entity.user_name = this.req.body.user_name || null;
         entity.email = this.req.body.email;
-        entity.phone_number = this.req.body.phone_number;
-        entity.latitude = this.req.body.latitude;
-        entity.longitude = this.req.body.longitude;
+        entity.phone_number = this.req.body.phone_number || null;
+        entity.latitude = this.req.body.latitude || null;
+        entity.longitude = this.req.body.longitude || null;
         entity.password = this.req.body.password;
         entity.gender = this.req.body.gender || null;
         entity.birth_date = this.req.body.birth_date || null;
@@ -42,6 +42,7 @@ export default  class UserDTO implements IAdapterFromBody{
             first_name: user.first_name,
             lastName: user.last_name,
             full_name: `${user.first_name} ${user.last_name}`,
+            user_name: user.user_name,
             email: user.email,
             phone_number: user.phone_number,
             latitude: user.latitude,
@@ -50,7 +51,9 @@ export default  class UserDTO implements IAdapterFromBody{
             gender: user.gender,
             birth_date: user.birth_date,
             role: user.role_code,
-            language: user.language
+            language: user.language,
+            profile_picture_url: user.profile_picture_url,
+            account_status: user.account_status
         };
     }
 
@@ -72,13 +75,19 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.card_id = this.req.body.card_id;
         entity.first_name = this.req.body.first_name;
         entity.last_name = this.req.body.last_name;
+        entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
-        entity.phone_number = this.req.body.phone_number;
+        entity.phone_number = this.req.body.phone_number || null;
         entity.latitude = this.req.body.latitude || null;
         entity.longitude = this.req.body.longitude || null;
         entity.gender = this.req.body.gender || null;
         entity.birth_date = this.req.body.birth_date || null;
         entity.language = this.req.body.language || null;
+        entity.country_iso_code = this.req.body.country_iso_code || null;
+        entity.role_code = this.req.body.role_code || null;
+        entity.profile_picture_url = this.req.body.profile_picture_url || null;
+        entity.is_active_from_email = this.req.body.is_active_from_email || null;
+        entity.account_status = this.req.body.account_status || null;
         return entity;
     }
 

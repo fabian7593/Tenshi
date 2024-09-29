@@ -81,7 +81,6 @@ export default class UserController extends GenericController{
             try{
                 //Password encryption
                 userBody.password = await hashPassword(userBody.password);
-                userBody.is_active_from_email = false;
     
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
