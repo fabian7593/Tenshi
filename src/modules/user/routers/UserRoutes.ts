@@ -58,7 +58,7 @@ class UserRoutes extends GenericRoutes {
                 .isValidateRole("USER")
                 .build();
 
-                this.getController().insert(requestHandler);
+                (this.getController() as UserController).insert(requestHandler);
         });
 
         this.router.post(`${this.getRouterName()}/register`, async (req: Request, res: Response) => {

@@ -81,7 +81,7 @@ export default class UserController extends GenericController{
             try{
                 //Password encryption
                 userBody.password = await hashPassword(userBody.password);
-                userBody.isActive = 1;
+                userBody.is_active_from_email = false;
     
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
@@ -112,6 +112,7 @@ export default class UserController extends GenericController{
     
             //Password encryption
             userBody.password = await hashPassword(userBody.password);
+            userBody.role_code = config.SERVER.CUSTOMER_REGULAR_ROLE;
 
             const jwtObj : JWTObject = {
                 id: 0,

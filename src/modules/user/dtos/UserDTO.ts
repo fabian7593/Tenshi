@@ -16,6 +16,7 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.card_id = this.req.body.card_id;
         entity.first_name = this.req.body.first_name;
         entity.last_name = this.req.body.last_name;
+        entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
         entity.phone_number = this.req.body.phone_number;
         entity.latitude = this.req.body.latitude;
@@ -26,6 +27,10 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.country_iso_code = this.req.body.country_iso_code || null;
         entity.role_code = this.req.body.role_code || config.SERVER.CUSTOMER_REGULAR_ROLE;
         entity.language = this.req.body.language || null;
+        entity.profile_picture_url = this.req.body.profile_picture_url || null;
+        entity.is_active_from_email = this.req.body.is_active_from_email || false;
+        entity.account_status = this.req.body.account_status || "pending";
+    
         return entity;
     }
 

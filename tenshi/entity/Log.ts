@@ -24,7 +24,7 @@ export class Log {
   @Column({ type: "varchar", length: 1000 })
   message: string;
 
-  @Column({ type: "varchar", length: 800, nullable: true })
+  @Column({ type: "varchar", length: 2500, nullable: true })
   data: string | null;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
