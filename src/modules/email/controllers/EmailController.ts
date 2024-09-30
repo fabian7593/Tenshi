@@ -5,11 +5,12 @@ import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstFunctions } from "@TenshiJS/consts/Const";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstTemplate } from "@index/consts/Const";
+import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 export default  class EmailController extends GenericController{
 
     constructor() {
-        super(User, new UserRepository());
+        super(User, new GenericService, new UserRepository);
     }
 
     /**
@@ -19,29 +20,9 @@ export default  class EmailController extends GenericController{
      * @returns {Promise<any>} A promise that resolves with the result of the email sending operation.
      */
     async sendMailController(reqHandler: RequestHandler) : Promise<any> {
-        // Get the HTTP execution object from the response locals
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try {
-            // Get the validation object and JWT data from the response locals
-            const validation : Validations = reqHandler.getResponse().locals.validation;
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            // Validate the role of the user
-            if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.CREATE, httpExec) !== true) {
-                return;
-            }
-
-            // Validate the required fields
-            if (!this.validateRequiredFields(reqHandler, validation)) {
-                return;
-            }
-
-            // Validate the regex fields
-            if (!this.validateRegex(reqHandler, validation)) {
-                return;
-            }
-
+        return this.getService().insertService(reqHandler, async (jwtData, httpExec) => {
+       
             // Get the email structure from the request body
             const emailStructure  = {
                 email: reqHandler.getRequest().body.email,
@@ -81,12 +62,9 @@ export default  class EmailController extends GenericController{
                 }
             } catch (error : any) {
                 // Return general error response if any exception occurs
-                return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+                return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerName());
             }
-        } catch (error : any) {
-            // Return general error response if any exception occurs
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
-        }
+        } );
     }
 
 
@@ -158,11 +136,11 @@ export default  class EmailController extends GenericController{
 
             }catch(error : any){
                 // Return general error response if any exception occurs
-                return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+                return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerName());
             }
         }catch(error : any){
             // Return general error response if any exception occurs
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerName());
         }
     }
 }

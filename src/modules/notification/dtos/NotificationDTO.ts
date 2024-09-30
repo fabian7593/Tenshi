@@ -1,5 +1,6 @@
 import { Request, IAdapterFromBody } from "@modules/index";
 import { Notification } from '@modules/notification/index';
+import { config } from "@index/index";
 
 export default  class NotificationDTO implements IAdapterFromBody{
     req: Request;
@@ -16,8 +17,8 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.message = this.req.body.message;
         entity.required_send_email = this.req.body.required_send_email || 0;
         entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
-        entity.action_url = this.req.body.action_url || null;
-        entity.language = this.req.body.language;
+        entity.action_url = this.req.body.action_url;
+        entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE;
         entity.created_date = new Date();
         return entity;
     }
@@ -60,8 +61,8 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.message = this.req.body.message;
         entity.required_send_email = this.req.body.required_send_email || 0;
         entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
-        entity.action_url = this.req.body.action_url || null;
-        entity.language = this.req.body.language || null;
+        entity.action_url = this.req.body.action_url;
+        entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE ;
         return entity;
     }
 }

@@ -12,15 +12,15 @@ export default  class LogDTO implements IAdapterFromBody{
         const entity = new Log();
         entity.method = this.req.body.method;
         entity.class = this.req.body.class;
-        entity.type = this.req.body.type || null;
-        entity.action = this.req.body.action || null;
-        entity.https = this.req.body.https || null;
+        entity.type = this.req.body.type;
+        entity.action = this.req.body.action;
+        entity.https = this.req.body.https;
         entity.message = this.req.body.message;
-        entity.data = this.req.body.data || null;
+        entity.data = this.req.body.data;
         entity.created_date = new Date();
-        entity.environment = this.req.body.environment || null;
-        entity.user_id = this.req.body.user_id || null;
-        entity.ip_address = this.req.body.ip_address || null;
+        entity.environment = this.req.body.environment;
+        entity.user_id = this.req.body.user_id;
+        entity.ip_address = this.req.body.ip_address;
 
         return entity;
     }

@@ -12,23 +12,22 @@ export default  class UserDTO implements IAdapterFromBody{
     //POST
     entityFromPostBody() : User{
         const entity = new User();
-        entity.id = this.req.body.id || null;
         entity.card_id = this.req.body.card_id;
         entity.first_name = this.req.body.first_name;
         entity.last_name = this.req.body.last_name;
-        entity.user_name = this.req.body.user_name || null;
+        entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
-        entity.phone_number = this.req.body.phone_number || null;
-        entity.latitude = this.req.body.latitude || null;
-        entity.longitude = this.req.body.longitude || null;
+        entity.phone_number = this.req.body.phone_number;
+        entity.latitude = this.req.body.latitude;
+        entity.longitude = this.req.body.longitude;
         entity.password = this.req.body.password;
-        entity.gender = this.req.body.gender || null;
-        entity.birth_date = this.req.body.birth_date || null;
-        entity.country_iso_code = this.req.body.country_iso_code || null;
+        entity.gender = this.req.body.gender;
+        entity.birth_date = this.req.body.birth_date;
+        entity.country_iso_code = this.req.body.country_iso_code;
         entity.role_code = this.req.body.role_code || config.SERVER.CUSTOMER_REGULAR_ROLE;
-        entity.language = this.req.body.language || null;
-        entity.profile_picture_url = this.req.body.profile_picture_url || null;
-        entity.is_active_from_email = this.req.body.is_active_from_email || false;
+        entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE;
+        entity.profile_picture_url = this.req.body.profile_picture_url;
+        entity.is_active_from_email = this.req.body.is_active_from_email;
         entity.account_status = this.req.body.account_status || "pending";
     
         return entity;
@@ -77,17 +76,17 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.last_name = this.req.body.last_name;
         entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
-        entity.phone_number = this.req.body.phone_number || null;
-        entity.latitude = this.req.body.latitude || null;
-        entity.longitude = this.req.body.longitude || null;
-        entity.gender = this.req.body.gender || null;
-        entity.birth_date = this.req.body.birth_date || null;
-        entity.language = this.req.body.language || null;
-        entity.country_iso_code = this.req.body.country_iso_code || null;
-        entity.role_code = this.req.body.role_code || null;
-        entity.profile_picture_url = this.req.body.profile_picture_url || null;
-        entity.is_active_from_email = this.req.body.is_active_from_email || null;
-        entity.account_status = this.req.body.account_status || null;
+        entity.phone_number = this.req.body.phone_number;
+        entity.latitude = this.req.body.latitude;
+        entity.longitude = this.req.body.longitude;
+        entity.gender = this.req.body.gender;
+        entity.birth_date = this.req.body.birth_date;
+        entity.language = this.req.body.language;
+        entity.country_iso_code = this.req.body.country_iso_code;
+        entity.role_code = this.req.body.role_code;
+        entity.profile_picture_url = this.req.body.profile_picture_url;
+        entity.is_active_from_email = this.req.body.is_active_from_email;
+        entity.account_status = this.req.body.account_status;
         return entity;
     }
 

@@ -3,10 +3,11 @@ import { Request, Response, GenericRoutes,
         GenericController } from "@modules/index";
 
 import { NotificationDTO, Notification, requiredBodyListNotifications, regexValidationList } from '@modules/notification/index';
+import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 class NotificationRoutes extends GenericRoutes {
     constructor() {
-        super(new GenericController(Notification));
+        super(new GenericController(Notification, new GenericService));
     }
 
     protected initializeRoutes() {

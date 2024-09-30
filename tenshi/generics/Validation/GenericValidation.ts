@@ -3,12 +3,11 @@ import Validations  from 'tenshi/helpers/Validations';
 import HttpAction from 'tenshi/helpers/HttpAction';
 import RoleRepository from "tenshi/generics/Role/RoleRepository"
 import IGenericRepository from 'tenshi/generics/Repository/IGenericRepository';
-import { RequestHandler } from 'tenshi/generics/index';
+import {  RequestHandler } from 'tenshi/generics/index';
 import { ConstStatusJson, ConstMessagesJson, ConstRoles, ConstGeneral } from "tenshi/consts/Const";
 
-export default  class GenericValidationController{
+export default  class GenericValidation{
 
-    //private roleRepository : RoleRepository;
     private repository : IGenericRepository;
 
     protected setRepository(repository: IGenericRepository){ 

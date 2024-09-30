@@ -584,8 +584,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Security:** Add Two Factor Authentication into login.
 - **Module:** Add payments methods module.
 - **Module:** Add subscriptions module.
-- **Generics:** Create Generics Service to avoid repeat your code in controllers.
-- **Middleware:** Separate Error handling logic into middlewares.
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
 - **Documentation:** Create Postman Endpoints Documentation.

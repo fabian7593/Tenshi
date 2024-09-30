@@ -14,7 +14,7 @@ abstract class GenericRoutes {
         this.controller = controller;
 
         if(routerName === null) {
-            this.routerName = this.controller.getControllerObj().route;
+            this.routerName = `/${this.controller.getEntityName()}`;
         }else {
             this.routerName = routerName;
         }

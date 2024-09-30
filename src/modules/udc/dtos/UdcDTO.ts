@@ -14,15 +14,14 @@ export default  class UdcDTO implements IAdapterFromBody{
         entity.code = this.req.body.code;
         entity.name = this.req.body.name;
         entity.type = this.req.body.type;
-        entity.description = this.req.body.description || null;
+        entity.description = this.req.body.description;
         entity.value1 = this.req.body.value1;
-        entity.value2 = this.req.body.value2 || null;
-        entity.value3 = this.req.body.value3 || null;
-        entity.value4 = this.req.body.value4 || null;
-        entity.value5 = this.req.body.value5 || null;
-        entity.country_iso_code = this.req.body.country_iso_code || null;
+        entity.value2 = this.req.body.value2;
+        entity.value3 = this.req.body.value3;
+        entity.value4 = this.req.body.value4;
+        entity.value5 = this.req.body.value5;
+        entity.country_iso_code = this.req.body.country_iso_code;
         entity.created_date = new Date();
-        entity.user_id = null;
         return entity;
     }
 
@@ -63,15 +62,15 @@ export default  class UdcDTO implements IAdapterFromBody{
         const entity = new UnitDynamicCentral();
         entity.name = this.req.body.name;
         entity.type = this.req.body.type;
-        entity.description = this.req.body.description || null;
+        entity.description = this.req.body.description;
         entity.value1 = this.req.body.value1;
-        entity.value2 = this.req.body.value2 || null;
-        entity.value3 = this.req.body.value3 || null;
-        entity.value4 = this.req.body.value4 || null;
-        entity.value5 = this.req.body.value5 || null;
-        entity.country_iso_code = this.req.body.country_iso_code || null;
+        entity.value2 = this.req.body.value2;
+        entity.value3 = this.req.body.value3;
+        entity.value4 = this.req.body.value4;
+        entity.value5 = this.req.body.value5;
+        entity.country_iso_code = this.req.body.country_iso_code;
         entity.updated_date = new Date();
-        entity.user_updated_id = this.req.body.user_updated_id || null;
+        entity.user_updated_id = this.req.body.user_updated_id;
         return entity;
     }
 }
