@@ -10,22 +10,39 @@ import { blockToken } from "@TenshiJS/utils/nodeCacheUtils";
 import { insertLogTracking } from "@TenshiJS/utils/logsUtils";
 import { getEmailTemplate, getMessageEmail } from "@TenshiJS/utils/htmlTemplateUtils";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
-import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstStatusJson } from "@TenshiJS/consts/Const";
+import { ConstGeneral, ConstHTTPRequest, ConstLogs, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate, ConstUrls } from "@index/consts/Const";
 import { AccountStatusEnum } from "@TenshiJS/enums/AccountStatusEnum";
 import { getIpAddress } from "@TenshiJS/utils/httpUtils";
-import UserService from "../services/UserService";
 const jwt = require('jsonwebtoken');
 
 export default class UserController extends GenericController{
     
     constructor() {
-        super(User, new UserService, new UserRepository);
+        super(User, new UserRepository);
     }
    
     async update(reqHandler: RequestHandler) : Promise<any>{
 
         return this.getService().updateService(reqHandler, async (jwtData, httpExec, id) => {
+
+            let validateId: number | null = null;
+            if(jwtData.role == ConstRoles.ADMIN){
+                try {
+                    // Initialize the ID variable to null
+                    // Check if the ID is present in the query string
+                    if (reqHandler.getRequest().query[ConstGeneral.ID] != undefined) {
+                        // Try to parse the ID from the query string as a number
+                        validateId = parseInt(reqHandler.getRequest().query[ConstGeneral.ID] as string, 10);
+                    }
+                } catch (error: any) {} 
+            }else{
+                validateId = jwtData.id;
+            }
+
+            // Validate the id
+            if(validateId === null){ return httpExec.paramsError(); }
+
              //Get data From Body
              const userBody = reqHandler.getAdapter().entityFromPutBody();
              try{
@@ -37,7 +54,7 @@ export default class UserController extends GenericController{
                  console.log(userBody);
                  
                  //Execute Action DB
-                 const user = await this.getRepository().update(id!, userBody, reqHandler.getLogicalDelete());
+                 const user = await this.getRepository().update(validateId, userBody, reqHandler.getLogicalDelete());
                  return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.UPDATE_SUCCESS);
              
              }catch(error : any){
@@ -129,9 +146,8 @@ export default class UserController extends GenericController{
     async loginUser(reqHandler: RequestHandler){
         return this.getService().insertService(reqHandler, async (jwtData, httpExec) => {
 
-            const userDTO = new UserDTO(reqHandler.getRequest());
             //Get data From Body
-            const userBody = userDTO.userFromBodyLogin();
+            const userBody =  (reqHandler.getAdapter() as UserDTO).userFromBodyLogin();
     
             let user;
             try{
@@ -195,7 +211,7 @@ export default class UserController extends GenericController{
                     await insertLogTracking(reqHandler, `Last Login ${userBody.email}`, ConstStatusJson.SUCCESS,
                         token, user.id, ConstLogs.LOGIN_TRACKING);
 
-                    return httpExec.successAction(userDTO.tokenToResponse(token, refreshToken, screens), ConstHTTPRequest.LOGIN_SUCCESS);
+                    return httpExec.successAction((reqHandler.getAdapter() as UserDTO).tokenToResponse(token, refreshToken, screens), ConstHTTPRequest.LOGIN_SUCCESS);
     
                 }else{
                     return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
@@ -207,7 +223,6 @@ export default class UserController extends GenericController{
             }
         });
     }
-
 
 
     async logoutUser(reqHandler: RequestHandler){
@@ -240,7 +255,6 @@ export default class UserController extends GenericController{
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const userDTO = new UserDTO(reqHandler.getRequest());
             const refreshToken = reqHandler.getRequest().params.refreshToken;
 
             let verify = null;
@@ -257,7 +271,7 @@ export default class UserController extends GenericController{
             }
         
             const accessToken = JWTService.generateToken(jwtObj);   
-            return httpExec.successAction(userDTO.refreshToResponse(accessToken), ConstHTTPRequest.REFRESH_TOKEN_SUCCESS);
+            return httpExec.successAction((reqHandler.getAdapter() as UserDTO).refreshToResponse(accessToken), ConstHTTPRequest.REFRESH_TOKEN_SUCCESS);
         } catch(error : any){
             return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerName());
         }
@@ -312,14 +326,13 @@ export default class UserController extends GenericController{
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
         try{
-            const userDTO = new UserDTO(reqHandler.getRequest());
             const validation : Validations = reqHandler.getResponse().locals.validation;
             
             if(!this.validateRequiredFields(reqHandler, validation)){ return; };
             if(!this.validateRegex(reqHandler, validation)){ return; };
     
             //Get data From Body
-            const userBody = userDTO.userFromBodyRecoverUserByEmail();
+            const userBody = (reqHandler.getAdapter() as UserDTO).userFromBodyRecoverUserByEmail();
             const user = await (this.getRepository() as UserRepository).getUserByEmailParam(userBody.email);
 
             if(user != undefined && user != null){

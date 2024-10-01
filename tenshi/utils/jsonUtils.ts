@@ -4,7 +4,15 @@ const config = ConfigManager.getInstance().getConfig();
 
 // The json files
 const messages = require(ConstGeneral.MESSAGES_JSON);
-const regexes = require(config.URL_FILES.REGEX_JSON);
+
+//Regexes import
+let regexes : any;
+try {
+  regexes = require(config.URL_FILES.REGEX_JSON);
+} catch (error) {
+  regexes = require(`../..${config.URL_FILES.REGEX_JSON}`);
+}
+
 const statusResponseList = require('tenshi/data/json/statusResponse.json');
 const errorDbList = require('tenshi/data/json/errorDBList.json');
 
@@ -13,11 +21,9 @@ import ErrorMessage from "tenshi/objects/ErrorMessageObject";
 import StatusResponseObject from "tenshi/objects/StatusResponseObject";
 import RegexObject from "tenshi/objects/RegexObject";
 
-
 /*
   Json Utils class use all information of the files in the json folder
 */
-
 // Get the message of json file message
 export function getMessage(key : string): string {
 
@@ -31,7 +37,6 @@ export function getMessage(key : string): string {
   if (!message) {
     return `Message Missed : ${key}`;
   }
-
   return message;
 }
 
@@ -50,7 +55,6 @@ export function getStatus(title: string): StatusResponseObject {
 
 //Get error of the DB with the SQL State
 export function getErrorDBbySqlState(errorMessage: string): ErrorMessage | null {
-
     const erroNoMatch = errorMessage.match(/no: (\w+)/);
     let errno;
     

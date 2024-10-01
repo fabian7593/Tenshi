@@ -19,7 +19,7 @@ import { UserRepository } from "@index/modules/user";
 export default  class UserNotificationController extends GenericController{
 
     constructor() {
-        super(UserNotification, new GenericService, new UserRepository);
+        super(UserNotification,new UserRepository);
     }
 
     /**

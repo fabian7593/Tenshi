@@ -5,12 +5,11 @@ import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
 import {  ConstHTTPRequest, ConstStatusJson,  ConstMessagesJson, ConstFunctions } from "@TenshiJS/consts/Const";
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 import { ConstTemplate } from "@index/consts/Const";
-import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 export default  class EmailController extends GenericController{
 
     constructor() {
-        super(User, new GenericService, new UserRepository);
+        super(User, new UserRepository);
     }
 
     /**

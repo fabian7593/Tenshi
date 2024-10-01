@@ -33,7 +33,7 @@ export default  class GenericController extends GenericValidation implements IGe
      * @param {IGenericRepository | null} repositoryClass - The repository class of the entity.
      *                                                      If it's not passed, a new instance of GenericRepository will be created.
      */
-    constructor(entityType: EntityTarget<any>, service: IGenericService = new GenericService(), repositoryClass: IGenericRepository | null = null) {
+    constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null, service: IGenericService = new GenericService()) {
         super();
 
         // Set the entity type.
@@ -118,7 +118,6 @@ export default  class GenericController extends GenericValidation implements IGe
             // Get data from the body
             const body = reqHandler.getAdapter().entityFromPutBody();
 
-            
             try {
                 // Execute the update action in the database
                 const updateEntity = await this.getRepository().update(id, body,

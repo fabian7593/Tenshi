@@ -345,4 +345,44 @@ export default  class GenericService extends GenericValidation implements IGener
             return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
         }
     }
+
+
+    async validateAll(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject | null, action: string | null = null): Promise<string> {
+        try {
+            const validation: Validations = reqHandler.getResponse().locals.validation;
+
+            if (jwtData != null && action != null) {
+                if (await this.validateRole(reqHandler, jwtData.role, action, httpExec) !== true) {
+                    return "validateRole";
+                }
+            }
+
+            const validateCode = this.getCodeFromQuery(validation, httpExec);
+            if (validateCode === null) {
+                return "validateCode";
+            }
+            
+            const validateId = this.getIdFromQuery(validation, httpExec);
+            if (validateId === null) {
+                return "validateId";
+            }
+            
+            if (reqHandler.getFilters() == null) {
+                return "validateFilters";
+            }
+
+            if(!this.validateRequiredFields(reqHandler, validation)){ 
+                return "validateRequiredFields"; 
+            }
+
+            if(!this.validateRegex(reqHandler, validation)){ 
+                return "validateRegex"; 
+            }
+
+            return "OK";
+        } catch (error: any) {
+            await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
+            return "generalError";
+        }
+    }
 }

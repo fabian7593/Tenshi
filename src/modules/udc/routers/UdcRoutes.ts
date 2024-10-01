@@ -2,7 +2,6 @@ import { Request, Response,
          RequestHandler, RequestHandlerBuilder, 
          GenericController, GenericRoutes} from "@modules/index";
 import { UnitDynamicCentral, UdcDTO } from '@modules/udc';
-import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 class UdcRoutes extends GenericRoutes{
     constructor() {

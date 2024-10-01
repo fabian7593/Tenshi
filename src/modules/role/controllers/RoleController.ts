@@ -2,12 +2,11 @@ import { HttpAction} from "@index/index";
 import { GenericController, RequestHandler, JWTObject, RoleRepository } from "@modules/index";
 import { UserRepository, User} from "@modules/user";
 import { ConstFunctions, ConstHTTPRequest } from "@TenshiJS/consts/Const";
-import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 export default class RoleController extends GenericController{
     
     constructor() {
-        super(User, new GenericService, new UserRepository);
+        super(User, new UserRepository);
     }
    
     async getAll(reqHandler: RequestHandler){
