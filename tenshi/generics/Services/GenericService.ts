@@ -106,9 +106,7 @@ export default  class GenericService extends GenericValidation implements IGener
             }
 
             // Validate the regex of the entity
-            if (!this.validateRegex(reqHandler, validation)) {
-                return;
-            }
+            if (!this.validateRegex(reqHandler, validation)) { return; }
 
             // Get the id from the URL params
             const validateId = this.getIdFromQuery(validation, httpExec);
@@ -321,13 +319,11 @@ export default  class GenericService extends GenericValidation implements IGener
 
             if(jwtData != null){
                 // Validate the role of the user
-                await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec);
+                if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec) !== true){ return; }
             }
 
             // Check if filters are provided in the request parameters
-            if (reqHandler.getFilters() == null) {
-                return httpExec.paramsError(); // Return error response if filters are not provided
-            }
+            if(this.validateHaveFilters(reqHandler, httpExec) !== true){ return; }
 
              // Get the page and size from the URL query parameters
              const page: number = reqHandler.getRequest().query.page ?
@@ -346,43 +342,4 @@ export default  class GenericService extends GenericValidation implements IGener
         }
     }
 
-
-    async validateAll(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject | null, action: string | null = null): Promise<string> {
-        try {
-            const validation: Validations = reqHandler.getResponse().locals.validation;
-
-            if (jwtData != null && action != null) {
-                if (await this.validateRole(reqHandler, jwtData.role, action, httpExec) !== true) {
-                    return "validateRole";
-                }
-            }
-
-            const validateCode = this.getCodeFromQuery(validation, httpExec);
-            if (validateCode === null) {
-                return "validateCode";
-            }
-            
-            const validateId = this.getIdFromQuery(validation, httpExec);
-            if (validateId === null) {
-                return "validateId";
-            }
-            
-            if (reqHandler.getFilters() == null) {
-                return "validateFilters";
-            }
-
-            if(!this.validateRequiredFields(reqHandler, validation)){ 
-                return "validateRequiredFields"; 
-            }
-
-            if(!this.validateRegex(reqHandler, validation)){ 
-                return "validateRegex"; 
-            }
-
-            return "OK";
-        } catch (error: any) {
-            await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
-            return "generalError";
-        }
-    }
 }

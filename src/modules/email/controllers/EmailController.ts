@@ -81,9 +81,7 @@ export default  class EmailController extends GenericController{
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
             // Check if filters are provided
-            if(reqHandler.getFilters() == null){
-                return httpExec.paramsError();
-            }
+            if(this.validateHaveFilters(reqHandler, httpExec) !== true){ return; }
 
             // Validate role
             if(await this.validateRole(reqHandler,  jwtData.role, ConstFunctions.CREATE, httpExec) !== true){ 

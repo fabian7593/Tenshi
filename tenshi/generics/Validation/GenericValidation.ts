@@ -10,11 +10,11 @@ export default  class GenericValidation{
 
     private repository : IGenericRepository;
 
-    protected setRepository(repository: IGenericRepository){ 
+    public setRepository(repository: IGenericRepository){ 
         this.repository = repository;
     }
 
-    protected getValidationRepository(): IGenericRepository {
+    public getValidationRepository(): IGenericRepository {
         return this.repository;
     }
 
@@ -27,7 +27,7 @@ export default  class GenericValidation{
          * @param {HttpAction} httpAction - The HTTP action object.
          * @return {Promise<any>} - A promise that resolves to the result of the validation.
          */
-    protected async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
+    public async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
         /**
          * Validates the role of the user.
          * If the user's role is required to be validated, it checks if the user has the permission for the specified action.
@@ -45,6 +45,7 @@ export default  class GenericValidation{
             const roleRepository : RoleRepository = await RoleRepository.getInstance();
             // Get the permission for the specified action and role from the role repository.
             const roleFunc = await roleRepository.getPermissionByFuncAndRole(role, reqHandler.getModule(), action);
+
             // If the user does not have the permission, return an unauthorized error.
             if (roleFunc == false) {
                 return httpAction.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
@@ -61,7 +62,7 @@ export default  class GenericValidation{
      * @param {Validations} validation - The validations object.
      * @return {boolean} - Returns true if all the required fields are present, false otherwise.
      */
-    protected validateRequiredFields(reqHandler: RequestHandler, validation: Validations): boolean {
+    public validateRequiredFields(reqHandler: RequestHandler, validation: Validations): boolean {
         // Check if the required fields list is not null
         if (reqHandler.getRequiredFieldsList() != null) {
             // Validate the required fields
@@ -84,7 +85,7 @@ export default  class GenericValidation{
      * @param {Validations} validation - The validations object.
      * @returns {boolean} - Returns true if all the regex validations pass, false otherwise.
      */
-    protected validateRegex(reqHandler: RequestHandler, validation: Validations): boolean {
+    public validateRegex(reqHandler: RequestHandler, validation: Validations): boolean {
         // Check if the request handler object contains a list of regex validators
         if (reqHandler.getRegexValidatorList() != null) {
             // Validate the multiple regex using the validation object
@@ -107,7 +108,7 @@ export default  class GenericValidation{
      * @param {number} id - The ID to set in the user ID field if it is not present in the body object
      * @return {any} - The modified body object with the user ID field set
      */
-    protected setUserId(body: any, id: number): any {
+    public setUserId(body: any, id: number): any {
         // Check if the user ID is not present in the body object
         if (!(ConstGeneral.USER_ID in body)) {
             // If the user ID is not present, set the user ID with the provided ID
@@ -133,7 +134,7 @@ export default  class GenericValidation{
      * @param {number | string} idOrCode - The ID or code of the entity.
      * @return {Promise<any>} - Returns a promise that resolves to the result of the HTTP action object.
      */
-    protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
+    public async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
         let userId: number | null = null; // Initialize user ID
 
         // Check if the request handler object requires validation of the where clause by user ID
@@ -168,13 +169,29 @@ export default  class GenericValidation{
     }
 
     /**
+     * Validates if the request handler has filters.
+     * This function checks if the filters are set in the request handler.
+     * If filters are not provided, it returns an error response.
+     *
+     * @param {RequestHandler} reqHandler - The request handler object.
+     * @param {HttpAction} httpExec - The HTTP action object.
+     * @return {boolean | any} - Returns true if filters are present, otherwise returns an error response.
+     */
+    public validateHaveFilters(reqHandler: RequestHandler, httpExec: HttpAction): any {
+        if (reqHandler.getFilters() == null) {
+            return httpExec.paramsError(); // Return error response if filters are not provided
+        }
+        return true;
+    }
+
+    /**
      * Retrieves the ID from the query parameters.
      * 
      * @param {Validations} validation - The validation object.
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {number | null} - The ID from the query parameters or null if validation fails.
      */
-    protected getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
+    public getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
         // Validate the ID from the query parameters
         const id = validation.validateIdFromQuery();
 
@@ -196,7 +213,7 @@ export default  class GenericValidation{
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {string | null} - The code from the query parameters or null if validation fails.
      */
-    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
+    public getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
         // Validate the code from the query parameters
         const code = validation.validateCodeFromQuery();
 
