@@ -73,27 +73,26 @@ export default class Validations{
     public validateMultipleRegex(listRegex: [string, string][] | null) {
 
         // Validate just in production
-        if (!this.config.SERVER.IS_DEBUGGING) {
-            if (listRegex != null) {
-                for (const [listKey, value] of listRegex) {
-                    // Get the regular expression object based on the name
-                    const regexObject = getRegex(listKey);
-                    let regexResult = null;
+        if (listRegex != null) {
+            for (const [listKey, value] of listRegex) {
+                // Get the regular expression object based on the name
+                const regexObject = getRegex(listKey);
+               
+                let regexResult = null;
 
-                    if (value != null && value != undefined) {
-                        // Validate the word, if there is an error, validate the regex and return an error validation
-                        regexResult = this.validateRegex(value, regexObject.regex, regexObject.message);
-                    }
+                if (value != null && value != undefined) {
+                    // Validate the word, if there is an error, validate the regex and return an error validation
+                    regexResult = this.validateRegex(value, regexObject.regex, regexObject.message);
+                }
 
-                    if (regexResult != null && regexResult != undefined) {
-                        return regexResult;
-                    }
+                if (regexResult == undefined) {
+                    return false;
                 }
             }
-
-            return null;
+            
+            return true;
         } else {
-            return null;
+            return true;
         }
     };
 
@@ -111,14 +110,14 @@ export default class Validations{
      * @param {string} message - The error message to be returned if the validation fails.
      * @return {object | null} - Returns null if the validation is successful, otherwise an error object.
      */
-    private validateRegex(validationWord: string, regexStr: string, message: string): object | null {
+    private validateRegex(validationWord: string, regexStr: string, message: string): object | boolean {
         // Create a regular expression object using the provided regular expression pattern.
         const regex = new RegExp(regexStr);
 
         // Check if the validation word is not null or undefined and if it matches the regular expression.
         if (validationWord && regex.test(validationWord)) {
             // Valid format.
-            return null;
+            return true;
         } else {
             // Return an error object with a specific status code and message.
             return this.httpAction.dynamicError(ConstStatusJson.REGEX, message);

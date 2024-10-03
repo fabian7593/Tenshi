@@ -89,10 +89,7 @@ export default  class GenericValidation{
         // Check if the request handler object contains a list of regex validators
         if (reqHandler.getRegexValidatorList() != null) {
             // Validate the multiple regex using the validation object
-            if (validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null) {
-                // If any of the regex validations fail, return false
-                return false;
-            }
+            return validation.validateMultipleRegex(reqHandler.getRegexValidatorList());
         }
 
         // If all the regex validations pass, return true
@@ -112,7 +109,7 @@ export default  class GenericValidation{
         // Check if the user ID is not present in the body object
         if (!(ConstGeneral.USER_ID in body)) {
             // If the user ID is not present, set the user ID with the provided ID
-            body.userId = id;
+            body.user_id = id;
         }
 
         // Return the modified body object with the user ID field set

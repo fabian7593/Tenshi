@@ -12,7 +12,7 @@ import RequestHandlerBuilder from '@TenshiJS/generics/RequestHandler/RequestHand
 import { Request, Response } from 'express';
 import Validations from '@TenshiJS/helpers/Validations';
 import JWTObject from '@TenshiJS/objects/JWTObject';
-import { ConstFunctions } from '@TenshiJS/consts/Const';
+import { ConstFunctions, ConstGeneral } from '@TenshiJS/consts/Const';
 import { ConstRegex } from '@index/consts/Const';
 
 describe('GenericValidation', () => {
@@ -23,7 +23,7 @@ describe('GenericValidation', () => {
     let httpExec: HttpAction;
     let jwtData: JWTObject | null = null;
 
-    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZW5zaGl0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjc4NDcyOTMsImV4cCI6MTcyNzg3NzI5M30.Rkaa9ZQ16vwWFna-Vm509o8feuiFMks3IfuGWFUcO2s';
+    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZW5zaGl0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjc5MzM1MzMsImV4cCI6MTcyNzk2MzUzM30.hU1w2K2Er-wurYMoUZ0GkuDwDiqxSxXqIyugn6ll454';
     const roleValidate = 'TEST';
 
     beforeEach(async () => {
@@ -218,9 +218,8 @@ describe('GenericValidation', () => {
         //************************************************ */
         it('Should SUCCESS Validate Regex Email', async () => {
 
-            req.body = { 'email': 'test@test.com' };
             const regexValidatorList: [string, string][] = [
-                [ConstRegex.EMAIL_REGEX, req.body.email as string]
+                [ConstRegex.EMAIL_REGEX, 'test@gmail.com']
             ];
             
              const requestHandler: RequestHandler =
@@ -236,10 +235,9 @@ describe('GenericValidation', () => {
          it('Should FAIL Validate Regex Email', async () => {
             req.body = { 'email': 'Invalid Email' };
             const regexValidatorList: [string, string][] = [
-                [ConstRegex.PASSWORD_REQUIRED_REGEX, req.body.email as string]
+                [ConstRegex.EMAIL_REGEX, req.body.email as string]
             ];
 
-            console.log(req.body.email);
              const requestHandler: RequestHandler =
                  new RequestHandlerBuilder(res, req)
                      .setRegexValidation(regexValidatorList)
@@ -267,9 +265,6 @@ describe('GenericValidation', () => {
          });
 
          it('Should FAIL Validate Regex Password', async () => {
-            req.body = { 'password': 'Invalid Password' };
-
-            console.log(req.body.password);
             const regexValidatorList: [string, string][] = [
                 [ConstRegex.PASSWORD_REQUIRED_REGEX, "Invalid Password"]
             ];
@@ -283,5 +278,58 @@ describe('GenericValidation', () => {
             expect(isValid).toBe(false);
          });
 
+
+        it('Should SUCCESS body.userId exists', () => {
+            const body = {}; // Create an empty object without 'userId'
+            const id = 123;  // Example ID to be set
+
+            // Call the method to be tested
+            const result = genericValidation.setUserId(body, id);
+          
+            // Ensure that 'userId' now exists in the object
+            expect(result.hasOwnProperty(ConstGeneral.USER_ID)).toBe(true);
+
+            // Check that 'userId' was correctly set in the object
+            expect(result.user_id).toBe(id);
+          });
+
+          it('Should FAIL body.userId exists', () => {
+            const body = {"user_id":777}; // Create an empty object without 'userId'
+            
+            // Call the method to be tested
+            const result = genericValidation.setUserId(body, 1);
+          
+            // Ensure that 'userId' now exists in the object
+            expect(result.hasOwnProperty(ConstGeneral.USER_ID)).toBe(true);
+
+            // Check that 'userId' was correctly set in the object
+            expect(result.user_id).toBe(777);
+          });
+          
+
+          it('Should SUCCESS Id From Query', () => {
+            req.query = {};
+            req.query[ConstGeneral.ID] = '777';
+            const result = genericValidation.getIdFromQuery(validation, httpExec);
+            expect(result).toBe(777);
+
+
+            req.query = {};
+            const result2 = genericValidation.getIdFromQuery(validation, httpExec);
+            expect(result2).toBe(null);
+          });
+
+
+          it('Should SUCCESS Code From Query', () => {
+            req.query = {};
+            req.query[ConstGeneral.CODE] = '777';
+            const result = genericValidation.getCodeFromQuery(validation, httpExec);
+            expect(result).toBe('777');
+
+
+            req.query = {};
+            const result2 = genericValidation.getCodeFromQuery(validation, httpExec);
+            expect(result2).toBe(null);
+          });
     });
 });
