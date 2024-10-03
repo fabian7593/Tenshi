@@ -50,8 +50,6 @@ export default class UserController extends GenericController{
                      //Password encryption
                      userBody.password = await hashPassword(userBody.password);
                  }
-
-                 console.log(userBody);
                  
                  //Execute Action DB
                  const user = await this.getRepository().update(validateId, userBody, reqHandler.getLogicalDelete());
@@ -151,6 +149,7 @@ export default class UserController extends GenericController{
     
             let user;
             try{
+                
                 //Execute Action DB
                 user = await (this.getRepository() as UserRepository).getUserByEmail(userBody);
                 let isSuccess = false;

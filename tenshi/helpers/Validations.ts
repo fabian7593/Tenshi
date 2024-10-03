@@ -74,18 +74,21 @@ export default class Validations{
 
         // Validate just in production
         if (listRegex != null) {
+            
             for (const [listKey, value] of listRegex) {
                 // Get the regular expression object based on the name
                 const regexObject = getRegex(listKey);
                
                 let regexResult = null;
 
-                if (value != null && value != undefined) {
+               
+                if (value !== null && value !== undefined) {
+                    
                     // Validate the word, if there is an error, validate the regex and return an error validation
                     regexResult = this.validateRegex(value, regexObject.regex, regexObject.message);
                 }
 
-                if (regexResult == undefined) {
+                if (regexResult === undefined) {
                     return false;
                 }
             }

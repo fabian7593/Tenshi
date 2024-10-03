@@ -90,6 +90,7 @@ export default  class GenericController extends GenericValidation implements IGe
             body = this.setUserId(body, jwtData!.id);
 
             try{
+               
                 // Insert the entity into the database
                 const createdEntity = await this.getRepository().add(body);
 

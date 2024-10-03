@@ -55,19 +55,18 @@ export default  class GenericService extends GenericValidation implements IGener
             // Validate the role of the user
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-
+           
             if(jwtData != null){
                 if(await this.validateRole(reqHandler,  jwtData.role, ConstFunctions.CREATE, httpExec) !== true){ return; }
             }
             
             // Validate the required fields of the entity
             if(!this.validateRequiredFields(reqHandler, validation)){ return; }
-
             // Validate the regex of the entity
             if(!this.validateRegex(reqHandler, validation)){ return; }
 
             executeInsertFunction(jwtData, httpExec);
-
+            return true;
         }catch(error : any){
             // Return the general error response
             return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
