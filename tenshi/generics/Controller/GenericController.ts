@@ -1,20 +1,18 @@
 import JWTObject  from 'tenshi/objects/JWTObject';
-import Validations  from 'tenshi/helpers/Validations';
 import HttpAction from 'tenshi/helpers/HttpAction';
 
-import ConfigManager  from "tenshi/config/ConfigManager";
 import { EntityTarget, RequestHandler } from 'tenshi/generics/index';
 
 import IGenericRepository from 'tenshi/generics/Repository/IGenericRepository';
 import GenericRepository from 'tenshi/generics/Repository/GenericRepository';
 
 import IGenericController from 'tenshi/generics/Controller/IGenericController';
-import ControllerObject from 'tenshi/objects/ControllerObject';
 
-import { createControllerObject } from 'tenshi/services/ControllerObjectFactory';
-
-import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson } from "tenshi/consts/Const";
-import GenericValidationController from './GenericValidationController';
+import { ConstHTTPRequest, ConstStatusJson, ConstMessagesJson, ConstFunctions } from "tenshi/consts/Const";
+import GenericValidation from '../Validation/GenericValidation';
+import { camelToUpperSnakeCase, getEntityName } from 'tenshi/utils/generalUtils';
+import IGenericService from '../Services/IGenericService';
+import GenericService from '../Services/GenericService';
 
 /*
     This class have the necessary methods (CRUDS) to send into the routing
@@ -22,9 +20,12 @@ import GenericValidationController from './GenericValidationController';
     Then you send the controller object, with all the specific names of the specific entity
     PD: IF YOU NEED TO OVERRIDE OR ADDED MORE METHODS, YOU NEED TO CREATE ANOTHER CONTROLLER AND EXTEND THIS
 */7
-export default  class GenericController extends GenericValidationController implements IGenericController {
-    private controllerObj: ControllerObject;
+export default  class GenericController extends GenericValidation implements IGenericController {
     private entityType : EntityTarget<any>;
+    private service : IGenericService;
+    private controllerName : string;
+    private entityName : string;
+
     /**
      * Constructor of the GenericController class.
      * This class needs the type of the entity of the ORM, and the controller object.
@@ -32,13 +33,21 @@ export default  class GenericController extends GenericValidationController impl
      * @param {IGenericRepository | null} repositoryClass - The repository class of the entity.
      *                                                      If it's not passed, a new instance of GenericRepository will be created.
      */
-    constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null) {
+    constructor(entityType: EntityTarget<any>, repositoryClass: IGenericRepository | null = null, service: IGenericService = new GenericService()) {
         super();
-        // Create the controller object using the entity type.
-        this.controllerObj = createControllerObject(entityType);
 
         // Set the entity type.
         this.entityType = entityType;
+
+        //set the entity name
+        this.entityName = getEntityName(entityType);
+
+        // Set the controller name
+        this.controllerName =  `${camelToUpperSnakeCase(getEntityName(entityType))}${ConstFunctions.CONTROLLER}`;
+
+        // Create the controller object using the entity type.
+        this.service = service;
+        this.service.setControllerName(this.controllerName);
 
         // Check if the repository class is passed.
         // If not, create a new instance of GenericRepository using the entity type.
@@ -50,56 +59,38 @@ export default  class GenericController extends GenericValidationController impl
         }
     }
    
-
-    /**
-     * Getter and Setters
-     */
-    public getControllerObj(): ControllerObject {
-        return this.controllerObj;
-    }
-
     public getRepository(): IGenericRepository {
         return this.getValidationRepository();
     }
 
+    public getEntityName(): string {
+        return this.entityName;
+    }
+
+    public getControllerName(): string {
+        return this.controllerName;
+    }
+
+    public getService(): IGenericService {
+        return this.service;
+    }
 
     /**
-     * This function is used to insert a new entity into the database.
-     * It performs the following steps:
-     * 1. Validates the role of the user.
-     * 2. Validates the required fields of the entity.
-     * 3. Validates the regex of the entity.
-     * 4. Sets the user id of the entity.
-     * 5. Inserts the entity into the database.
-     * 6. Returns a success response if the insertion is successful.
-     * 7. Returns a database error response if there is an error while inserting the entity.
-     * 8. Returns a general error response if there is an error while performing the above steps.
+     * Insert an entity into the database.
      *
-     * @param {RequestHandler} reqHandler - The request handler object.
-     * @return {Promise<any>} A promise that resolves to the success response if the insertion is successful.
+     * @param reqHandler - The request handler.
+     * @returns A promise that resolves to the inserted entity.
      */
     async insert(reqHandler: RequestHandler): Promise<any> {
-        // Execute the returns structure
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try{
-            // Validate the role of the user
-            const validation : Validations = reqHandler.getResponse().locals.validation;
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
+        return this.service.insertService(reqHandler, async (jwtData, httpExec) => {
 
-            if(await this.validateRole(reqHandler,  jwtData.role, this.controllerObj.create, httpExec) !== true){ return; }
-
-            // Validate the required fields of the entity
-            if(!this.validateRequiredFields(reqHandler, validation)){ return; }
-
-            // Validate the regex of the entity
-            if(!this.validateRegex(reqHandler, validation)){ return; }
-
-            // Set the user id of the entity
             let body = reqHandler.getAdapter().entityFromPostBody();
-            body = this.setUserId(body, jwtData.id);
+            // Set the user ID of the entity with the ID of the JWT
+            body = this.setUserId(body, jwtData!.id);
 
             try{
+               
                 // Insert the entity into the database
                 const createdEntity = await this.getRepository().add(body);
 
@@ -108,13 +99,10 @@ export default  class GenericController extends GenericValidationController impl
 
             }catch(error : any){
                 // Return the database error response
-                return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                return await httpExec.databaseError(error, jwtData!.id.toString(), 
+                reqHandler.getMethod(), this.controllerName);
             }
-        }catch(error : any){
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
      }
   
 
@@ -125,32 +113,8 @@ export default  class GenericController extends GenericValidationController impl
       * @returns A promise that resolves to the updated entity.
       */
      async update(reqHandler: RequestHandler): Promise<any> {
-        // Execute the returns structure
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try {
-            // Validate the role of the user
-            const validation : Validations = reqHandler.getResponse().locals.validation;
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            // Validate the role of the user
-            if (await this.validateRole(reqHandler, jwtData.role, this.controllerObj.update, httpExec) !== true) {
-                return;
-            }
-
-            // Validate the regex of the entity
-            if (!this.validateRegex(reqHandler, validation)) {
-                return;
-            }
-
-            // Get the id from the URL params
-            const validateId = this.getIdFromQuery(validation, httpExec);
-            if(validateId === null){ return; }
-            const id = validateId as number; 
-
-            // If you need to validate if the user id of the table 
-            // should be the user id of the user request (JWT)
-            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+        return this.service.updateService(reqHandler, async (jwtData, httpExec, id) => {
 
             // Get data from the body
             const body = reqHandler.getAdapter().entityFromPutBody();
@@ -165,13 +129,9 @@ export default  class GenericController extends GenericValidationController impl
             } catch (error: any) {
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.controllerName);
             }
-
-        } catch (error: any) {
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
      }
 
      /**
@@ -181,24 +141,8 @@ export default  class GenericController extends GenericValidationController impl
       * @returns A promise that resolves to the deleted entity.
       */
      async delete(reqHandler: RequestHandler): Promise<any> {
-        // Get the HTTP action object from the response
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try{
-            // Get the validations object from the response
-            const validation : Validations = reqHandler.getResponse().locals.validation;
-            // Get the JWT object from the response
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-            // Get the id from URL params
-            const validateId = this.getIdFromQuery(validation, httpExec);
-            if(validateId === null){ return; }
-            const id = validateId as number; 
-
-            // Validate the role of the user
-            if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.delete, httpExec) !== true){ return; }
-            // Validate the user id
-            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
-
+        return this.service.deleteService(reqHandler, async (jwtData, httpExec, id) => {
             try{
                 // Execute the delete action in the database
                 if(reqHandler.getLogicalDelete()){
@@ -214,12 +158,9 @@ export default  class GenericController extends GenericValidationController impl
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.controllerName);
             }
-        }catch(error : any){
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
      }
 
      /**
@@ -229,24 +170,8 @@ export default  class GenericController extends GenericValidationController impl
       * @returns A promise that resolves to the entity.
       */
      async getById(reqHandler: RequestHandler): Promise<any> {
-        // Get the HTTP action object from the response
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try{
-             // Get the validations object from the response
-             const validation : Validations = reqHandler.getResponse().locals.validation;
-             // Get the JWT object from the response
-             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-             // Get the id from URL params
-             const validateId = this.getIdFromQuery(validation, httpExec);
-             if(validateId === null){ return; }
-             const id = validateId as number; 
-
-             // Validate the role of the user
-             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
-             // Validate the user id
-             if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
-
+        return this.service.getByIdService(reqHandler, async (jwtData, httpExec, id) => {
             try{
                 // Execute the get by id action in the database
                 const entity = await this.getRepository().findById(id, reqHandler.getLogicalDelete());
@@ -261,12 +186,9 @@ export default  class GenericController extends GenericValidationController impl
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.controllerName);
             }
-        }catch(error : any){
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
      }
 
 
@@ -277,24 +199,8 @@ export default  class GenericController extends GenericValidationController impl
       * @returns A promise that resolves to the entity.
       */
      async getByCode(reqHandler: RequestHandler): Promise<any> {
-        // Get the HTTP action object from the response
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try{
-             // Get the validations object from the response
-             const validation : Validations = reqHandler.getResponse().locals.validation;
-             // Get the JWT object from the response
-             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-             // Get the code from URL params
-             const validateCode = this.getCodeFromQuery(validation, httpExec);
-             if(validateCode === null){ return; }
-             const code = validateCode as string; 
-
-             // Validate the role of the user
-             if(await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec) !== true){ return; }
-             // Validate the user id
-             if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code) !== true){ return; }
-
+        return this.service.getByCodeService(reqHandler, async (jwtData, httpExec, code) => {
             try{
                 // Execute the get by code action in the database
                 const entity = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
@@ -308,12 +214,9 @@ export default  class GenericController extends GenericValidationController impl
             }catch(error : any){
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.controllerObj.controller);
+                reqHandler.getMethod(), this.controllerName);
             }
-        }catch(error : any){
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
      }
    
 
@@ -324,28 +227,10 @@ export default  class GenericController extends GenericValidationController impl
      * @returns A promise that resolves to the entities.
      */
     async getAll(reqHandler: RequestHandler): Promise<any> {
-        const config = ConfigManager.getInstance().getConfig();
-        // Get the HTTP action object from the response
-        const httpExec: HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try {
-            const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            // Validate the role of the user
-            if (await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getAll, httpExec) !== true) {
-                return;
-            }
-
+        return this.service.getAllService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
             try {
-                // Get the page and size from the URL query parameters
-                const page: number = reqHandler.getRequest().query.page ?
-                    parseInt(reqHandler.getRequest().query.page as string) :
-                    config.HTTP_REQUEST.PAGE_OFFSET;
-
-                const size: number = reqHandler.getRequest().query.size ?
-                    parseInt(reqHandler.getRequest().query.size as string) :
-                    config.HTTP_REQUEST.PAGE_SIZE;
-
+               
                 // Execute the get all action in the database
                 const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), page, size);
                 if(entities != null && entities != undefined){
@@ -355,16 +240,12 @@ export default  class GenericController extends GenericValidationController impl
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                 }
 
-               
             } catch (error: any) {
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(),
-                    reqHandler.getMethod(), this.controllerObj.controller);
+                    reqHandler.getMethod(), this.controllerName);
             }
-        } catch (error: any) {
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
     }
   
 
@@ -375,32 +256,10 @@ export default  class GenericController extends GenericValidationController impl
      * @returns {Promise<any>} A promise that resolves to the success response if the operation is successful.
      */
     async getByFilters(reqHandler: RequestHandler): Promise<any> {
-        const config = ConfigManager.getInstance().getConfig();
-        // Get the HTTP action object from the response
-        const httpExec: HttpAction = reqHandler.getResponse().locals.httpExec;
 
-        try {
-            // Get the JWT data from the response
-            const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            // Validate the role of the user
-            await this.validateRole(reqHandler, jwtData.role, this.controllerObj.getById, httpExec);
-
-            // Check if filters are provided in the request parameters
-            if (reqHandler.getFilters() == null) {
-                return httpExec.paramsError(); // Return error response if filters are not provided
-            }
-
+        return this.service.getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
             try {
-                // Get the page and size from the URL query parameters
-                const page: number = reqHandler.getRequest().query.page ?
-                    parseInt(reqHandler.getRequest().query.page as string) :
-                    config.HTTP_REQUEST.PAGE_OFFSET;
-
-                const size: number = reqHandler.getRequest().query.size ?
-                    parseInt(reqHandler.getRequest().query.size as string) :
-                    config.HTTP_REQUEST.PAGE_SIZE;
-
+               
                 // Execute the find by filters action in the database
                 const entities = await this.getRepository().findByFilters(reqHandler.getFilters()!,
                     reqHandler.getLogicalDelete(), page, size);
@@ -415,11 +274,8 @@ export default  class GenericController extends GenericValidationController impl
             } catch (error: any) {
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(),
-                    reqHandler.getMethod(), this.controllerObj.controller);
+                    reqHandler.getMethod(), this.controllerName);
             }
-        } catch (error: any) {
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerObj.controller);
-        }
+        });
     }
 }

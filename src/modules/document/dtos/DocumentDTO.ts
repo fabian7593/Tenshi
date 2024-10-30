@@ -1,6 +1,5 @@
 import { Request, IAdapterFromBody } from "@modules/index";
-import { Document } from '@modules/document/index'
-import { Code } from "typeorm";
+import { Document } from '@modules/document/index';
 
 export default  class DocumentDTO implements IAdapterFromBody{
     req: Request;
@@ -16,10 +15,10 @@ export default  class DocumentDTO implements IAdapterFromBody{
     //POST
     entityFromPostBodyWithParams(body : any) : Document{
         const entity = new Document();
-        entity.title = body.name || null;
+        entity.title = body.name;
         entity.type = body.type;
         entity.action_type = body.action_type || "GENERAL";
-        entity.description = body.description || null;
+        entity.description = body.description;
         entity.id_for_table = body.id_for_table || 0;
         entity.table = body.table;
         entity.user_id = body.user_id;

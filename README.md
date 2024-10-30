@@ -537,10 +537,11 @@ To customize existing email templates or add new ones, follow these guidelines:
 
 <br><br>
 
+
 ## Dependencies
 | Dependency               | Version      |
 |--------------------------|--------------|
-| @types/axios             | ^0.14.0      |
+| @types/bcrypt            | ^5.0.2       |
 | @types/cors              | ^2.8.17      |
 | @types/express           | ^4.17.21     |
 | @types/jsonwebtoken      | ^9.0.6       |
@@ -548,7 +549,9 @@ To customize existing email templates or add new ones, follow these guidelines:
 | @types/multer            | ^1.4.11      |
 | @types/nodemailer        | ^6.4.15      |
 | @types/pg                | ^8.6.6       |
+| @types/supertest         | ^6.0.2       |  
 | aws-sdk                  | ^2.1672.0    |
+| bcrypt                   | ^5.1.1       |
 | copyfiles                | ^2.4.1       |
 | cors                     | ^2.8.5       |
 | express                  | ^4.19.2      |
@@ -559,14 +562,20 @@ To customize existing email templates or add new ones, follow these guidelines:
 | mssql                    | ^10.0.1      |
 | multer                   | ^1.4.5-lts.1 |
 | mysql                    | ^2.18.1      |
+| node-cache               | ^5.1.2       | 
 | nodemailer               | ^6.9.14      |
 | pg                       | ^8.12.0      |
 | rate-limiter-flexible    | ^5.0.3       |
+| supertest                | ^7.0.0       |  
 | ts-node                  | ^10.9.2      |
 | ts-node-dev              | ^2.0.0       |
 | tsconfig-paths           | ^4.2.0       |
 | typeorm                  | ^0.3.20      |
 | typescript               | ^5.5.4       |
+| @types/jest              | ^29.5.13     |  
+| jest                     | ^29.7.0      |  
+| ts-jest                  | ^29.2.5      |  
+
 
 <br><br>
 
@@ -584,8 +593,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Security:** Add Two Factor Authentication into login.
 - **Module:** Add payments methods module.
 - **Module:** Add subscriptions module.
-- **Generics:** Create Generics Service to avoid repeat your code in controllers.
-- **Middleware:** Separate Error handling logic into middlewares.
 - **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
 - **Documentation:** Create Postman Endpoints Documentation.

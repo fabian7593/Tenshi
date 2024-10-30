@@ -61,7 +61,7 @@ function getErrorCode(error: string): string | null {
 
 //Get error of the DB with the SQL State
 export function getErrorDBbySqlState(errorMessage: string): ErrorMessage | null {
-    
+   
     const errors: ErrorMessage[] = errorDbList;
     const errorCode = getErrorCode(errorMessage);
 

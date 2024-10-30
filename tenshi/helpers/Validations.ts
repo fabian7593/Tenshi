@@ -7,6 +7,7 @@ import ConfigManager  from "tenshi/config/ConfigManager";
 import { getRegex } from "tenshi/utils/jsonUtils";
 import {  ConstStatusJson, ConstGeneral, ConstMessagesJson, ConstRoles } from "tenshi/consts/Const";
 import { ServerResponse } from 'http';
+import { isUndefined } from 'util';
 
 const jwt = require('jsonwebtoken');
 /*
@@ -89,7 +90,7 @@ export default class Validations{
                     regexResult = this.validateRegex(value, regexObject.regex, regexObject.message);
                 }
 
-                if (regexResult instanceof ServerResponse) {
+                if (regexResult instanceof ServerResponse || regexResult === undefined) {
                     return false;
                 }
             }

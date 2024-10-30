@@ -12,7 +12,6 @@ export { default as IAdapterFromBody } from "@TenshiJS/generics/Adapter/IAdapter
 
 //Objects and utils
 export { default as JWTObject } from "@TenshiJS/objects/JWTObject";
-export { default as ControllerObject } from "@TenshiJS/objects/ControllerObject";
 export { getUrlParam, toSnakeCase, getCurrentFunctionName } from "@TenshiJS/utils/generalUtils";
 
 //Entity

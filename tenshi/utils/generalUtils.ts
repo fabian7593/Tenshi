@@ -1,3 +1,4 @@
+import { EntityTarget } from "tenshi/generics";
 import { Request } from "express";
 /*
     General Utils is a class that works for every environments
@@ -30,6 +31,12 @@ export function camelToUpperSnakeCase(text: string): string {
       .replace(/^_/, '');
   }
   
+export function getEntityName(entity: EntityTarget<any>): string {
+    // Cast the entity to any type to access the name property.
+    // This is safe because the name property is a valid property of EntityTarget.
+    return (entity as any).name;
+}
+
 
 
 /**

@@ -5,7 +5,7 @@ import { UserNotification, UserNotificationDTO, requiredBodyListUserNotification
 
 class UserNotificationRoutes extends GenericRoutes {
     constructor() {
-        super(new UserNotificationController(UserNotification));
+        super(new UserNotificationController());
     }
 
     protected initializeRoutes() {
@@ -35,7 +35,7 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .build();
         
           //TODO JUST WORK AFTER RUN STORED PROCEDURE src\data\db_scripting\01_db_stored_procedures.sql
-          //this.getController().getByFilters(requestHandler);
+          this.getController().getByFilters(requestHandler);
         });
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {

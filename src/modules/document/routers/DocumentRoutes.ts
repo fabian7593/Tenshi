@@ -3,7 +3,7 @@ import { Request, Response, GenericRoutes,
     FindManyOptions } from "@modules/index";
 
 import { config } from "@index/index";
-import { Document, DocumentController, DocumentDTO, multer } from '@modules/document/index';
+import { DocumentController, DocumentDTO, multer } from '@modules/document/index';
 import { getUrlParam } from "@TenshiJS/utils/generalUtils";
 
 const storage = multer.memoryStorage(); // Almacenamiento en memoria
@@ -16,7 +16,7 @@ const upload = multer({
 
 class DocumentRoutes extends GenericRoutes {
     constructor() {
-        super(new DocumentController(Document));
+        super(new DocumentController());
     }
 
     protected initializeRoutes() {

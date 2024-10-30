@@ -1,4 +1,4 @@
-import { Validations, HttpAction, config } from "@index/index";
+import { HttpAction, config } from "@index/index";
 import { DBPersistanceFactory } from "@TenshiJS/persistance/DBPersistanceFactory";
 
 import { GenericRepository, 
@@ -11,33 +11,46 @@ import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/Execu
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
-import { ConstHTTPRequest, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
+import {  ConstHTTPRequest, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate } from "@index/consts/Const";
+import GenericService from "@TenshiJS/generics/Services/GenericService";
+import { UserRepository } from "@index/modules/user";
 
 export default  class UserNotificationController extends GenericController{
 
+    constructor() {
+        super(UserNotification,new UserRepository);
+    }
+
+    /**
+     * This function is used to insert a new user notification in the database.
+     * It performs the following steps:
+     * 1. Validates the role of the user.
+     * 2. Validates the required fields of the entity.
+     * 3. Validates the regex of the entity.
+     * 4. Executes the function provided as a parameter.
+     * 5. Returns a success response if the insertion is successful.
+     * 6. Returns a database error response if there is an error while inserting the entity.
+     * 7. Returns a general error response if there is an error while performing the above steps.
+     * 
+     * @param {RequestHandler} reqHandler - The request handler object.
+     * @return {Promise<any>} A promise that resolves to the success response if the insertion is successful.
+     */
     async insert(reqHandler: RequestHandler) : Promise<any>{
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
-    
-        try{
+
+        return this.getService().insertService(reqHandler, async (jwtData, httpExec) => {
             const repositoryUser = new GenericRepository(User);
             const repositoryNotification = new GenericRepository(Notification);
             const repositoryUserNotification = new GenericRepository(UserNotification);
 
-            const validation : Validations = reqHandler.getResponse().locals.validation;
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().create, httpExec) !== true){ return; }
-            if(!this.validateRequiredFields(reqHandler, validation)){ return; };
-
-             //Get data From some tables
-             const userNotifications : UserNotification = reqHandler.getAdapter().entityFromPostBody();
-             const notification : Notification =
-                 await repositoryNotification.findByCode(
+            //Get data From some tables
+            const userNotifications : UserNotification = reqHandler.getAdapter().entityFromPostBody();
+            const notification : Notification =
+                await repositoryNotification.findByCode(
                     userNotifications.notification_code, 
                     reqHandler.getLogicalDelete());
-             
-             if(notification != undefined && notification != null){
+            
+            if(notification != undefined && notification != null){
                 if(notification.required_send_email){
                     const user : User = await repositoryUser.findById(userNotifications.id_user_receive, true);
                     
@@ -54,12 +67,11 @@ export default  class UserNotificationController extends GenericController{
                         message: htmlBody,
                         attachments: [] 
                     });
-                 }
-             }else{
+                }
+            }else{
                 return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-             }
+            }
             
-
             try{
                 //Execute Action DB
                 const userNotificationAdded: UserNotification = await repositoryUserNotification.add(userNotifications);
@@ -67,36 +79,18 @@ export default  class UserNotificationController extends GenericController{
                 return httpExec.successAction(responseWithNewAdapter, ConstHTTPRequest.INSERT_SUCESS);
             
             }catch(error : any){
-                return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.getControllerObj().controller);
+                return await httpExec.databaseError(error, jwtData!.id.toString(), 
+                reqHandler.getMethod(), this.getControllerName());
             }
-        }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
-        }
+        });
     }
 
 
-
-
     async update(reqHandler: RequestHandler): Promise<any>{
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
+        return this.getService().updateService(reqHandler, async (jwtData, httpExec, id) => {
 
-        try{
-             //This is for use the basic CRUD
-             const repository = new GenericRepository(UserNotification);
-
-             const repositoryNotification = new GenericRepository(Notification);
-
-             //This is for do validations
-             const validation : Validations = reqHandler.getResponse().locals.validation;
-             //This calls the jwt data into JWTObject
-             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-             //get the id from URL params
-             const validateId = this.getIdFromQuery(validation, httpExec);
-             if(validateId === null){ return; }
-             const id = validateId as number; 
-
-            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().update, httpExec) !== true){ return; }
+            const repository = new GenericRepository(UserNotification);
+            const repositoryNotification = new GenericRepository(Notification);
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
@@ -136,58 +130,40 @@ export default  class UserNotificationController extends GenericController{
 
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.getControllerObj().controller);
+                reqHandler.getMethod(), this.getControllerName());
             }
-        }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
-        }
+        });
      }
-
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
-        const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
-
-        try{
-            const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            if(await this.validateRole(reqHandler,  jwtData.role, this.getControllerObj().getById, httpExec) !== true){ return; }
-
-            let userReceive : string | null = null;
-            if(reqHandler.getRequest().query['user_receive'] != undefined){
-                userReceive = reqHandler.getRequest().query['user_receive'] as string;
-            }
-
-            let userSend : string | null = null;
-            if(reqHandler.getRequest().query['user_send'] != undefined){
-                userSend = reqHandler.getRequest().query['user_send'] as string;
-            }
-
+        return this.getService().getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
             try{
-                //get by url params the page and the size of the response
-                const page : number = reqHandler.getRequest().query.page ? 
-                            parseInt(reqHandler.getRequest().query.page as string) : 
-                            config.HTTP_REQUEST.PAGE_OFFSET;
+                // Get the filters from the request query parameters
+                let userReceive : string | null = null;
+                if(reqHandler.getRequest().query['user_receive'] != undefined){
+                    userReceive = reqHandler.getRequest().query['user_receive'] as string;
+                }
+    
+                let userSend : string | null = null;
+                if(reqHandler.getRequest().query['user_send'] != undefined){
+                    userSend = reqHandler.getRequest().query['user_send'] as string;
+                }
 
-                const size : number = reqHandler.getRequest().query.size ? 
-                            parseInt(reqHandler.getRequest().query.size as string) : 
-                            config.HTTP_REQUEST.PAGE_SIZE;
-
-                //Execute Action DB
+                // Execute the get by filters action in the database
                 const entities = await this.getAllUserNotifications(userReceive, userSend, page, size);
 
-                // Filtrar el OkPacket
+                // Filter the OkPacket
                 const data = entities.filter((item: any) => !('affectedRows' in item));
 
+                // Return the success response
                 return httpExec.successAction(data, ConstHTTPRequest.GET_ALL_SUCCESS);
             }catch(error : any){
+                // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.getControllerObj().controller);
+                reqHandler.getMethod(), this.getControllerName());
             }
-        }catch(error : any){
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
-        }
+        });
      }
-
  
      async getAllUserNotifications(userReceive : string | null, userSend : string | null,
                                    page: number, size : number ): Promise<any>{

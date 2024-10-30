@@ -3,19 +3,18 @@ import Validations  from 'tenshi/helpers/Validations';
 import HttpAction from 'tenshi/helpers/HttpAction';
 import RoleRepository from "tenshi/generics/Role/RoleRepository"
 import IGenericRepository from 'tenshi/generics/Repository/IGenericRepository';
-import { RequestHandler } from 'tenshi/generics/index';
+import {  RequestHandler } from 'tenshi/generics/index';
 import { ConstStatusJson, ConstMessagesJson, ConstRoles, ConstGeneral } from "tenshi/consts/Const";
 
-export default  class GenericValidationController{
+export default  class GenericValidation{
 
-    //private roleRepository : RoleRepository;
     private repository : IGenericRepository;
 
-    protected setRepository(repository: IGenericRepository){ 
+    public setRepository(repository: IGenericRepository){ 
         this.repository = repository;
     }
 
-    protected getValidationRepository(): IGenericRepository {
+    public getValidationRepository(): IGenericRepository {
         return this.repository;
     }
 
@@ -28,7 +27,7 @@ export default  class GenericValidationController{
          * @param {HttpAction} httpAction - The HTTP action object.
          * @return {Promise<any>} - A promise that resolves to the result of the validation.
          */
-    protected async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
+    public async validateRole(reqHandler: RequestHandler, role: string, action: string,  httpAction: HttpAction): Promise<any> {
         /**
          * Validates the role of the user.
          * If the user's role is required to be validated, it checks if the user has the permission for the specified action.
@@ -46,6 +45,7 @@ export default  class GenericValidationController{
             const roleRepository : RoleRepository = await RoleRepository.getInstance();
             // Get the permission for the specified action and role from the role repository.
             const roleFunc = await roleRepository.getPermissionByFuncAndRole(role, reqHandler.getModule(), action);
+
             // If the user does not have the permission, return an unauthorized error.
             if (roleFunc == false) {
                 return httpAction.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
@@ -62,7 +62,7 @@ export default  class GenericValidationController{
      * @param {Validations} validation - The validations object.
      * @return {boolean} - Returns true if all the required fields are present, false otherwise.
      */
-    protected validateRequiredFields(reqHandler: RequestHandler, validation: Validations): boolean {
+    public validateRequiredFields(reqHandler: RequestHandler, validation: Validations): boolean {
         // Check if the required fields list is not null
         if (reqHandler.getRequiredFieldsList() != null) {
             // Validate the required fields
@@ -85,14 +85,11 @@ export default  class GenericValidationController{
      * @param {Validations} validation - The validations object.
      * @returns {boolean} - Returns true if all the regex validations pass, false otherwise.
      */
-    protected validateRegex(reqHandler: RequestHandler, validation: Validations): boolean {
+    public validateRegex(reqHandler: RequestHandler, validation: Validations): boolean {
         // Check if the request handler object contains a list of regex validators
         if (reqHandler.getRegexValidatorList() != null) {
             // Validate the multiple regex using the validation object
-            if (validation.validateMultipleRegex(reqHandler.getRegexValidatorList()) != null) {
-                // If any of the regex validations fail, return false
-                return false;
-            }
+            return validation.validateMultipleRegex(reqHandler.getRegexValidatorList());
         }
 
         // If all the regex validations pass, return true
@@ -108,11 +105,11 @@ export default  class GenericValidationController{
      * @param {number} id - The ID to set in the user ID field if it is not present in the body object
      * @return {any} - The modified body object with the user ID field set
      */
-    protected setUserId(body: any, id: number | string): any {
+    public setUserId(body: any, id: number | string): any {
         // Check if the user ID is not present in the body object
         if (!(ConstGeneral.USER_ID in body)) {
             // If the user ID is not present, set the user ID with the provided ID
-            body.userId = id;
+            body.user_id = id;
         }
 
         // Return the modified body object with the user ID field set
@@ -169,13 +166,29 @@ export default  class GenericValidationController{
     }
 
     /**
+     * Validates if the request handler has filters.
+     * This function checks if the filters are set in the request handler.
+     * If filters are not provided, it returns an error response.
+     *
+     * @param {RequestHandler} reqHandler - The request handler object.
+     * @param {HttpAction} httpExec - The HTTP action object.
+     * @return {boolean | any} - Returns true if filters are present, otherwise returns an error response.
+     */
+    public validateHaveFilters(reqHandler: RequestHandler, httpExec: HttpAction): any {
+        if (reqHandler.getFilters() == null) {
+            return httpExec.paramsError(); // Return error response if filters are not provided
+        }
+        return true;
+    }
+
+    /**
      * Retrieves the ID from the query parameters.
      * 
      * @param {Validations} validation - The validation object.
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {number | null} - The ID from the query parameters or null if validation fails.
      */
-    protected getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
+    public getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
         // Validate the ID from the query parameters
         const id = validation.validateIdFromQuery();
 
@@ -197,7 +210,7 @@ export default  class GenericValidationController{
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {string | null} - The code from the query parameters or null if validation fails.
      */
-    protected getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
+    public getCodeFromQuery(validation: Validations, httpExec: HttpAction): string | null {
         // Validate the code from the query parameters
         const code = validation.validateCodeFromQuery();
 

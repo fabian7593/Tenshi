@@ -4,6 +4,7 @@ import { GenericController, RequestHandler, JWTObject } from "@modules/index";
 import { ConstHTTPRequest } from "@TenshiJS/consts/Const";
 import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/ExecuteQuery";
 import { Log } from "@TenshiJS/entity/Log";
+import GenericService from "@TenshiJS/generics/Services/GenericService";
 
 export default  class LogController extends GenericController{
 
@@ -18,18 +19,7 @@ export default  class LogController extends GenericController{
       * @returns {Promise<any>} A promise that resolves to the success response if the operation is successful.
       */
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
-
-        // Get the HTTP action object from the response
-        const httpExec: HttpAction = reqHandler.getResponse().locals.httpExec;
-
-        try {
-            // Get the JWT data from the response
-            const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
-
-            // Validate the role of the user
-            if(await this.validateRole(reqHandler, jwtData.role, this.getControllerObj().getById, httpExec) !== true){ 
-                return; 
-            }
+        return this.getService().getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
 
             // Get the filters from the query parameters
             let environment : string | null = null;
@@ -48,15 +38,6 @@ export default  class LogController extends GenericController{
             }
 
             try {
-                // Get the page and size from the URL query parameters
-                const page : number = reqHandler.getRequest().query.page ? 
-                        parseInt(reqHandler.getRequest().query.page as string) : 
-                        config.HTTP_REQUEST.PAGE_OFFSET;
-
-                const size : number = reqHandler.getRequest().query.size ? 
-                        parseInt(reqHandler.getRequest().query.size as string) : 
-                        config.HTTP_REQUEST.PAGE_SIZE;
-
                 // Execute the action to get all logs with the specified filters
                 const entities = await this.getAllLogs(environment, userId, type, page, size);
 
@@ -68,12 +49,9 @@ export default  class LogController extends GenericController{
             } catch(error : any) {
                 // Return the database error response
                 return await httpExec.databaseError(error, jwtData.id.toString(), 
-                reqHandler.getMethod(), this.getControllerObj().controller);
+                reqHandler.getMethod(), this.getControllerName());
             }
-        } catch(error : any) {
-            // Return the general error response
-            return await httpExec.generalError(error, reqHandler.getMethod(), this.getControllerObj().controller);
-        }
+        });
      }
    
      async getAllLogs(environment : string | null,
