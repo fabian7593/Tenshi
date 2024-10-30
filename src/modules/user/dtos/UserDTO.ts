@@ -9,6 +9,8 @@ export default  class UserDTO implements IAdapterFromBody{
         this.req = req;
     }
 
+
+
     //POST
     entityFromPostBody() : User{
         const entity = new User();
@@ -18,12 +20,15 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
         entity.phone_number = this.req.body.phone_number;
-        entity.latitude = this.req.body.latitude;
-        entity.longitude = this.req.body.longitude;
+        entity.bio = this.req.body.bio;
         entity.password = this.req.body.password;
         entity.gender = this.req.body.gender;
         entity.birth_date = this.req.body.birth_date;
         entity.country_iso_code = this.req.body.country_iso_code;
+        entity.city_name = this.req.body.city_name;
+        entity.postal_code = this.req.body.postal_code;
+        entity.latitude = this.req.body.latitude;
+        entity.longitude = this.req.body.longitude;
         entity.role_code = this.req.body.role_code || config.SERVER.CUSTOMER_REGULAR_ROLE;
         entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE;
         entity.profile_picture_url = this.req.body.profile_picture_url;
@@ -44,9 +49,12 @@ export default  class UserDTO implements IAdapterFromBody{
             user_name: user.user_name,
             email: user.email,
             phone_number: user.phone_number,
+            bio: user.bio,
+            country_iso_code: user.country_iso_code,
+            city_name: user.city_name,
+            postal_code: user.postal_code,
             latitude: user.latitude,
             longitude: user.longitude,
-            country_iso_code: user.country_iso_code,
             gender: user.gender,
             birth_date: user.birth_date,
             role: user.role_code,
@@ -77,12 +85,15 @@ export default  class UserDTO implements IAdapterFromBody{
         entity.user_name = this.req.body.user_name;
         entity.email = this.req.body.email;
         entity.phone_number = this.req.body.phone_number;
-        entity.latitude = this.req.body.latitude;
-        entity.longitude = this.req.body.longitude;
+        entity.bio = this.req.body.bio;
         entity.gender = this.req.body.gender;
         entity.birth_date = this.req.body.birth_date;
         entity.language = this.req.body.language;
         entity.country_iso_code = this.req.body.country_iso_code;
+        entity.city_name = this.req.body.city_name;
+        entity.postal_code = this.req.body.postal_code;
+        entity.latitude = this.req.body.latitude;
+        entity.longitude = this.req.body.longitude;
         entity.role_code = this.req.body.role_code;
         entity.profile_picture_url = this.req.body.profile_picture_url;
         entity.is_active_from_email = this.req.body.is_active_from_email;
