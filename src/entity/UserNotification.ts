@@ -8,11 +8,11 @@ export class UserNotification {
   @PrimaryGeneratedColumn({ type: "int" })
   id: number;
 
-  @Column({ type: "int", unsigned: true, nullable: true })
-  id_user_send: number | null;
+  @Column({ type: "varchar",nullable: true })
+  id_user_send: number | string | null;
 
-  @Column({ type: "int", unsigned: true })
-  id_user_receive: number;
+  @Column({ type: "varchar"})
+  id_user_receive: number | string;
 
   @Column({ type: "varchar", length: 60 })
   notification_code: string;

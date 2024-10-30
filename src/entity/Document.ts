@@ -21,8 +21,10 @@ export class Document {
   @Column({ type: "varchar", length: 10 })
   extension: string;
 
-  @Column({ type: "varchar", length: 100 })
-  action_type: string; // e.g., PROFILE_PICTURE, GENERAL_GALLERY, PERSONAL_DOCUMENT
+  @Column({ type: "enum", 
+            enum: ["PROFILE_PICTURE", "GENERAL_GALLERY", "PERSONAL_DOCUMENT"], 
+            default: "GENERAL_GALLERY" })
+  action_type: string; 
 
   @Column({ type: "enum", enum: ["DOC", "IMG", "OTHER"], default: "IMG" })
   type: "DOC" | "IMG" | "OTHER";

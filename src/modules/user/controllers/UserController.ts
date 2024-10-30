@@ -29,7 +29,7 @@ export default class UserController extends GenericController{
             const validation : Validations = reqHandler.getResponse().locals.validation;
             const jwtData : JWTObject = reqHandler.getResponse().locals.jwtData;
 
-            let id : number | null = null;
+            let id : number | string | null = null;
             if(jwtData.role == ConstRoles.ADMIN){
                 id = validation.validateIdFromQuery();
             }else{

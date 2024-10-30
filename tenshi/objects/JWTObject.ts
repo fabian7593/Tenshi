@@ -1,6 +1,6 @@
 
 interface JWTObject {
-    id: number;
+    id: number|string;
     email: string;
     role: string;
     

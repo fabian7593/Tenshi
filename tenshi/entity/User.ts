@@ -2,8 +2,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn({ type: "int", unsigned: true })
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column({ type: "int", unsigned: true, nullable: true })
   card_id: number | null;
@@ -13,6 +13,9 @@ export class User {
 
   @Column({ type: "varchar", length: 250 })
   last_name: string;
+
+  @Column({ type: "varchar", length: 500, nullable: true, default: null })
+  bio: string;
 
   @Column({ type: "varchar", length: 250, unique: true })
   email: string;
@@ -34,6 +37,12 @@ export class User {
 
   @Column({ type: "varchar", length: 3, nullable: true, default: null })
   country_iso_code: string | null;
+
+  @Column({ type: "varchar", length: 200, nullable: true, default: null })
+  city_name: string | null;
+
+  @Column({ type: "varchar", length: 50, nullable: true, default: null })
+  postal_code: string | null;
 
   @Column({ type: "varchar", length: 35 })
   role_code: string;

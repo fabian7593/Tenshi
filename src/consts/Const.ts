@@ -24,4 +24,8 @@ export class ConstEnums{
     public static readonly DOC_TYPE_DOC: string = "DOC";
     public static readonly DOC_TYPE_IMG: string = "IMG";
     public static readonly DOC_TYPE_OTHER: string = "OTHER";
+
+    public static readonly DOC_ACTION_TYPE_PROFILE_PICTURE: string = "PROFILE_PICTURE";
+    public static readonly DOC_ACTION_TYPE_GENERAL_GALLERY: string = "GENERAL_GALLERY";
+    public static readonly DOC_ACTION_TYPE_PERSONAL_DOCUMENT: string = "PERSONAL_DOCUMENT";
 }

@@ -73,7 +73,7 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any | undefined>} The updated entity, or undefined if it was not found.
      * @throws {Error} If there was an error while updating the entity.
      */
-    async update(id: number, 
+    async update(id: number|string, 
                  newData: Partial<any>, 
                  hasLogicalDeleted : boolean): Promise<any | undefined> {
         try {
@@ -113,7 +113,7 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any>} The entity that was removed from the database.
      * @throws {Error} If the entity is not found or if there was an error while deleting the entity.
      */
-    async remove(id: number): Promise<any> {
+    async remove(id: number|string): Promise<any> {
 
         try {
             // Define the options for finding the entity by its ID
@@ -146,7 +146,7 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any>} The entity that was logically removed.
      * @throws {Error} If the entity is not found or if the entity does not have an "is_deleted" property.
      */
-    async logicalRemove(id: number): Promise<any> {
+    async logicalRemove(id: number|string): Promise<any> {
         try {
             let options : FindOneOptions;
             options = { where: { id : id }  };  // Set the options to find the entity by its ID
@@ -177,7 +177,7 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any>} The entity found.
      * @throws {Error} If the entity is not found.
      */
-    async findById(id: number, 
+    async findById(id: number|string, 
                    hasLogicalDeleted : boolean): Promise<any> {
         try {
             // Prepare the options for the entity manager's findOne method

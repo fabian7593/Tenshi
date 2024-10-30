@@ -100,7 +100,7 @@ export default  class UserNotificationController extends GenericController{
 
             //If you need to validate if the user id of the table 
             //should be the user id of the user request (JWT)
-            let userId : number | null= null;
+            let userId : number | string | null= null;
             let userNotification : UserNotification;
             userNotification = await repository.findById(id, reqHandler.getLogicalDelete());
 

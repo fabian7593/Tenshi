@@ -108,7 +108,7 @@ export default  class GenericValidationController{
      * @param {number} id - The ID to set in the user ID field if it is not present in the body object
      * @return {any} - The modified body object with the user ID field set
      */
-    protected setUserId(body: any, id: number): any {
+    protected setUserId(body: any, id: number | string): any {
         // Check if the user ID is not present in the body object
         if (!(ConstGeneral.USER_ID in body)) {
             // If the user ID is not present, set the user ID with the provided ID
@@ -135,7 +135,7 @@ export default  class GenericValidationController{
      * @return {Promise<any>} - Returns a promise that resolves to the result of the HTTP action object.
      */
     protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
-        let userId: number | null = null; // Initialize user ID
+        let userId: number | string | null = null; // Initialize user ID
 
         // Check if the request handler object requires validation of the where clause by user ID
         if (reqHandler.getRequireValidWhereByUserId()) {
