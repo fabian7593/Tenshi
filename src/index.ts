@@ -34,6 +34,7 @@ import { default as cors } from 'cors';
 import { default as bodyParser } from 'body-parser';
 
 //Import Routes
+import AuthRoutes from '@index/modules/auth/routers/AuthRoutes';
 import UserRoutes from '@modules/user/routers/UserRoutes';
 import RoleRoutes from '@modules/role/routers/RoleRoutes';
 import UdcRoutes from '@modules/udc/routers/UdcRoutes';
@@ -117,6 +118,7 @@ export const TenshiMain = () => {
     //              ROUTES
     //*************************************** */
     //Add Routers
+    app.use(new AuthRoutes().getRouter());
     app.use(new UserRoutes().getRouter());
     app.use(new RoleRoutes().getRouter());
     app.use(new UdcRoutes().getRouter());

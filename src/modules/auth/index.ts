@@ -1,10 +1,9 @@
-import UserController from './controllers/UserController';
 //Generic
 export { default as JWTService } from '@TenshiJS/helpers/JWT';
 export { hashPassword, verifyPassword } from "@TenshiJS/utils/encryptionUtils";
 
 //user
-export { default as UserController } from "@modules/user/controllers/UserController";
+export { default as AuthController } from "@modules/auth/controllers/AuthController";
 export { default as RoleController } from "@modules/role/controllers/RoleController";
 export { User } from "@TenshiJS/entity/User";
 export { default as UserDTO } from "@modules/user/dtos/UserDTO";
