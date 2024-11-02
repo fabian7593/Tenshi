@@ -97,5 +97,9 @@
         "AUTH_USER": "tenshitest1@gmail.com",
         "AUTH_PASSWORD": "xnqitxldphiymoov",
         "EMAIL_FROM": "tenshitest1@gmail.com"
+    },
+    "TEST" : {
+        "JWT_TEST": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2NjUyZjVmLWVlNWYtNDMyMC1iNDkwLTg4ODhiNGM0NmNjYiIsImVtYWlsIjoidGVuc2hpdGVzdDFAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNTA4MTY5LCJleHAiOjE3MzA1MzgxNjl9.kCSAwMlG7A8lj8_iZ-ljLMLiddmhGmrw47Tw_MJ1zZ8",
+        "ROLE_TESt": "TEST"
     }
 }

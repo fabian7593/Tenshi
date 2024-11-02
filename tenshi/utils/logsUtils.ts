@@ -99,7 +99,9 @@ async function saveLog(log: Log, title: string) {
         // If the setting in the config file allows it, save the log to the database.
         if(config.LOG.LOG_DATABASE == true){
             const genericRepository = new GenericRepository(Log);
-            await genericRepository.add(log);
+            if(await genericRepository){
+                await genericRepository.add(log);
+            }
         }
 
         // If the setting in the config file allows it, save the log to a file.

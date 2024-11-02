@@ -12,13 +12,13 @@ export class UnitDynamicCentral {
   @Column({ type: "varchar", length: 100 })
   name: string;
 
-  @Column({ type: "enum", enum: ["PROJECT_TYPE", "PROJECT_CATEGORY", "INDUSTRY_TYPE"], nullable: true })
-  type: "PROJECT_TYPE" | "PROJECT_CATEGORY" | "INDUSTRY_TYPE" | null;
+  @Column({ type: "enum", enum: ["EVENT_TYPES", "PROJECT_CATEGORY", "CAMP_TYPES"], nullable: true })
+  type: "EVENT_TYPES" | "PROJECT_CATEGORY" | "CAMP_TYPES" | null;
 
   @Column({ type: "varchar", length: 400, nullable: true, default: null })
   description: string | null;
 
-  @Column({ type: "varchar", length: 300 })
+  @Column({ type: "varchar", length: 300, nullable: true, default: null })
   value1: string;
 
   @Column({ type: "varchar", length: 300, nullable: true, default: null })
@@ -45,8 +45,8 @@ export class UnitDynamicCentral {
   @Column({ type: "tinyint", default: 0 })
   is_deleted: boolean;
 
-  @Column({ type: "int", unsigned: true, nullable: true, default: null })
-  user_id: number | null;
+  @Column({ type: "varchar", length: 300, nullable: true, default: null })
+  user_id: string | null;
 
   @Column({ type: "int", unsigned: true, nullable: true, default: null })
   user_updated_id: number | null;

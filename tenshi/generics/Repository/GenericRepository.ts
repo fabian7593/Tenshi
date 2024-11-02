@@ -25,11 +25,15 @@ export default  class GenericRepository implements IGenericRepository{
     private repository: Repository<any>;
    
     //the constructor method init the Singleton of DB connection and send it the entity target
-    constructor(entityTarget : EntityTarget<any>) {
-        this.dataSource = Database.getInstance();
-        this.repository = this.dataSource.getRepository(entityTarget);
-        this.entityManager = this.dataSource.manager;
+    constructor(entityTarget: EntityTarget<any>) {
         this.entityTarget = entityTarget;
+        this.initialize(); // Llama a initialize, pero no esperas su resultado
+    }
+
+    private async initialize() {
+        this.dataSource = await Database.getInstance(); // Espera a obtener la instancia de DataSource
+        this.repository = this.dataSource.getRepository(this.entityTarget); // Accede al repositorio
+        this.entityManager = this.dataSource.manager; // Obtén el EntityManager
     }
 
      /**
@@ -41,6 +45,10 @@ export default  class GenericRepository implements IGenericRepository{
 
     public getDataSource(): DataSource {
         return this.dataSource;
+    }
+
+    public setDataSource(dataSource: DataSource) {
+         this.dataSource = dataSource;
     }
     
     /**

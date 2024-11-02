@@ -21,7 +21,7 @@ class DocumentRoutes extends GenericRoutes {
 
     protected initializeRoutes() {
 
-        this.router.get(`${this.getRouterName()}/get_by_some_params`, async (req: Request, res: Response) => {
+        this.router.get(`${this.getRouterName()}/get_by_filters`, async (req: Request, res: Response) => {
             const nameParam : string | null = getUrlParam("name", req) || null;
             const extensionParam : string | null = getUrlParam("ext", req) || null;
             const actionTypeParam : string | null = getUrlParam("action_type", req) || null;

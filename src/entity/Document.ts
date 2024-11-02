@@ -47,8 +47,8 @@ export class Document {
   @Column({ type: "tinyint", default: 0 })
   is_public: boolean;
 
-  @Column({ type: "int", unsigned: true })
-  user_id: number;
+  @Column({ type: "varchar", length: 500, nullable: true, default: null  })
+  user_id: string | null;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   created_date: Date;

@@ -2,7 +2,7 @@ import path from 'path';
 import ConfigManager from '@TenshiJS/config/ConfigManager';
 const configPath = path.resolve(__dirname, '../../tenshi-config.json');
 const configManager = ConfigManager.getInstance(configPath);
-configManager.getConfig();
+const config = configManager.getConfig();
 
 import { RequestHandler } from '@TenshiJS/generics/index';
 import HttpAction from '@TenshiJS/helpers/HttpAction';
@@ -23,8 +23,8 @@ describe('GenericValidation', () => {
     let httpExec: HttpAction;
     let jwtData: JWTObject | null = null;
 
-    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZW5zaGl0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyNjQ5NDEsImV4cCI6MTczMDI5NDk0MX0.O3kksyTMNTXNuiLNQQqohLFuwEZ9isUb1-VKFK1LaVc';
-    const roleValidate = 'TEST';
+    const jwt = config.TEST.JWT_TEST;
+    const roleValidate = config.TEST.ROLE_TESt;
 
     beforeEach(async () => {
         req = {
@@ -72,9 +72,11 @@ describe('GenericValidation', () => {
         it('Should SUCCESS Validate JWT', async () => {
             jwtData = await validation.validateRequireJWT();
             expect(jwtData).toEqual(expect.objectContaining({
-                id: expect.any(Number),
+                id: expect.any(String),
                 email: expect.any(String),
-                role: expect.any(String)
+                role: expect.any(String),
+                exp: expect.any(Number),
+                iat: expect.any(Number),
             }));
         });
 

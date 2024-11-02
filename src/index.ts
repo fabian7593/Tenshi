@@ -17,8 +17,6 @@ import { Document } from '@entity/Document';
 import { Notification } from '@entity/Notification';
 import { UnitDynamicCentral } from '@entity/UnitDynamicCentral';
 import { UserNotification } from '@entity/UserNotification';
-//Init instance of database First time
-Database.getInstance([User, Document, Notification, UnitDynamicCentral, UserNotification]);
 
 
 //*************************************** */
@@ -83,7 +81,9 @@ export let httpServer: ReturnType<typeof http.createServer>;
 //*************************************** */
 //           Started FUNCTION
 //*************************************** */
-export const TenshiMain = () => {
+export const TenshiMain = async() => {
+
+    await Database.getInstance([User, Document, Notification, UnitDynamicCentral, UserNotification]);
 
     //Cors handler middle ware
     app.use(CorsHandlerMiddleware);
@@ -111,7 +111,6 @@ export const TenshiMain = () => {
     app.use(StartMiddleware);
     //logging handler 
     app.use(LoggingHandlerMiddleware);
-
 
 
     //*************************************** */

@@ -44,7 +44,7 @@ export class User {
   @Column({ type: "varchar", length: 50, nullable: true, default: null })
   postal_code: string | null;
 
-  @Column({ type: "varchar", length: 35 })
+  @Column({ type: "varchar", length: 100 })
   role_code: string;
 
   @Column({ type: "tinyint", default: 0 })
