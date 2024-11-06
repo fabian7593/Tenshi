@@ -18,7 +18,7 @@ class LogRoutes extends GenericRoutes {
                                     .isValidateRole("LOG")
                                     .build();
         
-            this.getController().getByFilters(requestHandler);
+            this.getController().getAll(requestHandler);
         });
         
         this.router.post(`${this.getRouterName()}/add`, async (req: Request, res: Response) => {

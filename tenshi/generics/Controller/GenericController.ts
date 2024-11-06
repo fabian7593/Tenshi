@@ -232,7 +232,7 @@ export default  class GenericController extends GenericValidation implements IGe
             try {
                
                 // Execute the get all action in the database
-                const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), page, size);
+                const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
                 if(entities != null && entities != undefined){
                     // Return the success response
                     return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
@@ -248,34 +248,4 @@ export default  class GenericController extends GenericValidation implements IGe
         });
     }
   
-
-    /**
-     * This function gets entities by applying filters specified in the request parameters.
-     * 
-     * @param {RequestHandler} reqHandler - The request handler object.
-     * @returns {Promise<any>} A promise that resolves to the success response if the operation is successful.
-     */
-    async getByFilters(reqHandler: RequestHandler): Promise<any> {
-
-        return this.service.getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
-            try {
-               
-                // Execute the find by filters action in the database
-                const entities = await this.getRepository().findByFilters(reqHandler.getFilters()!,
-                    reqHandler.getLogicalDelete(), page, size);
-
-                if(entities != null && entities != undefined){
-                    // Return the success response
-                    return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
-                }else{
-                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-                }
-
-            } catch (error: any) {
-                // Return the database error response
-                return await httpExec.databaseError(error, jwtData.id.toString(),
-                    reqHandler.getMethod(), this.controllerName);
-            }
-        });
-    }
 }

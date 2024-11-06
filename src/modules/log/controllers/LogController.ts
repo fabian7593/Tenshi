@@ -19,7 +19,7 @@ export default  class LogController extends GenericController{
       * @returns {Promise<any>} A promise that resolves to the success response if the operation is successful.
       */
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
-        return this.getService().getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
+        return this.getService().getAllService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
 
             // Get the filters from the query parameters
             let environment : string | null = null;

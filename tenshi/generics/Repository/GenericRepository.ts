@@ -258,29 +258,29 @@ export default  class GenericRepository implements IGenericRepository{
      * @param {number} [size=3000] - The number of entities per page.
      * @return {Promise<any[] | null>} The entities found.
      */
-    async findAll(hasLogicalDeleted: boolean, 
+    async findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null = {},
                   page: number = 1, size: number = 3000): Promise<any[] | null> {
         try {
 
             // Calculate the offset based on the page and size
             const offset = (page - 1) * size;
 
-            // Initialize the find options
-            let options : FindManyOptions;
+            const finalOptions: FindManyOptions = options !== null ? { ...options } : {};
 
             // If logical deletion is required, set the where clause
             if(hasLogicalDeleted){
-                options = { where: { "is_deleted" : 0 }  }; 
-            }else{
-                options = { }; 
+                finalOptions.where = {
+                    ...finalOptions.where,
+                    is_deleted: 0
+                };
             }
 
             // Set the skip and take options for pagination
-            options.skip = offset;
-            options.take = size;
+            finalOptions.skip = offset;
+            finalOptions.take = size;
 
             // Find entities using the entity manager
-            const getEntities = await this.entityManager.find(this.entityTarget, options); 
+            const getEntities = await this.entityManager.find(this.entityTarget, finalOptions); 
           
             return getEntities;
         } catch (error : any) {
@@ -289,46 +289,6 @@ export default  class GenericRepository implements IGenericRepository{
         } 
     }
    
-
-    /**
-     * Find entities by filters.
-     * 
-     * @param {FindManyOptions} options - The find options.
-     * @param {boolean} hasLogicalDeleted - Whether the entities are logical deleted.
-     * @param {number} page - The page number.
-     * @param {number} size - The number of entities per page.
-     * @return {Promise<any>} The entities found.
-     */
-    async findByFilters(options: FindManyOptions, hasLogicalDeleted: boolean,
-                        page: number = 1, size: number = 3000
-    ): Promise<any> {
-        try {
-            // Calculate the offset based on the page number and size.
-            const offset = (page - 1) * size;
-
-            // If the entities are logical deleted, add the "is_deleted" filter.
-            if(hasLogicalDeleted) {
-                if (typeof options.where === 'object' && options.where !== null) {
-                    options.where = {
-                        ...options.where,
-                        "is_deleted": 0
-                    };
-                }
-            }
-
-            // Set the pagination options.
-            options.skip = offset;
-            options.take = size;
-
-            // Find the entities using the options.
-            const getEntities = await this.entityManager.find(this.entityTarget, options); 
-            return getEntities;
-        } catch (error : any) {
-            // Throw the error if there is an exception.
-            throw error;
-        }
-    }
-    
     //Execute query scripting and stored procedures.
     /*async executeQueryExample(user: User): Promise<void>{
        await executeQuery(async (conn) => {

@@ -63,7 +63,7 @@ class DocumentRoutes extends GenericRoutes {
                                     .isLogicalDelete()
                                     .build();
         
-            this.getController().getByFilters(requestHandler);
+            this.getController().getAll(requestHandler);
         });
         
         this.router.get(`${this.getRouterName()}/get_by_code`, async (req: Request, res: Response) => {

@@ -10,8 +10,7 @@ interface IGenericRepository {
 
     findById(id: number|string, hasLogicalDeleted : boolean): Promise<any | undefined>;
     findByCode(code: string, hasLogicalDeleted : boolean): Promise<any | undefined>;
-    findByFilters(options: FindManyOptions, hasLogicalDeleted: boolean, page: number, size: number): Promise<any | undefined>;
-    findAll(hasLogicalDeleted: boolean, page: number, size: number): Promise<any[] | null>;
+    findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<any[] | null>;
 }
 
 export default IGenericRepository;

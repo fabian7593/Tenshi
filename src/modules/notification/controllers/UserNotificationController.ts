@@ -136,7 +136,7 @@ export default  class UserNotificationController extends GenericController{
      }
 
      async getByFilters(reqHandler: RequestHandler): Promise<any> {
-        return this.getService().getByFiltersService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
+        return this.getService().getAllService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
             try{
                 // Get the filters from the request query parameters
                 let userReceive : string | null = null;
