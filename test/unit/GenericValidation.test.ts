@@ -107,14 +107,12 @@ describe('GenericValidation', () => {
         //************************************************ */
         it('Should SUCCESS Validate Role', async () => {
 
-           /* req.body = { 'exampleField': 'exampleValue' };
-            req.params = {};
-            req.query = {};
-*/
             const requestHandler: RequestHandler =
                 new RequestHandlerBuilder(res, req)
                     .isValidateRole(roleValidate)
                     .build();
+
+                    console.log(jwtData!.role);
 
             const isValid = await genericValidation.validateRole(requestHandler, jwtData!.role, ConstFunctions.GET_ALL, httpExec);
             expect(isValid).toBe(true);

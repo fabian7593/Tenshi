@@ -186,24 +186,28 @@ export default  class GenericRepository implements IGenericRepository{
      * @throws {Error} If the entity is not found.
      */
     async findById(id: number|string, 
-                   hasLogicalDeleted : boolean): Promise<any> {
+                   hasLogicalDeleted : boolean, 
+                   options: FindManyOptions | null = {}): Promise<any> {
         try {
+
+            let finalOptions: FindManyOptions = options !== null ? { ...options } : {};
+
             // Prepare the options for the entity manager's findOne method
-            let options : FindOneOptions;
-            options = { where: { id : id}  }; 
+            finalOptions.where = {
+                ...finalOptions.where,
+                id : id
+            };
 
             // If the entity is supposed to be logical deleted, add the filter for it
             if(hasLogicalDeleted){
-                if (typeof options.where === 'object' && options.where !== null) {
-                    options.where = {
-                        ...options.where,
-                        "is_deleted": 0 // Only return non-logically deleted entities
-                    };
-                }
+                finalOptions.where = {
+                    ...finalOptions.where,
+                    is_deleted: 0
+                };
             }
 
             // Find the entity by ID
-            const entity = await this.entityManager.findOne(this.entityTarget, options); 
+            const entity = await this.entityManager.findOne(this.entityTarget, finalOptions); 
 
             // Return the found entity
             return entity;
@@ -224,24 +228,26 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any | undefined>} The entity found, or undefined if not found.
      */
     async findByCode(code: string, 
-                     hasLogicalDeleted : boolean): Promise<any | undefined> {
+                     hasLogicalDeleted : boolean, 
+                     options: FindManyOptions | null = {}): Promise<any | undefined> {
         try {
             // Set up the options for finding the entity
-            let options : FindManyOptions;
-            options = { where: { code : code}  }; 
+            let finalOptions: FindManyOptions = options !== null ? { ...options } : {};
+            finalOptions.where = {
+                ...finalOptions.where,
+                code : code
+            };
 
-            // If logical deletion is enabled, append the "is_deleted" condition
+            // If the entity is supposed to be logical deleted, add the filter for it
             if(hasLogicalDeleted){
-                if (typeof options.where === 'object' && options.where !== null) {
-                    options.where = {
-                        ...options.where,
-                        "is_deleted": 0
-                    };
-                }
+                finalOptions.where = {
+                    ...finalOptions.where,
+                    is_deleted: 0
+                };
             }
 
             // Find the entity with the specified code
-            const entity = await this.entityManager.findOne(this.entityTarget, options); 
+            const entity = await this.entityManager.findOne(this.entityTarget, finalOptions); 
             return entity;
 
         } catch (error : any) {

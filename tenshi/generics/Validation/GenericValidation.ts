@@ -144,9 +144,9 @@ export default  class GenericValidation{
             // Call the appropriate entity retrieval function based on the type of the ID or code
             let entity: any = null; // Initialize entity
             if (typeof idOrCode === 'number') {
-                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete()); // Call findById function
+                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findById function
             } else {
-                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete()); // Call findByCode function
+                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findByCode function
             }
 
             // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT

@@ -174,7 +174,7 @@ export default  class GenericController extends GenericValidation implements IGe
         return this.service.getByIdService(reqHandler, async (jwtData, httpExec, id) => {
             try{
                 // Execute the get by id action in the database
-                const entity = await this.getRepository().findById(id, reqHandler.getLogicalDelete());
+                const entity = await this.getRepository().findById(id, reqHandler.getLogicalDelete(), reqHandler.getFilters());
 
                 if(entity != null && entity != undefined){
                     // Return the success response
@@ -203,7 +203,7 @@ export default  class GenericController extends GenericValidation implements IGe
         return this.service.getByCodeService(reqHandler, async (jwtData, httpExec, code) => {
             try{
                 // Execute the get by code action in the database
-                const entity = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
+                const entity = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete(), reqHandler.getFilters());
                 if(entity != null && entity != undefined){
                     // Return the success response
                     return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);

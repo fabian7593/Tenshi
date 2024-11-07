@@ -90,7 +90,7 @@ export default  class DocumentController extends GenericController{
         return this.getService().getByCodeService(reqHandler, async (jwtData, httpExec, code) => {
             try{
                 // Execute the get by code action in the database
-                const entity : Document = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete());
+                const entity : Document = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete(), reqHandler.getFilters());
 
                 if(entity != null && entity != undefined){
                     if(entity.is_public == false){

@@ -8,8 +8,8 @@ interface IGenericRepository {
     remove(id: number|string): Promise<any>;
     logicalRemove(id: number|string): Promise<any>;
 
-    findById(id: number|string, hasLogicalDeleted : boolean): Promise<any | undefined>;
-    findByCode(code: string, hasLogicalDeleted : boolean): Promise<any | undefined>;
+    findById(id: number|string, hasLogicalDeleted: boolean, options: FindManyOptions | null): Promise<any | undefined>;
+    findByCode(code: string, hasLogicalDeleted: boolean, options: FindManyOptions | null): Promise<any | undefined>;
     findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<any[] | null>;
 }
 
