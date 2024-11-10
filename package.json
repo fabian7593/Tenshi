@@ -10,7 +10,8 @@
         "copytemp": "copyfiles -u 1 src/templates/*.html build",
         "start": "ts-node -r tsconfig-paths/register src/index.ts",
         "test": "jest",
-        "seed": "ts-node -r tsconfig-paths/register src/seeds/GeneralSeed.ts"
+        "seed": "ts-node -r tsconfig-paths/register src/seeds/GeneralSeed.ts",
+        "automation": "ts-node -r tsconfig-paths/register automation/Automation.ts"
     },
     "keywords": [],
     "author": "",
