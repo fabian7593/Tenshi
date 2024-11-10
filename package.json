@@ -11,7 +11,8 @@
         "start": "ts-node -r tsconfig-paths/register src/index.ts",
         "test": "jest",
         "seed": "ts-node -r tsconfig-paths/register src/seeds/GeneralSeed.ts",
-        "automation": "ts-node -r tsconfig-paths/register automation/Automation.ts"
+        "automation": "ts-node -r tsconfig-paths/register automation/Automation.ts",
+        "autotest": "ts-node -r tsconfig-paths/register automation/AutomationTest.ts"
     },
     "keywords": [],
     "author": "",

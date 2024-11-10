@@ -4,7 +4,7 @@ import ts from 'typescript';
 
 const entityName = process.argv[2];
 if (!entityName) {
-    console.error("Por favor, proporciona el nombre de la entidad.");
+    console.error("Please Write the entity Name");
     process.exit(1);
 }
 
@@ -13,10 +13,10 @@ const modulePath = path.join(__dirname, '../src', 'modules', entityName.toLowerC
 const dtoPath = path.join(modulePath, 'dtos');
 const routerPath = path.join(modulePath, 'routers');
 
-// Campos que deben omitirse en la generación automática
+// Excluded fields for automatic generation
 const excludedFields = ["id", "created_date", "updated_date", "is_deleted"];
 
-// Función para extraer campos y tipos desde la entidad
+// Extract fields and type from entity
 function extractEntityFields(entityFilePath: string): { name: string; type: string }[] {
     const source = fs.readFileSync(entityFilePath, 'utf-8');
     const sourceFile = ts.createSourceFile(entityFilePath, source, ts.ScriptTarget.ES2015, true);
@@ -28,7 +28,7 @@ function extractEntityFields(entityFilePath: string): { name: string; type: stri
                 if (ts.isPropertyDeclaration(member) && member.name && ts.isIdentifier(member.name)) {
                     const fieldName = member.name.escapedText.toString();
                     const fieldType = member.type?.getText() || 'any';
-                    // Omitir campos excluidos
+                    
                     if (!excludedFields.includes(fieldName)) {
                         fields.push({ name: fieldName, type: fieldType });
                     }
@@ -59,8 +59,7 @@ function extractAllFields(entityFilePath: string): { name: string; type: string 
     return fields;
 }
 
-// Función para extraer campos y determinar si tienen relaciones o si son nullable
-// Función para extraer campos y determinar si tienen relaciones o si son nullable
+// Extract fields, nullabillity and relations from entity
 function extractEntityFieldsAndRelations(entityFilePath: string): {
     fields: string[];
     relations: string[];
@@ -108,12 +107,12 @@ function extractEntityFieldsAndRelations(entityFilePath: string): {
 
 
 
-// Crear carpeta del módulo si no existe
+// Create folder if not exists
 if (!fs.existsSync(modulePath)) {
     fs.mkdirSync(modulePath, { recursive: true });
 }
 
-// Crear carpetas para DTO y Router si no existen
+// Create folder if not exists
 if (!fs.existsSync(dtoPath)) {
     fs.mkdirSync(dtoPath, { recursive: true });
 }
@@ -121,14 +120,14 @@ if (!fs.existsSync(routerPath)) {
     fs.mkdirSync(routerPath, { recursive: true });
 }
 
-// Extraer campos de la entidad para el DTO
+// Extract fields from entity for DTO
 const fields = extractEntityFields(entityPath);
 const getfields = extractAllFields(entityPath);
 
-// Extraer campos y relaciones de la entidad para Routes
+
 const { fields: routeFields, relations } = extractEntityFieldsAndRelations(entityPath);
 
-// Generar contenido para el archivo DTO
+// Generate DTO
 const dtoContent = `
 import { ${entityName} } from "@index/entity/${entityName}";
 import { Request, IAdapterFromBody } from "@modules/index";
@@ -183,22 +182,22 @@ export default class ${entityName}DTO implements IAdapterFromBody {
 }
 `;
 
-// Generar archivo DTO solo si no existe
+// Generate DTO if not exists
 const dtoFilePath = path.join(dtoPath, `${entityName}DTO.ts`);
 if (!fs.existsSync(dtoFilePath)) {
     fs.writeFileSync(dtoFilePath, dtoContent);
-    console.log(`Archivo DTO creado en ${dtoFilePath}`);
+    console.log(`DTO file created in ${dtoFilePath}`);
 } else {
-    console.log(`El archivo DTO ya existe en ${dtoFilePath}, no se sobrescribió.`);
+    console.log(`The DTO field is already exists ${dtoFilePath}, we dont overwrite.`);
 }
 
-// Generar contenido para el archivo Routes
+// Generate routes fields
 const routesContent = `import { Request, Response, 
          RequestHandler, RequestHandlerBuilder, 
          GenericController, GenericRoutes,
          FindManyOptions} from "@modules/index";
 import { ${entityName} } from "@index/entity/${entityName}";
-import ${entityName}DTO from "@modules/${entityName.toLowerCase()}/dtos/${entityName}DTO";
+import ${entityName}DTO from "@modules/02_Synco/${entityName.toLowerCase()}/dtos/${entityName}DTO";
 
 class ${entityName}Routes extends GenericRoutes {
     
@@ -285,7 +284,7 @@ export default new ${entityName}Routes();
 const routerFilePath = path.join(routerPath, `${entityName}Routes.ts`);
 if (!fs.existsSync(routerFilePath)) {
     fs.writeFileSync(routerFilePath, routesContent);
-    console.log(`Archivo de rutas creado en ${routerFilePath}`);
+    console.log(`Routes File created in ${routerFilePath}`);
 } else {
-    console.log(`El archivo de rutas ya existe en ${routerFilePath}, no se sobrescribió.`);
+    console.log(`This routes file is already exists ${routerFilePath}.`);
 }

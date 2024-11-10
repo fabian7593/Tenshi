@@ -66,7 +66,6 @@ class NotificationRoutes extends GenericRoutes {
                                     .setAdapter(new NotificationDTO(req))
                                     .setMethod("updateNotification")
                                     .isValidateRole("NOTIFICATION")
-                                    .isValidateWhereByUserId()
                                     .build();
         
             this.getController().update(requestHandler);
