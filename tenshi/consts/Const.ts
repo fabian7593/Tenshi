@@ -54,6 +54,7 @@ export class ConstMessagesJson {
     public static readonly USER_PASS_ERROR: string = "USER_PASS_ERROR";
     public static readonly RESET_PASSWORD: string = "RESET_PASSWORD";
     public static readonly EMAIL_SENT_SUCCESS: string = "EMAIL_SENT_SUCCESS";
+    public static readonly REGISTER_CONFIRMATION_SUCCESSFUL: string = "REGISTER_CONFIRMATION_SUCCESSFUL";
 }
 
 

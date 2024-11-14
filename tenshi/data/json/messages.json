@@ -22,6 +22,7 @@
     "VALID_TOKEN_SUCCESS": "Valid Token Successful",
     "REFRESH_TOKEN_SUCCESS": "Refresh Token Successful",
     "INVALID_REFRESH_TOKEN": "Invalid Refresh Token",
+    "REGISTER_CONFIRMATION_SUCCESSFUL": "Register Successful",
 
     "DATA_BASE_ERROR": "Data Base Error",
 
