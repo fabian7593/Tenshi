@@ -46,7 +46,7 @@ export default class AuthController extends GenericController{
         userBody.active_register_token = registerToken;
 
         //set the language
-        userBody.language = userBody.language == null ? reqHandler.getRequest().headers[ConstGeneral.HEADER_LANGUAGE] : config.SERVER.DEFAULT_LANGUAGE;
+        userBody.language = userBody.language == null ? config.SERVER.DEFAULT_LANGUAGE :  userBody.language;
     
         try{
             //Execute Action DB
