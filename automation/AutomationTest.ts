@@ -228,13 +228,13 @@ const postmanCollection = {
 									}
                     },
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/edit?id={{id}}",
+                        "raw": "{{host}}/${entityName.toLowerCase()}/edit?id=1",
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "edit"],
                         "query": [
                             {
                                 "key": "id",
-                                "value": "{{id}}"
+                                "value": "1"
                             }
                         ]
                     }
@@ -257,13 +257,13 @@ const postmanCollection = {
                         }
                     ],
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/get?id={{id}}",
+                        "raw": "{{host}}/${entityName.toLowerCase()}/get?id=1",
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "get"],
                         "query": [
                             {
                                 "key": "id",
-                                "value": "{{id}}"
+                                "value": "1"
                             }
                         ]
                     }
@@ -309,13 +309,13 @@ const postmanCollection = {
                         }
                     ],
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/delete?id={{id}}",
+                        "raw": "{{host}}/${entityName.toLowerCase()}/delete?id=1",
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "delete"],
                         "query": [
                             {
                                 "key": "id",
-                                "value": "{{id}}"
+                                "value": "1"
                             }
                         ]
                     }

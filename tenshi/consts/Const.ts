@@ -19,10 +19,6 @@ export class ConstHTTPRequest {
     public static readonly SEND_MAIL_SUCCESS: string = "SEND_MAIL_SUCCESS";
 }
 
-export class ConstRoles {
-    public static readonly ADMIN: string = "ADMIN";
-}
-
 export class ConstStatusJson {
     public static readonly NOT_FOUND: string =  "NOT_FOUND";
     public static readonly UNAUTHORIZED: string =  "UNAUTHORIZED";
@@ -57,7 +53,6 @@ export class ConstMessagesJson {
     public static readonly REGISTER_CONFIRMATION_SUCCESSFUL: string = "REGISTER_CONFIRMATION_SUCCESSFUL";
 }
 
-
 export class ConstMessages {
     //Init variables
     public static readonly INIT_MIDDLEWARE: string = "Initialize Middleware: ";
@@ -68,7 +63,6 @@ export class ConstMessages {
     public static readonly ERROR_ROLE_FILE: string = "Error reading roles from file: ";
     public static readonly ERROR_PARSING_DEVIDE_INFO: string = "Error parsing device-info: ";
     public static readonly ERROR_NOT_HAVE_IS_DELETED: string = "Entity does not have an 'is_deleted' property.";
-    
 }
 
 export class ConstGeneral {

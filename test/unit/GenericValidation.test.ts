@@ -24,7 +24,7 @@ describe('GenericValidation', () => {
     let jwtData: JWTObject | null = null;
 
     const jwt = config.TEST.JWT_TEST;
-    const roleValidate = config.TEST.ROLE_TESt;
+    const roleValidate = config.TEST.ROLE_TEST;
 
     beforeEach(async () => {
         req = {

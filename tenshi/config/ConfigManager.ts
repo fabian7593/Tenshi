@@ -102,11 +102,12 @@ interface SuperAdminConfig {
     FIRST_NAME: string;
     LAST_NAME: string;
     USERNAME: string;
+    ROLE_CODE: string;
 }
 
 interface TestConfig {
     JWT_TEST: string;
-    ROLE_TESt: string;
+    ROLE_TEST: string;
 }
 
 interface AppConfig {

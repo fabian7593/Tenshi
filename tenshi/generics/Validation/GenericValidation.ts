@@ -4,7 +4,11 @@ import HttpAction from 'tenshi/helpers/HttpAction';
 import RoleRepository from "tenshi/generics/Role/RoleRepository"
 import IGenericRepository from 'tenshi/generics/Repository/IGenericRepository';
 import {  RequestHandler } from 'tenshi/generics/index';
-import { ConstStatusJson, ConstMessagesJson, ConstRoles, ConstGeneral } from "tenshi/consts/Const";
+import { ConstStatusJson, ConstMessagesJson, ConstGeneral } from "tenshi/consts/Const";
+
+import ConfigManager  from "tenshi/config/ConfigManager";
+const config = ConfigManager.getInstance().getConfig();
+
 
 export default  class GenericValidation{
 
@@ -117,6 +121,7 @@ export default  class GenericValidation{
     }
 
     /**
+     * This is a function that need to have user_id in the table, to valid just the current user linked and the admin can be modify it.
      * Validates the user ID by ID or code entity.
      * This function checks if the request handler object requires validation of the where clause by user ID.
      * If it does, it checks the role of the JWT and sets the user ID accordingly.
@@ -134,10 +139,12 @@ export default  class GenericValidation{
     protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
         let userId: number | string | null = null; // Initialize user ID
 
+    
+
         // Check if the request handler object requires validation of the where clause by user ID
         if (reqHandler.getRequireValidWhereByUserId()) {
             // Check if the role of the JWT is not admin
-            if (jwtData.role != ConstRoles.ADMIN) {
+            if (jwtData.role != config.SUPER_ADMIN.ROLE_CODE) {
                 userId = jwtData.id; // Set the user ID with the ID of the JWT
             }
 

@@ -11,9 +11,8 @@ import { executeDatabaseQuery } from "@TenshiJS/persistance/DataBaseHelper/Execu
 import EmailService from "@TenshiJS/services/EmailServices/EmailService";
 
 import { getEmailTemplate } from "@TenshiJS/utils/htmlTemplateUtils";
-import {  ConstHTTPRequest, ConstMessagesJson, ConstRoles, ConstStatusJson } from "@TenshiJS/consts/Const";
+import {  ConstHTTPRequest, ConstMessagesJson, ConstStatusJson } from "@TenshiJS/consts/Const";
 import { ConstTemplate } from "@index/consts/Const";
-import GenericService from "@TenshiJS/generics/Services/GenericService";
 import { UserRepository } from "@index/modules/user";
 
 export default  class UserNotificationController extends GenericController{
@@ -104,7 +103,7 @@ export default  class UserNotificationController extends GenericController{
             }
 
             if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != ConstRoles.ADMIN){
+                if(jwtData.role != config.SUPER_ADMIN.ROLE_CODE){
                     userId = jwtData.id;
                 }
              

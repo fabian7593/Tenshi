@@ -19,14 +19,15 @@
         "FAIL_LOGIN_MAX_NUMBER": 3,
         "DEFAULT_LANGUAGE" : "en",
         "FORMAT_DATE" : "es-ES",
-        "CUSTOMER_REGULAR_ROLE" : "CUSTOMER"
+        "CUSTOMER_REGULAR_ROLE" : "94db2848-3df7-4593-b90d-1615a700bddd"
     },
     "SUPER_ADMIN":{
         "USER_EMAIL":"tenshitest1@gmail.com",
         "PASSWORD":"Tenshitest1*",
         "FIRST_NAME":"Tenshi",
         "LAST_NAME":"Test",
-        "USERNAME":"tenshitest1"
+        "USERNAME":"tenshitest1",
+        "ROLE_CODE":"13ebc7f8-6fae-404b-8f9b-2267a3348ca4"
     },
     "DB": {
         "TYPE": "mariadb",
@@ -100,6 +101,6 @@
     },
     "TEST" : {
         "JWT_TEST": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM2ZDBhZTQ5LWUzMTMtNDUwZC1iNjE3LTcyYjNjZjg2M2ZiZSIsImVtYWlsIjoidGVuc2hpdGVzdDFAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMxMjc5NDQ2LCJleHAiOjE3MzEzMDk0NDZ9.SsJ2tIyXCTeu1a3_WMC-DVmxWp0bU-lz7wFvUmkn2xw",
-        "ROLE_TESt": "TEST"
+        "ROLE_TEST": "TEST"
     }
 }

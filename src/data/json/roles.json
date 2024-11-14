@@ -2,7 +2,7 @@
   "roles": [
     {
       "id": 1,
-      "code": "ADMIN",
+      "code": "13ebc7f8-6fae-404b-8f9b-2267a3348ca4",
       "name": "Administrator",
       "description": "Administrator role with full access to all functionalities.",
       "modules": [
@@ -95,7 +95,7 @@
     },
     {
       "id": 2,
-      "code": "ANALYST",
+      "code": "d4218228-306b-4aba-a282-6702242c2107",
       "name": "Analyst",
       "description": "Analyst role with access to analytical tools and reporting functionalities.",
       "modules": [
@@ -119,7 +119,7 @@
     },
     {
       "id": 3,
-      "code": "CUSTOMER",
+      "code": "94db2848-3df7-4593-b90d-1615a700bddd",
       "name": "Customer",
       "description": "Customer role with access to customer-specific functionalities.",
       "modules": [

@@ -5,7 +5,7 @@ import { Log } from "tenshi/entity/Log";
 import { User } from "tenshi/entity/User";
 
 import ConfigManager  from "tenshi/config/ConfigManager";
-import { ConstMessages, ConstRoles } from "tenshi/consts/Const";
+import { ConstMessages } from "tenshi/consts/Const";
 import { hashPassword } from "@TenshiJS/utils/encryptionUtils";
 
 export class Database {
@@ -90,7 +90,7 @@ export class Database {
                         adminUser.first_name = config.SUPER_ADMIN.FIRST_NAME;
                         adminUser.last_name = config.SUPER_ADMIN.LAST_NAME;
                         adminUser.user_name = config.SUPER_ADMIN.USERNAME;
-                        adminUser.role_code = ConstRoles.ADMIN; 
+                        adminUser.role_code = config.SUPER_ADMIN.ROLE_CODE; 
                         adminUser.is_active_from_email = true;
                         adminUser.account_status = "active";
 
@@ -103,6 +103,7 @@ export class Database {
                     throw err; // Throw an error if initialization fails
                 });
         }
+
         return Database.instance; // Return the singleton instance
     }
 

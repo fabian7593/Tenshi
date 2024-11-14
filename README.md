@@ -30,6 +30,7 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
   - [JWT](#jwt)
   - [FILE_STORAGE](#file_storage)
   - [EMAIL](#email)
+  - [TEST](#test)
 - [Import Postman](#import-postman)
 - [Project Architecture](#project-architecture)
   - [GenericRepository](#genericrepository)
@@ -38,6 +39,9 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - [RequestHandler Builder Logic](#requesthandler-builder-logic)
 - [Application Flow Diagram](#application-flow-diagram)
 - [Database Management](#database-management)
+- [Insert Seeds](#insert-seeds)
+- [Testing](#testing)
+- [Automation](#automation)
 - [Response Structure](#response-structure)
 - [Managing Roles](#managing-roles)
   - [How to Create and Modify Roles](#how-to-create-and-modify-roles)
@@ -136,7 +140,6 @@ Tenshi is a highly flexible framework, not just a library. To get started:
    //this is for start server in production environment
    npm run start
    ```
-
 <br><br>
 
 ## Configuration:
@@ -168,7 +171,7 @@ Configuration related to the server.
 - **FAIL_LOGIN_MAX_NUMBER**: Maximum number of failed login attempts before blocking or taking action.
 - **DEFAULT_LANGUAGE**: (2 letters language) Default language of the server.
 - **FORMAT_DATE**: Date format used for localization, e.g., "es-ES" for Spanish (Spain).
-- **CUSTOMER_REGULAR_ROLE**: Set the name of the role when a regular user register, this will be used on register endpoint. If you need a differnt role, you need to insert from admin user. in Post "user/add".
+- **CUSTOMER_REGULAR_ROLE**: Set the code  of the role when a regular user register, this will be used on register endpoint.
 
 ### 3. **SUPER_ADMIN**
 Configuration of the first master user. This user is inserted in the first time open server.
@@ -178,6 +181,7 @@ Configuration of the first master user. This user is inserted in the first time 
 - **FIRST_NAME**: The first name of the super admin user. 
 - **LAST_NAME**: The last name of the super admin user. 
 - **USERNAME**: A unique identifier for the super admin account. This is used for logging in.
+- **ROLE_CODE**: This is the role code for super admin, you could wait it on src/data/json/roles.json
 
 ### 4. **DB**
 Configuration related to the database.
@@ -256,6 +260,12 @@ Configuration related to the email service used by the application.
 - **AUTH_USER**: Username or email address used to authenticate with the email service.
 - **AUTH_PASSWORD**: Password used to authenticate with the email service.
 - **EMAIL_FROM**: Email address from which emails will be sent.
+
+### 11. **TEST**
+Configuration related to run npm run test.
+
+- **JWT_TEST**: This is the JWT of the user that have permission to have another role.
+- **ROLE_TEST**: This is the name of he role that you validate, could be any role.
 
 <br><br>
 
@@ -374,6 +384,59 @@ This method enables the validation of WHERE conditions in a query, ensuring that
 
 ## Database Management
 Tenshi utilizes TypeORM for database creation and management using a code-first approach, supporting databases like MariaDB, MySQL, SQL Server, Postgres, and SQLite. By default, Tenshi includes a logs table to store backend error logs, request logs, database logs, and critical application tracking information.
+
+<br><br>
+
+## Insert Seeds
+Context refers to a script or a set of instructions used to populate a database with initial or default data. Seeding is often necessary for setting up the initial state of an application, especially when working in development, testing, or staging environments.
+The seed on tenshi is in src/seed, and you could modify the scripting in package.json.
+
+   ```bash
+   //this is for run to insert seeds
+   npm run seed
+   ```
+
+<br><br>
+
+## Testing
+We added a script for testing files, actually we only have the unit test.
+But we will added integration test as well. 
+**Note: REMEMBER, before the test, you need to start your server and get a JWT from Super admin user, and you need to change the JWT on testing.config file.**
+
+Here:
+
+  ```bash
+    "TEST" : {
+        "JWT_TEST": "",
+        "ROLE_TEST": ""
+    }
+  ```
+
+  And for run the test, you need to run de script, like this
+   ```bash
+   //you need to run this script
+   npm run test
+   ```
+
+<br><br>
+
+## Automation
+Tenshi have some features about creation files automatically.
+You only need to create an entity into src/entity.
+And then you need to run de scripts.
+
+
+   ```bash
+   //for create DTOs files and routers files into modules, you can do this
+   npm run automation
+   ```
+
+   ```bash
+   //for create Postman files for importing, and integration test files of this entity and curent endpoints, you need to do this.
+   npm run autotest
+   ```
+When you complete this scripts, you need to verify the required fields, and the settings into the builder on router files.
+And then you need to test, with the script testing or from postman.
 
 <br><br>
 

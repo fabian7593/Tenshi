@@ -30,7 +30,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"sambasoccer24@gmail.com\",\r\n  \"user_name\": null,\r\n  \"password\": \"SambaSoccer24*\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"tenshitest1@gmail.com\",\r\n  \"user_name\": null,\r\n  \"password\": \"Tenshitest1*\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"

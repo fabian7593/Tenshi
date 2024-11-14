@@ -5,7 +5,7 @@ import { isTokenBlocked } from "@TenshiJS/utils/nodeCacheUtils";
 
 import ConfigManager  from "tenshi/config/ConfigManager";
 import { getRegex } from "tenshi/utils/jsonUtils";
-import {  ConstStatusJson, ConstGeneral, ConstMessagesJson, ConstRoles } from "tenshi/consts/Const";
+import {  ConstStatusJson, ConstGeneral, ConstMessagesJson } from "tenshi/consts/Const";
 import { ServerResponse } from 'http';
 import { isUndefined } from 'util';
 
