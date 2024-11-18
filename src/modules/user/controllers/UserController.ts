@@ -20,7 +20,12 @@ export default class UserController extends GenericController{
                     // Check if the ID is present in the query string
                     if (reqHandler.getRequest().query[ConstGeneral.ID] != undefined) {
                         // Try to parse the ID from the query string as a number
-                        validateId = parseInt(reqHandler.getRequest().query[ConstGeneral.ID] as string, 10);
+
+                        if (!isNaN(Number(reqHandler.getRequest().query[ConstGeneral.ID]))) {
+                            validateId = parseInt(reqHandler.getRequest().query[ConstGeneral.ID] as string, 10);
+                        } else {
+                            validateId = reqHandler.getRequest().query[ConstGeneral.ID] as string;
+                        }
                     }
                 } catch (error: any) {} 
             }else{
@@ -61,7 +66,7 @@ export default class UserController extends GenericController{
                 userBody.password = await hashPassword(userBody.password);
                 //Execute Action DB
                 const user = await this.getRepository().add(userBody);
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCESS);
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData!.id.toString(), 

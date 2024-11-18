@@ -11,7 +11,7 @@ export class ConstHTTPRequest {
     public static readonly LOGIN_SUCCESS: string = "LOGIN_SUCCESS";
     public static readonly LOGOUT_SUCCESS: string = "LOGOUT_SUCCESS";
     public static readonly REFRESH_TOKEN_SUCCESS: string = "REFRESH_TOKEN_SUCCESS";
-    public static readonly INSERT_SUCESS: string = "INSERT_SUCCESS";
+    public static readonly INSERT_SUCCESS: string = "INSERT_SUCCESS";
     public static readonly UPDATE_SUCCESS: string = "UPDATE_SUCCESS";
     public static readonly DELETE_SUCCESS: string = "DELETE_SUCCESS";
     public static readonly GET_ALL_SUCCESS: string = "GET_SUCCESS";
@@ -85,6 +85,7 @@ export class ConstGeneral {
 
     //JSON
     public static readonly MESSAGES_JSON: string = "tenshi/data/json/messages.json";
+    public static readonly DYNAMIC_MESSAGES_JSON: string = "../../src/data/json/messages.json";
 
     //ACTION
     public static readonly SEND_MAIL: string = "SEND_MAIL";

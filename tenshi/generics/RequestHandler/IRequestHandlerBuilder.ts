@@ -2,6 +2,7 @@ import { RequestHandler, IAdapterFromBody, FindManyOptions} from 'tenshi/generic
 
 export default interface IRequestHandlerBuilder {
     setMethod(method: string): IRequestHandlerBuilder;
+    setCodeMessageResponse(codeMessage: string): IRequestHandlerBuilder;
     setAdapter(adapter: IAdapterFromBody): IRequestHandlerBuilder;
     setRegexValidation(regexValidatorList: [string, string][]): IRequestHandlerBuilder;
     setRequiredFiles(requiredFieldsList: Array<string> ): IRequestHandlerBuilder;

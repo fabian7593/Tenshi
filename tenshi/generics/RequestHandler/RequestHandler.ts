@@ -17,6 +17,7 @@ export default class RequestHandler {
     private regexValidatorList: [string, string][] | null = null;
     private requiredFieldsList: Array<string> | null = null;
     private filters: FindManyOptions | null = null;
+    private codeMessageResponse: string | null = null;
 
     constructor(res: Response, req: Request, 
                 method: string, 
@@ -27,7 +28,8 @@ export default class RequestHandler {
                 requireValidWhereByUserId: boolean,
                 regexValidatorList: [string, string][] | null,
                 requiredFieldsList: Array<string> | null,
-                filters: FindManyOptions) {
+                filters: FindManyOptions,
+                codeMessageResponse: string | null) {
         this.res = res;
         this.req = req;
         this.method = method;
@@ -39,6 +41,7 @@ export default class RequestHandler {
         this.regexValidatorList = regexValidatorList;
         this.requiredFieldsList = requiredFieldsList;
         this.filters = filters;
+        this.codeMessageResponse = codeMessageResponse;
     }
 
      // Getters
@@ -56,6 +59,10 @@ export default class RequestHandler {
 
     getModule(): string {
         return this.module;
+    }
+
+    getCodeMessageResponse(): string | null {
+        return this.codeMessageResponse;
     }
 
     getAdapter(): IAdapterFromBody {

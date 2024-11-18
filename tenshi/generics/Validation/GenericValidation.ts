@@ -139,8 +139,6 @@ export default  class GenericValidation{
     protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
         let userId: number | string | null = null; // Initialize user ID
 
-    
-
         // Check if the request handler object requires validation of the where clause by user ID
         if (reqHandler.getRequireValidWhereByUserId()) {
             // Check if the role of the JWT is not admin
@@ -195,7 +193,7 @@ export default  class GenericValidation{
      * @param {HttpAction} httpExec - The HTTP action object.
      * @return {number | null} - The ID from the query parameters or null if validation fails.
      */
-    public getIdFromQuery(validation: Validations, httpExec: HttpAction): number | null {
+    public getIdFromQuery(validation: Validations, httpExec: HttpAction): number | string | null {
         // Validate the ID from the query parameters
         const id = validation.validateIdFromQuery();
 

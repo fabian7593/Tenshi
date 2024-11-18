@@ -15,6 +15,8 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
     private method: string = '';
     //this variable is the name of the module
     private module: string = '';
+    //this variable is the code of message response, to send from request handler
+    private codeMessageResponse: string | null = null;
     //add specific adapter
     private adapter: IAdapterFromBody;
     //if you need to validate role, set it on true
@@ -52,8 +54,11 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
         return this;
     }
 
-   
-
+    setCodeMessageResponse(codeMessage: string): IRequestHandlerBuilder {
+        this.codeMessageResponse = codeMessage;
+        return this;
+    }
+    
     //Set the adapter of the current entity 
     setAdapter(adapter: IAdapterFromBody): IRequestHandlerBuilder {
         this.adapter = adapter;
@@ -94,6 +99,7 @@ export default class RequestHandlerBuilder implements IRequestHandlerBuilder {
                                   this.requireValidWhereByUserId,
                                   this.regexValidatorList,
                                   this.requiredFieldsList,
-                                  this.filters );
+                                  this.filters,
+                                  this.codeMessageResponse);
     }
 }

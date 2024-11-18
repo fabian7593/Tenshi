@@ -50,6 +50,7 @@ class UdcRoutes extends GenericRoutes{
                                     .isValidateRole("UNIT_DYNAMIC_CENTRAL")
                                     .isLogicalDelete()
                                     .setFilters(options)
+                                    //.setCodeMessageResponse("TEST")
                                     .build();
         
             this.getController().getAll(requestHandler);

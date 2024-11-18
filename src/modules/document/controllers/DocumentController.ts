@@ -31,7 +31,7 @@ export default  class DocumentController extends GenericController{
                 // Execute the database action
                 const document: Document = await this.getRepository().add(documentBody);
                 // Return a success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(document), ConstHTTPRequest.INSERT_SUCESS);
+                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(document), ConstHTTPRequest.INSERT_SUCCESS);
 
             } catch (error : any) {
                 // Return a database error response

@@ -153,21 +153,26 @@ export default class Validations{
                     // If the authorization header is incomplete, return an error
                     this.httpAction.validationError(ConstMessagesJson.INCOMPLETE_HEADER_REQUEST);
                 } else {
+                    
                     // Validate assigned secret key with the database
-                    const jwtAuth = this.req.headers[ConstGeneral.HEADER_AUTH];
+                    let jwtAuth = this.req.headers[ConstGeneral.HEADER_AUTH];
                     let isInvalidToken = false;
 
-                    if (typeof jwtAuth === 'string') {
+                    if (typeof jwtAuth !== 'string') {
+                        isInvalidToken = true;
+                        // If the token is invalid, return an unauthorized error
+                        this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                    }else{
                         if(await isTokenBlocked(jwtAuth)){
                             isInvalidToken = true;
                             // If the token is invalid, return an unauthorized error
                             this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
                         }
-                    }else{
-                        isInvalidToken = true;
-                         // If the token is invalid, return an unauthorized error
-                         this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
-                    } 
+                    }
+
+                    if((jwtAuth as String).startsWith("Bearer ")) {
+                        jwtAuth = (jwtAuth as String).split(" ")[1];
+                    }
 
                     if(!isInvalidToken){
                         try {
@@ -251,15 +256,20 @@ export default class Validations{
      *
      * @return {number | null} The parsed number if the ID is valid, otherwise null.
      */
-    public validateIdFromQuery() : number | null {
+    public validateIdFromQuery() : number | string | null {
         try {
             // Initialize the ID variable to null
-            let id: number | null = null;
+            let id: number | string | null = null;
 
             // Check if the ID is present in the query string
             if (this.req.query[ConstGeneral.ID] != undefined) {
                 // Try to parse the ID from the query string as a number
-                id = parseInt(this.req.query[ConstGeneral.ID] as string, 10);
+
+                if (!isNaN(Number(this.req.query[ConstGeneral.ID]))) {
+                    id = parseInt(this.req.query[ConstGeneral.ID] as string, 10);
+                } else {
+                    id = this.req.query[ConstGeneral.ID] as string;
+                }
             }
 
             // Return the parsed ID or null if it is not valid

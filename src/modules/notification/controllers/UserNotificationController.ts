@@ -75,7 +75,7 @@ export default  class UserNotificationController extends GenericController{
                 //Execute Action DB
                 const userNotificationAdded: UserNotification = await repositoryUserNotification.add(userNotifications);
                 const responseWithNewAdapter = (reqHandler.getAdapter() as UserNotificationDTO).entityToResponseCompleteInformation(userNotificationAdded, notification);
-                return httpExec.successAction(responseWithNewAdapter, ConstHTTPRequest.INSERT_SUCESS);
+                return httpExec.successAction(responseWithNewAdapter, ConstHTTPRequest.INSERT_SUCCESS);
             
             }catch(error : any){
                 return await httpExec.databaseError(error, jwtData!.id.toString(), 

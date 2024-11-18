@@ -70,7 +70,7 @@ export default class AuthController extends GenericController{
                 attachments: [] 
             });
          
-            return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCESS);
+            return httpExec.successAction(reqHandler.getAdapter().entityToResponse(user), ConstHTTPRequest.INSERT_SUCCESS);
         
         }catch(error : any){
             return await httpExec.databaseError(error, null, 

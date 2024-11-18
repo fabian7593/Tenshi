@@ -57,6 +57,8 @@ export default  class GenericController extends GenericValidation implements IGe
         }else{
             this.setRepository(repositoryClass);
         }
+
+        this.service.setRepositoryServiceValidation(this.getRepository());
     }
    
     public getRepository(): IGenericRepository {
@@ -94,8 +96,15 @@ export default  class GenericController extends GenericValidation implements IGe
                 // Insert the entity into the database
                 const createdEntity = await this.getRepository().add(body);
 
+                const codeResponse : string = 
+                reqHandler.getCodeMessageResponse() != null ? 
+                reqHandler.getCodeMessageResponse() as string :
+                ConstHTTPRequest.INSERT_SUCCESS;
+
                 // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(createdEntity), ConstHTTPRequest.INSERT_SUCESS);
+                return httpExec.successAction(
+                    reqHandler.getAdapter().entityToResponse(createdEntity), 
+                    codeResponse);
 
             }catch(error : any){
                 // Return the database error response
@@ -123,8 +132,16 @@ export default  class GenericController extends GenericValidation implements IGe
                 // Execute the update action in the database
                 const updateEntity = await this.getRepository().update(id, body,
                                                              reqHandler.getLogicalDelete());
+
+                const codeResponse : string = 
+                reqHandler.getCodeMessageResponse() != null ? 
+                reqHandler.getCodeMessageResponse() as string :
+                ConstHTTPRequest.UPDATE_SUCCESS;
+
                 // Return the success response
-                return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), ConstHTTPRequest.UPDATE_SUCCESS);
+                return httpExec.successAction(
+                    reqHandler.getAdapter().entityToResponse(updateEntity), 
+                    codeResponse);
 
             } catch (error: any) {
                 // Return the database error response
@@ -148,7 +165,16 @@ export default  class GenericController extends GenericValidation implements IGe
                 if(reqHandler.getLogicalDelete()){
                     // Logically remove the entity from the database
                     const deletedEntity = await this.getRepository().logicalRemove(id);
-                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(deletedEntity), ConstHTTPRequest.DELETE_SUCCESS);
+
+                    const codeResponse : string = 
+                    reqHandler.getCodeMessageResponse() != null ? 
+                    reqHandler.getCodeMessageResponse() as string :
+                    ConstHTTPRequest.DELETE_SUCCESS;
+    
+                    // Return the success response
+                    return httpExec.successAction(
+                        reqHandler.getAdapter().entityToResponse(deletedEntity), 
+                        codeResponse);
                 }else{
                     // Remove the entity from the database
                     const deletedEntity = await this.getRepository().remove(id);
@@ -177,8 +203,17 @@ export default  class GenericController extends GenericValidation implements IGe
                 const entity = await this.getRepository().findById(id, reqHandler.getLogicalDelete(), reqHandler.getFilters());
 
                 if(entity != null && entity != undefined){
+
+                    const codeResponse : string = 
+                    reqHandler.getCodeMessageResponse() != null ? 
+                    reqHandler.getCodeMessageResponse() as string :
+                    ConstHTTPRequest.GET_BY_ID_SUCCESS;
+    
                     // Return the success response
-                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+                    return httpExec.successAction(
+                        reqHandler.getAdapter().entityToResponse(entity), 
+                        codeResponse);
+
                 }else{
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                 }
@@ -205,8 +240,17 @@ export default  class GenericController extends GenericValidation implements IGe
                 // Execute the get by code action in the database
                 const entity = await this.getRepository().findByCode(code, reqHandler.getLogicalDelete(), reqHandler.getFilters());
                 if(entity != null && entity != undefined){
+
+                    const codeResponse : string = 
+                    reqHandler.getCodeMessageResponse() != null ? 
+                    reqHandler.getCodeMessageResponse() as string :
+                    ConstHTTPRequest.GET_BY_ID_SUCCESS;
+    
                     // Return the success response
-                    return httpExec.successAction(reqHandler.getAdapter().entityToResponse(entity), ConstHTTPRequest.GET_BY_ID_SUCCESS);
+                    return httpExec.successAction(
+                        reqHandler.getAdapter().entityToResponse(entity), 
+                        codeResponse);
+
                 }else{
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                 }
@@ -234,8 +278,17 @@ export default  class GenericController extends GenericValidation implements IGe
                 // Execute the get all action in the database
                 const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
                 if(entities != null && entities != undefined){
+
+                    const codeResponse : string = 
+                    reqHandler.getCodeMessageResponse() != null ? 
+                    reqHandler.getCodeMessageResponse() as string :
+                    ConstHTTPRequest.GET_ALL_SUCCESS;
+    
                     // Return the success response
-                    return httpExec.successAction(reqHandler.getAdapter().entitiesToResponse(entities), ConstHTTPRequest.GET_ALL_SUCCESS);
+                    return httpExec.successAction(
+                        reqHandler.getAdapter().entitiesToResponse(entities), 
+                        codeResponse);
+
                 }else{
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                 }
@@ -247,5 +300,4 @@ export default  class GenericController extends GenericValidation implements IGe
             }
         });
     }
-  
 }

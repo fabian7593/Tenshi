@@ -4,6 +4,11 @@ const config = ConfigManager.getInstance().getConfig();
 
 // The json files
 const messages = require(ConstGeneral.MESSAGES_JSON);
+let dynamic_messages: any = [];
+try{
+   dynamic_messages = require(ConstGeneral.DYNAMIC_MESSAGES_JSON);
+}catch(error){}
+
 
 //Regexes import
 let regexes : any;
@@ -31,12 +36,17 @@ export function getMessage(key : string): string {
     return key;
   }
 
-  const message = messages[key];
+  let message = messages[key];
 
   // if key entry doesnt exist
   if (!message) {
-    return `Message Missed : ${key}`;
+    //return `Message Missed : ${key}`;
+    message = dynamic_messages[key];
+    if(!message){
+      return `Message Missed : ${key}`;
+    }
   }
+
   return message;
 }
 
