@@ -165,7 +165,6 @@ Configuration related to the server.
 - **PORT**: (number) The port on which the backend server listens for incoming requests.
 - **SECRET_API_KEY**: Secret key used to authenticate API requests.
 - **VALIDATE_API_KEY**: (bool) Indicates if the server should validate the API key for incoming requests.
-- **PASSWORD_SALT**: (32 length string) A salt used for secure password encryption.
 - **MAX_REQUEST_PER_SECOND**: Maximum number of requests allowed per second, used to prevent denial of service (DoS) attacks.
 - **IS_DEBUGGING**: (bool) Indicates if the server is in debugging mode, which typically provides more detailed error information and logs.
 - **FAIL_LOGIN_MAX_NUMBER**: Maximum number of failed login attempts before blocking or taking action.
@@ -344,7 +343,12 @@ This method flags the request to perform a logical delete instead of a physical 
 
 - #### `isValidateWhereByUserId()`
 
-This method enables the validation of WHERE conditions in a query, ensuring that the necessary validations by `UserId` are included. This is useful in situations where data needs to be specifically filtered for the user making the request.
+This method enables the validation of WHERE conditions in a query, ensuring that the necessary validations by `UserId` (in DB `user_id`) are included. This is useful in situations where data needs to be specifically filtered for the user making the request.
+
+- #### `setCodeMessageResponse(codeMessage: string)`
+
+This method set the new code message for get a dynamic reply for any request.
+You need to set the code and the message from `src/data/json/messages.json`.
 
 <br><br>
 
@@ -388,7 +392,7 @@ Tenshi utilizes TypeORM for database creation and management using a code-first 
 <br><br>
 
 ## Insert Seeds
-Context refers to a script or a set of instructions used to populate a database with initial or default data. Seeding is often necessary for setting up the initial state of an application, especially when working in development, testing, or staging environments.
+This refers to a script to populate a database with initial or default data. Seeding is often necessary for setting up the initial state of an application, especially when working in development, testing, or staging environments.
 The seed on tenshi is in src/seed, and you could modify the scripting in package.json.
 
    ```bash
@@ -401,6 +405,7 @@ The seed on tenshi is in src/seed, and you could modify the scripting in package
 ## Testing
 We added a script for testing files, actually we only have the unit test.
 But we will added integration test as well. 
+
 **Note: REMEMBER, before the test, you need to start your server and get a JWT from Super admin user, and you need to change the JWT on testing.config file.**
 
 Here:
@@ -422,20 +427,22 @@ Here:
 
 ## Automation
 Tenshi have some features about creation files automatically.
-You only need to create an entity into src/entity.
-And then you need to run de scripts.
+You only need to create an entity into `src/entity`.
+And then you need to run the scripts.
 
+**Note: REMEMBER, you need to add the name of the entity after the script name, and verify that this name is equals to the respective entity.**
 
    ```bash
    //for create DTOs files and routers files into modules, you can do this
-   npm run automation
+   npm run automation NameEntity
    ```
 
    ```bash
    //for create Postman files for importing, and integration test files of this entity and curent endpoints, you need to do this.
-   npm run autotest
+   npm run autotest NameEntity
    ```
-When you complete this scripts, you need to verify the required fields, and the settings into the builder on router files.
+When you complete this scripts, you need to verify manually the required fields, and the settings into the builder on router files, that you need.
+
 And then you need to test, with the script testing or from postman.
 
 <br><br>
@@ -453,7 +460,7 @@ Tenshi provides a response structure for each of its responses, which is as foll
 
 - **info**: Provides a message with additional information required to understand what happened with the request.
 
-Example Response:
+Example Response for get multiple entities:
 ```json
 {
     "status": {
@@ -462,9 +469,26 @@ Example Response:
         "http_code": 200
     },
     "data": [
-        []
+        {"Test"},
+        {"Test 2"}
     ],
     "info": "Get Entries Successful"
+}
+```
+
+
+Example Response for get only one entity:
+```json
+{
+    "status": {
+        "id": 1,
+        "message": "Success",
+        "http_code": 200
+    },
+    "data": {
+      "Test"
+    },
+    "info": "Get Entry Successful"
 }
 ```
 
@@ -656,7 +680,6 @@ As time goes on, Tenshi will continue updating its list of modules that may be u
 - **Security:** Add Two Factor Authentication into login.
 - **Module:** Add payments methods module.
 - **Module:** Add subscriptions module.
-- **Testing:** Create testing environment, for Unit Test all endpoints.
 - **DevOps:** Create Devops Docker File and publish.
 - **Documentation:** Create Postman Endpoints Documentation.
 - **Videos:** Create some explanation video tutorials for explain how to use tenshi version 1.0.9
