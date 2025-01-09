@@ -12,7 +12,7 @@
                 "s3:GetObjectVersion",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::nameFolder/*"
+            "Resource": "arn:aws:s3:::nameS3Buket/*"
         },
         {
             "Sid": "PublicReadGetObject",
@@ -22,7 +22,7 @@
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::nameFolder/PublicFiles/*"
+            "Resource": "arn:aws:s3:::nameS3Buket/PublicFiles/*"
         }
     ]
 }

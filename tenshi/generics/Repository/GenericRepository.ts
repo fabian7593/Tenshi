@@ -1,7 +1,7 @@
 import { ConstMessages } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
-import { DataSource } from 'typeorm';
+import { DataSource, QueryFailedError } from 'typeorm';
 
 /*
     This class have the Connection to DB with ORM &&
@@ -27,13 +27,14 @@ export default  class GenericRepository implements IGenericRepository{
     //the constructor method init the Singleton of DB connection and send it the entity target
     constructor(entityTarget: EntityTarget<any>) {
         this.entityTarget = entityTarget;
-        this.initialize(); // Llama a initialize, pero no esperas su resultado
+        this.initialize(); 
     }
+ 
 
     private async initialize() {
-        this.dataSource = await Database.getInstance(); // Espera a obtener la instancia de DataSource
-        this.repository = this.dataSource.getRepository(this.entityTarget); // Accede al repositorio
-        this.entityManager = this.dataSource.manager; // Obtén el EntityManager
+        this.dataSource = await Database.getInstance(); 
+        this.repository = this.dataSource.getRepository(this.entityTarget);
+        this.entityManager = this.dataSource.manager; 
     }
 
      /**
@@ -133,6 +134,23 @@ export default  class GenericRepository implements IGenericRepository{
 
             // Delete the entity from the database by its ID
             await this.entityManager.delete(this.entityTarget, id);
+
+            // Return the entity that was removed from the database
+            return entity;
+          
+        } catch (error : any) {
+            // If there was an error while deleting the entity, throw the error
+            throw error;
+        } 
+    }
+
+    
+    async removeByOptions(options: FindManyOptions): Promise<any> {
+        try {
+        
+            const whereCondition = options.where;
+            // Delete the entity from the database by its ID
+            const entity = await this.entityManager.delete(this.entityTarget, whereCondition);
 
             // Return the entity that was removed from the database
             return entity;
@@ -291,6 +309,35 @@ export default  class GenericRepository implements IGenericRepository{
             return getEntities;
         } catch (error : any) {
             // Throw the error
+            throw error;
+        } 
+    }
+
+
+
+    async findByOptions(hasLogicalDeleted: boolean, isFindAll : boolean = true, options: FindManyOptions | null): Promise<any | undefined> {
+        try {
+            // Set up the options for finding the entity
+            let finalOptions: FindManyOptions = options !== null ? { ...options } : {};
+         
+            // If the entity is supposed to be logical deleted, add the filter for it
+            if(hasLogicalDeleted){
+                finalOptions.where = {
+                    ...finalOptions.where,
+                    is_deleted: 0
+                };
+            }
+
+           if(!isFindAll){
+                const entity = await this.entityManager.findOne(this.entityTarget, finalOptions); 
+                return entity;
+           }else{
+                const entity = await this.entityManager.find(this.entityTarget, finalOptions); 
+                return entity;
+           }
+            
+        } catch (error : any) {
+            // Throw the error if it occurs
             throw error;
         } 
     }

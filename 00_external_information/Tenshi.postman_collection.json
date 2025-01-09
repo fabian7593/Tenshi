@@ -92,7 +92,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"fabian7593@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"email\": \"fabian7593+test1@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -125,7 +125,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test3@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test1@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -356,7 +356,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"code\": \"CLUSTER7777\",\r\n  \"type\": \"PROJECT_TYPE\",\r\n  \"title\": \"Cluster\",\r\n  \"title_es\": \"Cluster\",\r\n  \"slug\": \"Cluster\",\r\n  \"father_code\": \"Cluster\",\r\n  \"value1\": \"valor_del_value1\",\r\n  \"value2\": \"valor_del_value2\",\r\n  \"country_iso_code\": \"CRC\"\r\n}\r\n\r\n",
+							"raw": "{\r\n  \"code\": \"CLUSTER7777\",\r\n  \"type\": \"EVENT_TYPES\",\r\n  \"name\": \"Cluster\",\r\n  \"description\": \"Cluster\",\r\n  \"value1\": \"Cluster\",\r\n  \"value2\": \"valor_del_value2\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -394,7 +394,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\": \"PROJECT_TYPE\",\r\n    \"title\": \"Cluster\",\r\n    \"title_es\": \"Cluster\",\r\n    \"slug\": \"Cluster\",\r\n    \"father_code\": \"Cluster\",\r\n    \"value1\": \"valor_del_value1\",\r\n    \"value2\": \"valor_del_value2\",\r\n    \"country_iso_code\": \"CRC\"\r\n}\r\n\r\n",
+							"raw": "{\r\n  \"name\": \"Cluster Updated\",\r\n  \"description\": \"Cluster Updated\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -402,7 +402,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/udc/edit?id=2",
+							"raw": "{{host}}/udc/edit?id=13",
 							"host": [
 								"{{host}}"
 							],
@@ -413,7 +413,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "13"
 								}
 							]
 						}
@@ -437,7 +437,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/udc/get_by_code?code=EASTER_CAMP",
+							"raw": "{{host}}/udc/get_by_code?code=CLUSTER7777",
 							"host": [
 								"{{host}}"
 							],
@@ -448,7 +448,7 @@
 							"query": [
 								{
 									"key": "code",
-									"value": "EASTER_CAMP"
+									"value": "CLUSTER7777"
 								}
 							]
 						}
@@ -468,12 +468,11 @@
 							{
 								"key": "x-api-key",
 								"value": "{{secret_api_key}}",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{host}}/udc/delete?id=122",
+							"raw": "{{host}}/udc/delete?id=13",
 							"host": [
 								"{{host}}"
 							],
@@ -484,7 +483,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "122"
+									"value": "13"
 								}
 							]
 						}
@@ -627,7 +626,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"card_id\": 7777,\r\n  \"first_name\": \"Test new user\",\r\n  \"position\":\"job position\",\r\n  \"bio\":\"my bio\",\r\n  \"phone_number\":\"+100 65432 - 3123\",\r\n  \"birth_date\": \"1990-05-20\",\r\n  \"profile_picture_url\":\"https://bucket-name-777.s3.us-east-2.amazonaws.com/PublicFiles//Front_end_SSS__DOC__1111202413314.jfif\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"card_id\": 7777,\r\n  \"first_name\": \"Test new user\",\r\n  \"position\":\"job position\",\r\n  \"phone_number\":\"+100 65432 - 3123\",\r\n  \"birth_date\": \"1990-05-20\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -635,7 +634,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/user/edit?id=90b4c713-bf6e-48a3-97f0-3a41bcd9c69d",
+									"raw": "{{host}}/user/edit?id=783ae704-73b8-479c-be37-e75418ae0b16",
 									"host": [
 										"{{host}}"
 									],
@@ -646,7 +645,7 @@
 									"query": [
 										{
 											"key": "id",
-											"value": "90b4c713-bf6e-48a3-97f0-3a41bcd9c69d"
+											"value": "783ae704-73b8-479c-be37-e75418ae0b16"
 										}
 									]
 								}
@@ -670,7 +669,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/user/get?id=90b4c713-bf6e-48a3-97f0-3a41bcd9c69d",
+									"raw": "{{host}}/user/get?id=783ae704-73b8-479c-be37-e75418ae0b16",
 									"host": [
 										"{{host}}"
 									],
@@ -681,7 +680,7 @@
 									"query": [
 										{
 											"key": "id",
-											"value": "90b4c713-bf6e-48a3-97f0-3a41bcd9c69d"
+											"value": "783ae704-73b8-479c-be37-e75418ae0b16"
 										}
 									]
 								}

@@ -136,7 +136,7 @@ export default  class GenericValidation{
      * @param {number | string} idOrCode - The ID or code of the entity.
      * @return {Promise<any>} - Returns a promise that resolves to the result of the HTTP action object.
      */
-    protected async validateUserIdEntityFindByCodeOrId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
+    protected async validateWhereByUserId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject, idOrCode: number | string) {
         let userId: number | string | null = null; // Initialize user ID
 
         // Check if the request handler object requires validation of the where clause by user ID
@@ -144,29 +144,28 @@ export default  class GenericValidation{
             // Check if the role of the JWT is not admin
             if (jwtData.role != config.SUPER_ADMIN.ROLE_CODE) {
                 userId = jwtData.id; // Set the user ID with the ID of the JWT
-            }
 
-            // Call the appropriate entity retrieval function based on the type of the ID or code
-            let entity: any = null; // Initialize entity
-            if (typeof idOrCode === 'number') {
-                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findById function
-            } else {
-                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findByCode function
-            }
+                // Call the appropriate entity retrieval function based on the type of the ID or code
+                let entity: any = null; // Initialize entity
+                if (typeof idOrCode === 'number') {
+                    entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findById function
+                } else {
+                    entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findByCode function
+                }
 
-            // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
-            if (entity != undefined && entity != null ) {
-                if (userId != null && entity.user_id != userId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
+                if (entity != undefined && entity != null ) {
+                    if (userId != null && entity.booked_by != userId) {
+                        httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                        return false;
+                    }
+                    
+                } else {
+                    httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
                     return false;
                 }
-                
-            } else {
-                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
-                return false;
             }
         }
-
         return true;
     }
 

@@ -60,13 +60,25 @@ export default class HttpAction{
 
     async databaseError(error : any, id: string | null = null, method : string = "", controller : string = "") {
         const status = getStatus(ConstStatusJson.ERROR);
-        await insertLogBackend(method, controller, error.message, 
+        let messageError;
+
+        if(error.message != undefined){
+            messageError = error.message;
+        }else{
+            messageError = error;
+        }
+
+        await insertLogBackend(method, controller, messageError, 
                         status.httpStatus, ConstMessagesJson.DATA_BASE_ERROR, id, 
                         getMessage(ConstMessagesJson.DATA_BASE_ERROR));
 
-        const errorJson =  getErrorDBbySqlState(error.message);
+        let errorJson =  getErrorDBbySqlState(messageError);
+        /*if(errorJson != null){
+            getErrorDBbyNo
+        }*/
+
         return this.res.status(status.httpStatus).json(
-            responseStruct(status, errorJson || error.message, getMessage(ConstMessagesJson.DATA_BASE_ERROR))
+            responseStruct(status, errorJson || messageError, getMessage(ConstMessagesJson.DATA_BASE_ERROR))
         ); 
     }
 

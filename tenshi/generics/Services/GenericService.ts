@@ -100,7 +100,7 @@ export default  class GenericService extends GenericValidation implements IGener
      * @return {Promise<any>} A promise that resolves to the success response if the insertion is successful.
      */
     async updateService(reqHandler: RequestHandler, 
-        executeUpdateFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string) => void): Promise<any> {
+        executeUpdateFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string | null) => void): Promise<any> {
         // Execute the returns structure
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
 
@@ -119,16 +119,20 @@ export default  class GenericService extends GenericValidation implements IGener
             // Validate the regex of the entity
             if (!this.validateRegex(reqHandler, validation)) { return; }
 
-            // Get the id from the URL params
-            const validateId = this.getIdFromQuery(validation, httpExec);
-            if(validateId === null){ return; }
-            const id = validateId; 
+            if(reqHandler.getRequiredIdFromQuery()){
+                // Get the id from the URL params
+                const validateId = this.getIdFromQuery(validation, httpExec);
+                if(validateId === null){ return; }
+                const id = validateId; 
 
-            // If you need to validate if the user id of the table 
-            // should be the user id of the user request (JWT)
-            if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                // If you need to validate if the user id of the table 
+                // should be the user id of the user request (JWT)
+                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
-            executeUpdateFunction(jwtData, httpExec, id);
+                executeUpdateFunction(jwtData, httpExec, id);
+            }else{
+                executeUpdateFunction(jwtData, httpExec, null);
+            }
 
         } catch (error: any) {
             // Return the general error response
@@ -172,7 +176,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.DELETE, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
             }
             // Execute the delete action in the database
             executeDeleteFunction(jwtData, httpExec, id);
@@ -204,7 +208,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
              }
 
              // Execute the get by id action in the database
@@ -250,7 +254,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateUserIdEntityFindByCodeOrId(reqHandler, httpExec, jwtData, code) !== true){ return; }
+                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, code) !== true){ return; }
               }
 
               executeGetByCodeFunction(jwtData, httpExec, code);

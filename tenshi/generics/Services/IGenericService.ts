@@ -6,7 +6,7 @@ import IGenericRepository from "../Repository/IGenericRepository";
 interface IGenericService {
     
     insertService(reqHandler: RequestHandler, executeInsertFunction: (jwtData : JWTObject | null, httpExec: HttpAction) => void): Promise<any>;
-    updateService(reqHandler: RequestHandler, executeUpdateFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string) => void): Promise<any>;
+    updateService(reqHandler: RequestHandler, executeUpdateFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string | null) => void): Promise<any>;
     deleteService(reqHandler: RequestHandler, executeDeleteFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string) => void): Promise<any>;
     getByIdService(reqHandler: RequestHandler, executeGetByIdFunction: (jwtData : JWTObject, httpExec: HttpAction, id: number | string) => void): Promise<any>;
     getByCodeService(reqHandler: RequestHandler, executeGetByCodeFunction: (jwtData : JWTObject, httpExec: HttpAction, code: string) => void): Promise<any>;

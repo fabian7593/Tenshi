@@ -154,25 +154,25 @@ export default class Validations{
                     this.httpAction.validationError(ConstMessagesJson.INCOMPLETE_HEADER_REQUEST);
                 } else {
                     
-                    // Validate assigned secret key with the database
-                    let jwtAuth = this.req.headers[ConstGeneral.HEADER_AUTH];
-                    let isInvalidToken = false;
+                   // Validate assigned secret key with the database
+                   let jwtAuth = this.req.headers[ConstGeneral.HEADER_AUTH];
+                   let isInvalidToken = false;
 
-                    if (typeof jwtAuth !== 'string') {
-                        isInvalidToken = true;
-                        // If the token is invalid, return an unauthorized error
-                        this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
-                    }else{
-                        if(await isTokenBlocked(jwtAuth)){
-                            isInvalidToken = true;
-                            // If the token is invalid, return an unauthorized error
-                            this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
-                        }
-                    }
+                   if (typeof jwtAuth !== 'string') {
+                       isInvalidToken = true;
+                       // If the token is invalid, return an unauthorized error
+                       this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                   }else{
+                       if(await isTokenBlocked(jwtAuth)){
+                           isInvalidToken = true;
+                           // If the token is invalid, return an unauthorized error
+                           this.httpAction.unauthorizedError(ConstMessagesJson.INVALID_TOKEN);
+                       }
+                   }
 
-                    if((jwtAuth as String).startsWith("Bearer ")) {
-                        jwtAuth = (jwtAuth as String).split(" ")[1];
-                    }
+                   if((jwtAuth as String).startsWith("Bearer ")) {
+                       jwtAuth = (jwtAuth as String).split(" ")[1];
+                   }
 
                     if(!isInvalidToken){
                         try {
@@ -308,5 +308,4 @@ export default class Validations{
             return null;
         } 
     }
-    
 }

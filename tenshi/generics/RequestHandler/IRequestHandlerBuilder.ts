@@ -10,5 +10,6 @@ export default interface IRequestHandlerBuilder {
     isValidateRole(module: string): IRequestHandlerBuilder;
     isLogicalDelete(): IRequestHandlerBuilder;
     isValidateWhereByUserId(): IRequestHandlerBuilder;
+    isRequireIdFromQueryParams(isRequired : boolean): IRequestHandlerBuilder;
     build(): RequestHandler;
 }
