@@ -71,7 +71,7 @@ export default  class DocumentController extends GenericController{
 
             try {
                 // Execute the database action
-                const updateEntity = await this.getRepository().update(id, documentBody, reqHandler.getLogicalDelete());
+                const updateEntity = await this.getRepository().update(id!!, documentBody, reqHandler.getLogicalDelete());
                 // Return a success response
                 return httpExec.successAction(reqHandler.getAdapter().entityToResponse(updateEntity), ConstHTTPRequest.UPDATE_SUCCESS);
 

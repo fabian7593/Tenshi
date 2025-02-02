@@ -95,7 +95,7 @@ export default  class UserNotificationController extends GenericController{
             //should be the user id of the user request (JWT)
             let userId : number | string | null= null;
             let userNotification : UserNotification;
-            userNotification = await repository.findById(id, reqHandler.getLogicalDelete());
+            userNotification = await repository.findById(id!!, reqHandler.getLogicalDelete());
 
             if(userNotification != undefined && userNotification != null){}
             else{
@@ -119,7 +119,7 @@ export default  class UserNotificationController extends GenericController{
             userNotification.is_read = true;
             try{
                 //Execute Action DB
-                const updateEntity = await repository.update(id, userNotification,  
+                const updateEntity = await repository.update(id!!, userNotification,  
                                                              reqHandler.getLogicalDelete());
 
                 const notification : Notification = await repositoryNotification.findByCode(updateEntity.notificationCode, false);
