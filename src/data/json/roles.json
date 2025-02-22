@@ -4,6 +4,7 @@
       "id": 1,
       "code": "13ebc7f8-6fae-404b-8f9b-2267a3348ca4",
       "name": "Administrator",
+      "is_public": false,
       "description": "Administrator role with full access to all functionalities.",
       "modules": [
         {
@@ -97,6 +98,7 @@
       "id": 2,
       "code": "d4218228-306b-4aba-a282-6702242c2107",
       "name": "Analyst",
+      "is_public": false,
       "description": "Analyst role with access to analytical tools and reporting functionalities.",
       "modules": [
         {
@@ -121,6 +123,7 @@
       "id": 3,
       "code": "94db2848-3df7-4593-b90d-1615a700bddd",
       "name": "Customer",
+      "is_public": true,
       "description": "Customer role with access to customer-specific functionalities.",
       "modules": [
         {

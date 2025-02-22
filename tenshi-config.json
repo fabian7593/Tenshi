@@ -19,7 +19,7 @@
         "FAIL_LOGIN_MAX_NUMBER": 3,
         "DEFAULT_LANGUAGE" : "en",
         "FORMAT_DATE" : "es-ES",
-        "CUSTOMER_REGULAR_ROLE" : "94db2848-3df7-4593-b90d-1615a700bddd"
+        "CUSTOMER_REGULAR_ROLE" : null
     },
     "SUPER_ADMIN":{
         "USER_EMAIL":"tenshitest1@gmail.com",

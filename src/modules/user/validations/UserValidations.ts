@@ -1,5 +1,6 @@
 
 import { ConstRegex } from "@index/consts/Const";
+import { config } from "@index/index";
 import { Request } from "@modules/index";
 export const regexValidationList = (req: Request): [string, string][] => {
     return [
@@ -10,12 +11,23 @@ export const regexValidationList = (req: Request): [string, string][] => {
 };
 
 export const requiredBodyList = (req: Request): string[] => {
-    return [
-        req.body.first_name, 
-        req.body.last_name, 
-        req.body.email, 
-        req.body.password
-    ];
+
+    if(config.SERVER.CUSTOMER_REGULAR_ROLE != null){
+        return [
+            req.body.first_name, 
+            req.body.last_name, 
+            req.body.email, 
+            req.body.password
+        ];
+    }else{
+        return [
+            req.body.first_name, 
+            req.body.last_name, 
+            req.body.email, 
+            req.body.password,
+            req.body.role_code
+        ];
+    }
 }
       
 export const regexValidationRecoverUserAndPassList = (req: Request): [string, string][] => {
