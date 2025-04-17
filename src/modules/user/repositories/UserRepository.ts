@@ -55,8 +55,8 @@ export default class UserRepository extends GenericRepository{
                         "profile_picture_url",
                         "last_login_at",
                         "login_ip_address",
-                        "created_at",
-                        "updated_at",
+                        "created_date",
+                        "updated_date",
                         "verified_at",
                       ],
                 }; 
@@ -102,8 +102,8 @@ export default class UserRepository extends GenericRepository{
                             "profile_picture_url",
                             "last_login_at",
                             "login_ip_address",
-                            "created_at",
-                            "updated_at",
+                            "created_date",
+                            "updated_date",
                             "verified_at",
                           ],
                     }; 

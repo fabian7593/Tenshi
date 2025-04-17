@@ -9,7 +9,7 @@ export default  class NotificationDTO implements IAdapterFromBody{
         this.req = req;
     }
 
-    entityFromPostBody() : Notification{
+    private getEntity(isCreating: boolean): Notification {
         const entity = new Notification();
         entity.code = this.req.body.code;
         entity.type = this.req.body.type;
@@ -19,10 +19,23 @@ export default  class NotificationDTO implements IAdapterFromBody{
         entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
         entity.action_url = this.req.body.action_url;
         entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE;
-        entity.created_date = new Date();
+
+        if (isCreating) {
+            entity.created_date = new Date();
+        } 
+
         return entity;
     }
 
+    //POST
+    entityFromPostBody() : Notification{
+        return this.getEntity(true);
+    }
+
+    //PUT
+    entityFromPutBody() : Notification{
+        return this.getEntity(false);
+    }
 
     entityToResponse(entity: Notification) : any{
     
@@ -50,19 +63,5 @@ export default  class NotificationDTO implements IAdapterFromBody{
         }
         
         return response;
-    }
-    
-    //PUT
-    entityFromPutBody() : Notification{
-        const entity = new Notification();
-        entity.code = this.req.body.code;
-        entity.type = this.req.body.type;
-        entity.subject = this.req.body.subject;
-        entity.message = this.req.body.message;
-        entity.required_send_email = this.req.body.required_send_email || 0;
-        entity.is_delete_after_read = this.req.body.is_delete_after_read || 0;
-        entity.action_url = this.req.body.action_url;
-        entity.language = this.req.body.language || config.SERVER.DEFAULT_LANGUAGE ;
-        return entity;
     }
 }

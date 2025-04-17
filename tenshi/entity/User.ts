@@ -93,10 +93,10 @@ export class User {
   two_factor_secret: string | null;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
-  created_at: Date;
+  created_date: Date;
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
-  updated_at: Date;
+  updated_date: Date;
 
   @Column({ type: "datetime", nullable: true, default: null })
   verified_at: Date | null;
