@@ -7,15 +7,18 @@ import { Notification } from "./Notification";
 export class UserNotification {
   @PrimaryGeneratedColumn({ type: "int" })
   id: number;
+  
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn({ name: "user_send", referencedColumnName: "id" })
+  user_send: User | null;
 
-  @Column({ type: "varchar",nullable: true })
-  id_user_send: number | string | null;
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn({ name: "user_receive", referencedColumnName: "id" })
+  user_receive: User;
 
-  @Column({ type: "varchar"})
-  id_user_receive: number | string;
-
-  @Column({ type: "varchar", length: 60 })
-  notification_code: string;
+  @ManyToOne(() => Notification)
+  @JoinColumn({ name: "notification", referencedColumnName: "code" })
+  notification: Notification;
 
   @Column({ type: "varchar", length: 500, nullable: true, default: null })
   body_action: string;
@@ -28,16 +31,4 @@ export class UserNotification {
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   created_date: Date;
-
-  @ManyToOne(() => Notification, notification => notification.id)
-  @JoinColumn({ name: "notification_code", referencedColumnName: "code" })
-  notification: Notification;
-
-  @ManyToOne(() => User, user => user.id)
-  @JoinColumn({ name: "id_user_send", referencedColumnName: "id" })
-  userSend: User;
-
-  @ManyToOne(() => User, user => user.id)
-  @JoinColumn({ name: "id_user_receive", referencedColumnName: "id" })
-  userReceive: User;
 }

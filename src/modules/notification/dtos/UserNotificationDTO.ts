@@ -11,9 +11,9 @@ export default  class UserNotificationDTO implements IAdapterFromBody{
 
     entityFromPostBody() : UserNotification{
         const entity = new UserNotification();
-        entity.id_user_send = this.req.body.id_user_send || null;
-        entity.id_user_receive = this.req.body.id_user_receive;
-        entity.notification_code = this.req.body.notification_code;
+        entity.user_send = this.req.body.user_send_id || null;
+        entity.user_receive = this.req.body.user_receive_id;
+        entity.notification = this.req.body.notification_code;
         entity.created_date = new Date();
         return entity;
     }
@@ -24,9 +24,9 @@ export default  class UserNotificationDTO implements IAdapterFromBody{
     
         return  {
             id : entity.id,
-            id_user_send: entity.id_user_send,
-            id_user_receive: entity.id_user_receive,
-            notification_code: entity.notification_code,
+            user_send: entity.user_send,
+            user_receive: entity.user_receive,
+            notification: entity.notification,
             is_read: entity.is_read,
             created_date: entity.created_date
         };
@@ -36,9 +36,9 @@ export default  class UserNotificationDTO implements IAdapterFromBody{
        
         return  {
             id : entity.id,
-            id_user_send: entity.id_user_send,
-            id_user_receive: entity.id_user_receive,
-            code: entity.notification_code,
+            user_send: entity.user_send,
+            user_receive: entity.user_receive,
+            notification: entity.notification,
             is_read: entity.is_read,
             type: notification.type,
             message: notification.message,
@@ -66,7 +66,7 @@ export default  class UserNotificationDTO implements IAdapterFromBody{
         if(entities != null && notifications != null){
             for (const entity of entities) {
                 for (const notif of notifications) {
-                    if(entity.notification_code == notif.code){
+                    if(entity.notification.code == notif.code){
                         response.push(this.entityToResponseCompleteInformation(entity, notif));
                     }
                 }
