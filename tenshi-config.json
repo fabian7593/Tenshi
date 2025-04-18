@@ -55,12 +55,12 @@
     "HTTP_REQUEST":{
         "PAGE_SIZE": 3000,
         "PAGE_OFFSET":1,
-        "REQUEST_WITHOUT_JWT": ["login", "refresh_token", 
-                         "register", "confirmation_register", 
-                         "forgot_password", "verify_forgot_password",
-                         "reset_password", "recover_user", "active_user"],
+        "REQUEST_WITHOUT_JWT": ["/login", "/refresh_token", 
+                         "/register", "/confirmation_register", 
+                         "/forgot_password", "/verify_forgot_password",
+                         "/reset_password", "/recover_user", "/active_user"],
 
-        "REQUEST_WITHOUT_API_KEY": ["confirmation_register", "verify_forgot_password", "active_user"]
+        "REQUEST_WITHOUT_API_KEY": ["/confirmation_register", "/verify_forgot_password", "/active_user"]
     },
     "JWT": {
         "MAIN_TOKEN" :{
