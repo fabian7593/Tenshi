@@ -479,8 +479,6 @@ Configuration related to run npm run test.
 
 <br><br>
 
-Perfecto, Fabián. Aquí tenés la sección **actualizada y mejorada** de `Import Postman`, **enriquecida con información de control de acceso por roles**, la lógica del archivo `roles.json`, y cómo cada endpoint es accedido dependiendo del tipo de usuario. Todo está explicado de forma clara, separada por módulos y enfocada para que el frontend entienda cómo integrarse correctamente con el backend de Tenshi.
-
 ---
 
 ## Import Postman
