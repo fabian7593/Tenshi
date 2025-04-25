@@ -44,7 +44,14 @@ export default  class LogDTO implements IAdapterFromBody{
     }
 
     entitiesToResponse(entities: Log[] | null): any {
-        const response: any[] = [];  
+        const response: any[] = [];
+    
+        if(entities != null){
+            for (const entity of entities) {
+                response.push(this.entityToResponse(entity));
+            }
+        }
+        
         return response;
     }
     
