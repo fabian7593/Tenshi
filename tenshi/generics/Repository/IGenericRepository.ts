@@ -1,3 +1,4 @@
+import { structPagination } from '@TenshiJS/objects/BodyResObject';
 import { FindManyOptions} from 'tenshi/generics/index';
 
 interface IGenericRepository {
@@ -13,6 +14,7 @@ interface IGenericRepository {
     findById(id: number|string, hasLogicalDeleted: boolean, options: FindManyOptions | null): Promise<any | undefined>;
     findByCode(code: string, hasLogicalDeleted: boolean, options: FindManyOptions | null): Promise<any | undefined>;
     findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<any[] | null>;
+    count(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<structPagination | null>;
 }
 
 export default IGenericRepository;

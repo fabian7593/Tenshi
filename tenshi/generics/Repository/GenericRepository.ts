@@ -1,3 +1,4 @@
+import { structPagination } from '@TenshiJS/objects/BodyResObject';
 import { ConstMessages } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
@@ -283,7 +284,7 @@ export default  class GenericRepository implements IGenericRepository{
      * @return {Promise<any[] | null>} The entities found.
      */
     async findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null = {},
-                  page: number = 1, size: number = 3000): Promise<any[] | null> {
+                  page: number = 1, size: number = 300000): Promise<any[] | null> {
         try {
 
             // Calculate the offset based on the page and size
@@ -307,6 +308,40 @@ export default  class GenericRepository implements IGenericRepository{
             const getEntities = await this.entityManager.find(this.entityTarget, finalOptions); 
           
             return getEntities;
+        } catch (error : any) {
+            // Throw the error
+            throw error;
+        } 
+    }
+
+    async count(hasLogicalDeleted: boolean, options: FindManyOptions | null = {},
+                page: number = 1, size: number = 300000
+    ): Promise<structPagination | null> {
+    try {
+
+        const finalOptions: FindManyOptions = options !== null ? { ...options } : {};
+
+        // If logical deletion is required, set the where clause
+        if(hasLogicalDeleted){
+            finalOptions.where = {
+                ...finalOptions.where,
+                is_deleted: 0
+            };
+        }
+
+
+        // Find entities using the entity manager
+        const getEntities = await this.entityManager.find(this.entityTarget, finalOptions); 
+
+        const pagination: structPagination = {
+            total: getEntities.length,
+            page: page,
+            size: size,   
+            total_pages: size > 0 ? Math.ceil(getEntities.length / size) : 1
+        };
+
+        return pagination;
+
         } catch (error : any) {
             // Throw the error
             throw error;

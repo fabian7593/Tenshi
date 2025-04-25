@@ -24,6 +24,9 @@ export class UnitDynamicCentral {
   @Column({ type: "varchar", length: 300, nullable: true, default: null })
   value2: string | null;
 
+  @Column({ type: "varchar", length: 200, nullable: true, default: null })
+  father_code: string | null;
+
   @Column({ type: "varchar", length: 3, nullable: true, default: null })
   country_iso_code: string | null;
 

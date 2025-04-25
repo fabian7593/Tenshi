@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { insertLogBackend  } from 'tenshi/utils/logsUtils';
-import { responseStruct } from 'tenshi/objects/BodyResObject'
+import { responseStruct, structPagination } from 'tenshi/objects/BodyResObject'
 import { getErrorDBbySqlState, getStatus, getMessage } from 'tenshi/utils/jsonUtils';
 import {  ConstStatusJson, ConstGeneral, ConstMessagesJson } from "tenshi/consts/Const";
 
@@ -22,10 +22,10 @@ export default class HttpAction{
         return this.res.send(htmlContent);
     }
 
-    successAction(responseJson : any | null, message : string){
+    successAction(responseJson : any | null, message : string,  pagination: structPagination | null = null) {
         const status = getStatus(ConstStatusJson.SUCCESS);
         return this.res.status(status.httpStatus).json(
-            responseStruct(status, responseJson, getMessage(message))
+            responseStruct(status, responseJson, getMessage(message), pagination)
         ); 
     }
 

@@ -280,7 +280,9 @@ export default  class GenericController extends GenericValidation implements IGe
             try {
                
                 // Execute the get all action in the database
-                const entities = await this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
+                const entities = this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
+                const pagination = this.getRepository().count(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
+
                 if(entities != null && entities != undefined){
 
                     const codeResponse : string = 
@@ -290,8 +292,8 @@ export default  class GenericController extends GenericValidation implements IGe
     
                     // Return the success response
                     return httpExec.successAction(
-                        reqHandler.getAdapter().entitiesToResponse(entities), 
-                        codeResponse);
+                        reqHandler.getAdapter().entitiesToResponse(await entities), 
+                        codeResponse, await pagination);
 
                 }else{
                     return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);

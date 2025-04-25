@@ -28,6 +28,7 @@ class DocumentRoutes extends GenericRoutes {
             const typeParam : string | null = getUrlParam("type", req) || null;
             const tableParam : string | null = getUrlParam("table", req) || null;
             const userId : string | null = getUrlParam("user_id", req) || null;
+            const idForTable : string | null = getUrlParam("id_for_table", req) || null;
         
             const options: FindManyOptions = {};
             if(nameParam != null){
@@ -52,6 +53,10 @@ class DocumentRoutes extends GenericRoutes {
         
             if(userId != null){
                 options.where = { ...options.where, user_id: userId};
+            }
+
+            if(idForTable != null){
+                options.where = { ...options.where, id_for_table: idForTable};
             }
         
             const requestHandler : RequestHandler = 

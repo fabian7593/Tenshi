@@ -13,6 +13,7 @@ export default  class UdcDTO implements IAdapterFromBody{
         entity.code = this.req.body.code;
         entity.name = this.req.body.name;
         entity.type = this.req.body.type;
+        entity.father_code = this.req.body.father_code;
         entity.description = this.req.body.description;
         entity.value1 = this.req.body.value1;
         entity.value2 = this.req.body.value2;
@@ -42,6 +43,7 @@ export default  class UdcDTO implements IAdapterFromBody{
             code: entity.code,
             name: entity.name,
             type: entity.type,
+            father_code: entity.father_code,
             description: entity.description ,
             value1: entity.value1,
             value2: entity.value2,

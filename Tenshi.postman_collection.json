@@ -125,7 +125,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test2@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\",\r\n  \"role_code\":\"94db2848-3df7-4593-b90d-1615a700bddd\"\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test1@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\",\r\n  \"role_code\":\"94db2848-3df7-4593-b90d-1615a700bddd\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -356,7 +356,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"code\": \"CLUSTER7777\",\r\n  \"type\": \"EVENT_TYPES\",\r\n  \"name\": \"Cluster\",\r\n  \"description\": \"Cluster\",\r\n  \"value1\": \"Cluster\",\r\n  \"value2\": \"valor_del_value2\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n  \"code\": \"CLUSTER7777\",\r\n  \"type\": \"EVENT_TYPES\",\r\n  //\"father_code\":\"\",\r\n  \"name\": \"Cluster\",\r\n  \"description\": \"Cluster\",\r\n  \"value1\": \"Cluster\",\r\n  \"value2\": \"valor_del_value2\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -414,41 +414,6 @@
 								{
 									"key": "id",
 									"value": "13"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get UDC By Code",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "authorization",
-								"value": "{{auth_jwt}}",
-								"type": "text"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{secret_api_key}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/udc/get_by_code?code=CLUSTER7777",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"udc",
-								"get_by_code"
-							],
-							"query": [
-								{
-									"key": "code",
-									"value": "CLUSTER7777"
 								}
 							]
 						}
@@ -536,7 +501,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/udc/get_all?type=CAMP_TYPES&page=1&size=10",
+							"raw": "{{host}}/udc/get_all?type=CAMP_TYPES",
 							"host": [
 								"{{host}}"
 							],
@@ -550,12 +515,29 @@
 									"value": "CAMP_TYPES"
 								},
 								{
+									"key": "code",
+									"value": "PENDING",
+									"disabled": true
+								},
+								{
+									"key": "father_code",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "page",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "size",
-									"value": "10"
+									"value": "10",
+									"disabled": true
 								}
 							]
 						}
@@ -803,7 +785,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Document by Code",
+					"name": "Get Private Document by Code",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -819,7 +801,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/document/get_by_code?code=FRONT_END_SSS__DOC__13112024235312",
+							"raw": "{{host}}/document/get_by_code?code=PROFILE_PICTURE__USER__1__DOC__1942025184731",
 							"host": [
 								"{{host}}"
 							],
@@ -830,7 +812,7 @@
 							"query": [
 								{
 									"key": "code",
-									"value": "FRONT_END_SSS__DOC__13112024235312"
+									"value": "PROFILE_PICTURE__USER__1__DOC__1942025184731"
 								}
 							]
 						}
@@ -867,7 +849,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Documents By Some Params",
+					"name": "Get Documents By Some Params Copy",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -883,7 +865,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/document/get_by_filters?table=USER&user_id=5",
+							"raw": "{{host}}/document/get_by_filters",
 							"host": [
 								"{{host}}"
 							],
@@ -894,11 +876,40 @@
 							"query": [
 								{
 									"key": "table",
-									"value": "USER"
+									"value": "SUPPLIER",
+									"disabled": true
 								},
 								{
 									"key": "user_id",
-									"value": "5"
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "id_for_table",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "ext",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "action_type",
+									"value": "GENERAL_GALLERY",
+									"description": "PROFILE_PICTURE, GENERAL_GALLERY, PERSONAL_DOCUMENT, OTHER",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"description": "DOC, IMG, OTHER",
+									"disabled": true
 								}
 							]
 						}
