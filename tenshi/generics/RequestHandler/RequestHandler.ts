@@ -19,6 +19,7 @@ private requiredFieldsList: Array<string> | null = null;
 private filters: FindManyOptions | null = null;
 private codeMessageResponse: string | null = null;
 private requireIdFromQueryParam: boolean = true;
+private allowRoleList: Array<string> | null = null;
 
 constructor(res: Response, req: Request, 
            method: string, 
@@ -31,7 +32,8 @@ constructor(res: Response, req: Request,
            requiredFieldsList: Array<string> | null,
            filters: FindManyOptions,
            codeMessageResponse: string | null,
-           requireIdFromQueryParam: boolean) {
+           requireIdFromQueryParam: boolean,
+           allowRoleList: Array<string> | null) {
    this.res = res;
    this.req = req;
    this.method = method;
@@ -45,6 +47,7 @@ constructor(res: Response, req: Request,
    this.filters = filters;
    this.codeMessageResponse = codeMessageResponse;
    this.requireIdFromQueryParam = requireIdFromQueryParam;
+   this.allowRoleList = allowRoleList;
 }
 
     // Getters
@@ -98,6 +101,10 @@ constructor(res: Response, req: Request,
 
     getRequiredIdFromQuery(): boolean {
         return this.requireIdFromQueryParam;
+    }
+
+    getAllowRoleList(): Array<string> | null {
+        return this.allowRoleList;  
     }
 }
    

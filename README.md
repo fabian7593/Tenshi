@@ -28,7 +28,6 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
   - [Build the project](#build-the-project)  
   - [Install PM2 globally (Linux)](#install-pm2-globally-linux)  
   - [Start the production build using PM2](#start-the-production-build-using-pm2)  
-  - [Run without build (optional)](#run-without-build-or-compile)  
 - [Docker Deployment](#docker-deployment)  
   - [Dockerfile](#dockerfile)  
   - [Linux – Build and Run](#linux--build-and-run)  
@@ -36,17 +35,17 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
   - [One-Line Deployment (Linux only)](#one-line-deployment-linux-only)  
 - [Useful PM2 Commands](#useful-pm2-commands)  
 - [Configuration](#configuration)  
-  - [COMPANY](#company)  
-  - [SERVER](#server)  
-  - [SUPER_ADMIN](#super_admin)  
-  - [DB](#db)  
-  - [URL_FILES](#url_files)  
-  - [LOG](#log)  
-  - [HTTP_REQUEST](#http_request)  
-  - [JWT](#jwt)  
-  - [FILE_STORAGE](#file_storage)  
-  - [EMAIL](#email)  
-  - [TEST](#test)  
+  - [COMPANY](#1-company)  
+  - [SERVER](#2-server)  
+  - [SUPER_ADMIN](#3-super_admin)  
+  - [DB](#4-db)  
+  - [URL_FILES](#5-url_files)  
+  - [LOG](#6-log)  
+  - [HTTP_REQUEST](#7-http_request)  
+  - [JWT](#8-jwt)  
+  - [FILE_STORAGE](#9-file_storage)  
+  - [EMAIL](#10-email)  
+  - [TEST](#11-test)  
 - [Import Postman](#import-postman)  
   - [Import the Collection](#1-import-the-collection)  
   - [Configure Environment Variables](#2-configure-environment-variables)  
@@ -69,17 +68,18 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 - [Insert Seeds](#insert-seeds)  
 - [Testing](#testing)  
 - [Automation](#automation)  
+- [Response Structure](#response-structure)  
 - [Managing Roles](#managing-roles)  
-  - [How Roles Work](#managing-roles)  
-  - [Role Structure Explained](#breakdown-of-role-structure)  
+  - [How Roles Work](#how-roles-work)  
+  - [Role Structure Explained](#role-structure-explained)  
+  - [User ID Validation Logic](#user-id-validation-logic)  
+  - [Quick Summary](#quick-summary)  
 - [Managing Regex Patterns](#managing-regex-patterns)  
 - [Customizing and Adding Email Templates](#customizing-and-adding-email-templates)  
 - [Dependencies](#dependencies)  
 - [Contribution](#contribution)  
   - [TODO List for Tenshi](#todo-list-for-tenshi)  
 - [License](#license)
-
----
 
 <br><br>
 
@@ -730,14 +730,49 @@ This method enables role validation for the current request. If enabled, the sys
 
 This method flags the request to perform a logical delete instead of a physical delete. This means that the record will not be removed from the database but will be marked as deleted (e.g., setting an `isDeleted` field to `true`). This is used in almost all HTTP requests. For GET requests, this method considers whether a record is logically deleted (e.g., if `is_deleted = true`, the record will not be shown in the GET response).
 
-- #### `isValidateWhereByUserId()`
-
-This method enables the validation of WHERE conditions in a query, ensuring that the necessary validations by `UserId` (in DB `user_id`) are included. This is useful in situations where data needs to be specifically filtered for the user making the request.
-
 - #### `setCodeMessageResponse(codeMessage: string)`
 
 This method set the new code message for get a dynamic reply for any request.
 You need to set the code and the message from `src/data/json/messages.json`.
+
+- #### `isValidateWhereByUserId()`
+  Enables validation based on the `user_id` field, ensuring that users can **only access their own records**.  
+  If the user is a `SUPER_ADMIN`, this validation is bypassed automatically.  
+  If this validation is active and the user does not own the record, the operation will be **denied with an unauthorized error**.
+
+  To **bypass this validation for specific roles**, see [`setAllowRoleList`](#setallowrolelistallowrolelist-arraystring).
+
+  > If you wish to **customize or disable** how this validation behaves, you can modify the `validateWhereByUserId` or `validateGetAllByUserId` methods located in the `GenericValidation` class.
+
+  These methods internally validate ownership by comparing the authenticated user (`jwtData.id`) against one of the following fields in the database entity:
+
+  - `user_id`
+  - `customer_id`
+  - `customer.id`
+  - `booked_by`
+
+  If none of these fields match or are present, access will be denied.
+
+- #### `setAllowRoleList(allowRoleList: Array<string>)`
+  Configures an exception list of roles that are allowed to bypass the `isValidateWhereByUserId` restriction.  
+  This provides flexibility when certain roles (such as managers, auditors, or specific customers) need broader access without being full `SUPER_ADMIN`s.
+
+  Example:
+
+  ```typescript
+  const allow_role_list: Array<string> = ["CUSTOMER", "MANAGER"];
+
+  const requestHandler: RequestHandler = 
+    new RequestHandlerBuilder(res, req)
+      .setAdapter(new AppointmentDTO(req))
+      .setMethod("getAppointments")
+      .isValidateRole("APPOINTMENT")
+      .isLogicalDelete()
+      .isValidateWhereByUserId()
+      .setAllowRoleList(allow_role_list)
+      .setFilters(this.filters)
+      .build();
+  ```
 
 <br><br>
 
@@ -884,7 +919,7 @@ Example Response for get only one entity:
 <br><br>
 
 
-### Managing Roles
+## Managing Roles
 
 Tenshi uses a local `roles.json` file (in `src/data/json/roles.json`) instead of storing roles in a database. 
 This is intentional and based on the framework’s modular and microservice-oriented philosophy:
@@ -893,7 +928,7 @@ This is intentional and based on the framework’s modular and microservice-orie
 - **Static config for performance.** Roles are loaded on server boot.
 - **Restart required.** If you modify `roles.json`, you must restart the backend server for changes to take effect.
 
-#### Breakdown of Role Structure 
+### Breakdown of Role Structure 
 
 ```json
 {
@@ -937,11 +972,59 @@ This is intentional and based on the framework’s modular and microservice-orie
 }
 ```
 
-#### Role Structure Explained
+### Role Structure Explained
 - `code`: The internal identifier that is linked to each user (`user.role_code`).
 - `is_public`: Defines whether users with this role can be registered via the `/auth/register` endpoint. If `false`, they can only be created by an admin via `/user/add`.
 - `modules`: Defines which modules and which functions (`CREATE`, `GET_ALL`, etc.) a role can access.
 - `screens`: Optional UI-related metadata for frontend interfaces.
+
+
+### User ID Validation Logic
+
+The logic for validating ownership (whether a user is allowed to access or modify a record) is centralized in two methods inside `GenericValidation`:
+
+- #### `validateWhereByUserId`
+  Used mainly in `DELETE` and `UPDATE` operations.
+
+- #### `validateGetAllByUserId`
+  Used mainly in `GET` operations that retrieve lists or single items.
+
+### How validation works internally:
+The system checks if the authenticated user's ID (`jwtData.id`) matches any of these fields on the entity:
+
+```typescript
+const entityUserId = 'user_id' in entity ? entity.user_id : undefined;
+const entityUserNestedId = 'user' in entity && entity.user ? entity.user.id : undefined;
+const entityCustomerId = 'customer' in entity && entity.customer ? entity.customer.id : undefined;
+const entityBookedBy = 'booked_by' in entity ? entity.booked_by : undefined;
+```
+
+If none of these fields match the current user, the operation is blocked with an `Unauthorized` error.
+
+If none of these fields exist at all, access is also denied by default to ensure strict security.
+
+### Customizing Validation Behavior:
+If you need different fields or a different validation logic, you can modify the corresponding method:
+
+- For `DELETE` and `UPDATE`, edit `validateWhereByUserId`.
+- For `GET` operations, edit `validateGetAllByUserId`.
+
+Both are located in the `GenericValidation` class.
+
+---
+
+### Quick Summary
+
+| Topic | Purpose |
+|:------|:--------|
+| `isValidateWhereByUserId` | Forces user-specific access control |
+| `setAllowRoleList` | Allows exceptions to user-specific control |
+| `validateWhereByUserId` | Validation for DELETE and UPDATE operations |
+| `validateGetAllByUserId` | Validation for GET operations |
+| Fields checked | `user_id`, `customer_id`, `customer.id`, `booked_by` |
+| Customization | Modify validation methods in `GenericValidation` |
+
+---
 
 <br><br>
 

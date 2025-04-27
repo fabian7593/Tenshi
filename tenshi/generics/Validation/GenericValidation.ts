@@ -141,8 +141,14 @@ export default  class GenericValidation{
 
         // Check if the request handler object requires validation of the where clause by user ID
         if (reqHandler.getRequireValidWhereByUserId()) {
-            // Check if the role of the JWT is not admin
-            if (jwtData.role != config.SUPER_ADMIN.ROLE_CODE) {
+
+               // Retrieve the allowed role list and determine if the user is authorized by role
+               const allowRoleList = reqHandler.getAllowRoleList();
+               const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
+               const isAllowedRole = allowRoleList ? allowRoleList.includes(jwtData.role) : false;
+
+             // If the user is not a super admin and not in the allowed role list, validate entity ownership
+            if (!isSuperAdmin && !isAllowedRole) {
                 userId = jwtData.id; // Set the user ID with the ID of the JWT
 
                 // Call the appropriate entity retrieval function based on the type of the ID or code
@@ -152,65 +158,104 @@ export default  class GenericValidation{
                 } else {
                     entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters()); // Call findByCode function
                 }
-
+              
                 // Check if the entity exists and if the user ID of the entity is different from the user ID of the JWT
-                if (entity != undefined && entity != null ) {
-                    if (userId != null && entity.booked_by != userId) {
-                        httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR); // Return unauthorized error if conditions are not met
+                if (entity != undefined && entity != null) {
+                    if (userId != null) {
+                        const entityUserId = 'user_id' in entity ? entity.user_id : undefined;
+                        const entityUserNestedId = 'user' in entity && entity.user ? entity.user.id : undefined;
+                        const entityCustomerId = 'customer' in entity && entity.customer ? entity.customer.id : undefined;
+                        const entityBookedBy = 'booked_by' in entity ? entity.booked_by : undefined;
+                
+                        const matchedId = entityUserId ?? entityUserNestedId ?? entityCustomerId ?? entityBookedBy;
+                
+                        if (matchedId !== userId) {
+                            httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                            return false;
+                        }
+                    }
+                } else {
+                    httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                    return false;
+                }
+                
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Validates if the user making the request is authorized to retrieve all entities by user ID.
+     * This function checks if the request requires a user ID validation, verifies the role permissions,
+     * retrieves the entities, and ensures that the user is authorized to access them based on ownership fields.
+     *
+     * @param {RequestHandler} reqHandler - The request handler object.
+     * @param {HttpAction} httpExec - The HTTP action executor object.
+     * @param {JWTObject} jwtData - The JWT payload containing the user session data.
+     * @return {Promise<boolean>} - Returns true if validation passes, otherwise executes an error response.
+     */
+    protected async validateGetAllByUserId(reqHandler: RequestHandler, httpExec: HttpAction, jwtData: JWTObject) {
+
+        // Check if the request requires validation by user ID
+        if (reqHandler.getRequireValidWhereByUserId()) {
+
+            // Retrieve the allowed role list and determine if the user is authorized by role
+            const allowRoleList = reqHandler.getAllowRoleList();
+            const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
+            const isAllowedRole = allowRoleList ? allowRoleList.includes(jwtData.role) : false;
+
+            // If the user is not a super admin and not in the allowed role list, validate entity ownership
+            if (!isSuperAdmin && !isAllowedRole) {
+                const entities = await this.repository.findByOptions(
+                    reqHandler.getLogicalDelete(),
+                    true,
+                    reqHandler.getFilters()
+                );
+
+                // Validate that the JWT has a user ID
+                if (jwtData.id != null) {
+                    // If no entities are found, return a not found error
+                    if (entities == null || entities.length === 0) {
+                        httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
                         return false;
                     }
-                    
-                } else {
-                    httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS); // Return dynamic error if entity does not exist
-                    return false;
+
+                    // Take the first entity from the result
+                    const entity = entities[0];
+
+                    // Validate ownership by checking available fields in the entity
+                    if ('user_id' in entity) {
+                        if (entity.user_id !== jwtData.id) {
+                            httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                            return false;
+                        }
+                    } else if ('customer_id' in entity) {
+                        if (entity.customer_id !== jwtData.id) {
+                            httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                            return false;
+                        }
+                    } else if ('customer' in entity) {
+                        if (entity.customer.id !== jwtData.id) {
+                            httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                            return false;
+                        }
+                    } else if ('booked_by' in entity) {
+                        if (entity.booked_by !== jwtData.id) {
+                            httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                            return false;
+                        }
+                    } else {
+                        // If none of the expected fields exist, deny access
+                        httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                        return false;
+                    }
                 }
             }
         }
         return true;
     }
 
-
-
-    protected async validateGetAllByUserId(reqHandler: RequestHandler, httpExec: HttpAction, jwtId: string | number | null) {
-
-        const entities = await this.repository.findByOptions(reqHandler.getLogicalDelete(), true, reqHandler.getFilters()); 
-
-        if (jwtId != null) {
-            if(entities == null || entities.length == 0){
-                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-                return false;
-            }
-
-            const entity = entities[0];
-       
-            if ('user_id' in entity) {
-                if (entity.user_id !== jwtId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                    return false;
-                }
-            } else if ('customer_id' in entity) {
-                if (entity.customer_id !== jwtId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                    return false;
-                }
-            } else if ('customer' in entity) {
-                if (entity.customer.id !== jwtId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                    return false;
-                }
-            } else if ('booked_by' in entity) {
-                if (entity.booked_by !== jwtId) {
-                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                    return false;
-                }
-            } else {
-                httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Validates if the request handler has filters.

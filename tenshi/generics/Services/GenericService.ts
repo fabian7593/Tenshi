@@ -292,10 +292,12 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_ALL, httpExec) !== true) { return; }
 
-                if (jwtData.role != config.SUPER_ADMIN.ROLE_CODE) {
+                const allowRoleList = reqHandler.getAllowRoleList();
+                const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
+                const isAllowedRole = allowRoleList ? allowRoleList.includes(jwtData.role) : false;
 
-                    //If the user is not a super admin, validate if the user id of the table
-                    // should be the user id of the user request (JWT)
+                if (!isSuperAdmin && !isAllowedRole) {
+
                     const filters = reqHandler.getFilters();
                     let extractedId: string | null = null;
 
@@ -312,8 +314,7 @@ export default  class GenericService extends GenericValidation implements IGener
                         return httpExec.paramsError();
                     }
 
-                    // Validate the user id
-                    if(await this.validateGetAllByUserId(reqHandler, httpExec, jwtData.id) !== true){ return; }
+                    if(await this.validateGetAllByUserId(reqHandler, httpExec, jwtData) !== true){ return; }
                 }
             }
 

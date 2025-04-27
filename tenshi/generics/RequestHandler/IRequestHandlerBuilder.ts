@@ -6,6 +6,7 @@ export default interface IRequestHandlerBuilder {
     setAdapter(adapter: IAdapterFromBody): IRequestHandlerBuilder;
     setRegexValidation(regexValidatorList: [string, string][]): IRequestHandlerBuilder;
     setRequiredFiles(requiredFieldsList: Array<string> ): IRequestHandlerBuilder;
+    setAllowRoleList(allowRoleList: Array<string> ): IRequestHandlerBuilder;
     setFilters(filters: FindManyOptions): IRequestHandlerBuilder;
     isValidateRole(module: string): IRequestHandlerBuilder;
     isLogicalDelete(): IRequestHandlerBuilder;
