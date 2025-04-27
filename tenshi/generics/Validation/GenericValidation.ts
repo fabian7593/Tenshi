@@ -169,6 +169,49 @@ export default  class GenericValidation{
         return true;
     }
 
+
+
+    protected async validateGetAllByUserId(reqHandler: RequestHandler, httpExec: HttpAction, jwtId: string | number | null) {
+
+        const entities = await this.repository.findByOptions(reqHandler.getLogicalDelete(), true, reqHandler.getFilters()); 
+
+        if (jwtId != null) {
+            if(entities == null || entities.length == 0){
+                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+                return false;
+            }
+
+            const entity = entities[0];
+       
+            if ('user_id' in entity) {
+                if (entity.user_id !== jwtId) {
+                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                    return false;
+                }
+            } else if ('customer_id' in entity) {
+                if (entity.customer_id !== jwtId) {
+                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                    return false;
+                }
+            } else if ('customer' in entity) {
+                if (entity.customer.id !== jwtId) {
+                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                    return false;
+                }
+            } else if ('booked_by' in entity) {
+                if (entity.booked_by !== jwtId) {
+                    httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                    return false;
+                }
+            } else {
+                httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Validates if the request handler has filters.
      * This function checks if the filters are set in the request handler.
