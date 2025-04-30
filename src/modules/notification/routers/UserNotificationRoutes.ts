@@ -59,7 +59,9 @@ class UserNotificationRoutes extends GenericRoutes {
                                     .setMethod("updateUserNotification")
                                     .isValidateRole("NOTIFICATION")
                                     .isLogicalDelete()
-                                    .isValidateWhereByUserId()
+                                    .setDynamicRoleValidationByEntityField([
+                                        ["CUSTOMER", "user_receive.id"]
+                                    ])
                                     .build();
         
             this.getController().update(requestHandler);

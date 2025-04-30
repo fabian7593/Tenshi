@@ -102,20 +102,6 @@ export default  class UserNotificationController extends GenericController{
                 return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
             }
 
-            if(reqHandler.getRequireValidWhereByUserId()){
-                if(jwtData.role != config.SUPER_ADMIN.ROLE_CODE){
-                    userId = jwtData.id;
-                }
-             
-                if(userNotification != undefined && userNotification != null){
-                    if(userId != null && userNotification.user_receive.id != userId){
-                        return httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
-                    }
-                }else{
-                    return httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-                }
-            }
-
             userNotification.is_read = true;
             try{
                 //Execute Action DB

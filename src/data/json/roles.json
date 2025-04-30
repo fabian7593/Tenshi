@@ -110,6 +110,16 @@
             "GET_BY_ID",
             "GET_ALL"
           ]
+        },
+        {
+          "name": "UNIT_DYNAMIC_CENTRAL",
+          "function_list": [
+            "CREATE",
+            "UPDATE",
+            "DELETE",
+            "GET_BY_ID",
+            "GET_ALL"
+          ]
         }
       ],
       "screens": [
@@ -121,7 +131,7 @@
     },
     {
       "id": 3,
-      "code": "94db2848-3df7-4593-b90d-1615a700bddd",
+      "code": "CUSTOMER",
       "name": "Customer",
       "is_public": true,
       "description": "Customer role with access to customer-specific functionalities.",
@@ -130,7 +140,9 @@
           "name": "DOCUMENT",
           "function_list": [
             "GET_BY_ID",
-            "GET_ALL"
+            "GET_ALL",
+            "DELETE",
+            "CREATE"
           ]
         }
       ],

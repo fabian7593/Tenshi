@@ -127,7 +127,7 @@ export default  class GenericService extends GenericValidation implements IGener
 
                 // If you need to validate if the user id of the table 
                 // should be the user id of the user request (JWT)
-                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                if(await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData, id) !== true){ return; }
 
                 executeUpdateFunction(jwtData, httpExec, id);
             }else{
@@ -176,7 +176,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.DELETE, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                if(await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData, id) !== true){ return; }
             }
             // Execute the delete action in the database
             executeDeleteFunction(jwtData, httpExec, id);
@@ -208,7 +208,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, id) !== true){ return; }
+                if(await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData, id) !== true){ return; }
              }
 
              // Execute the get by id action in the database
@@ -254,7 +254,7 @@ export default  class GenericService extends GenericValidation implements IGener
                 // Validate the role of the user
                 if(await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_BY_ID, httpExec) !== true){ return; }
                 // Validate the user id
-                if(await this.validateWhereByUserId(reqHandler, httpExec, jwtData, code) !== true){ return; }
+                if(await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData, code) !== true){ return; }
               }
 
               executeGetByCodeFunction(jwtData, httpExec, code);
@@ -291,31 +291,7 @@ export default  class GenericService extends GenericValidation implements IGener
             if(jwtData != null){
                 // Validate the role of the user
                 if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.GET_ALL, httpExec) !== true) { return; }
-
-                const allowRoleList = reqHandler.getAllowRoleList();
-                const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
-                const isAllowedRole = allowRoleList ? allowRoleList.includes(jwtData.role) : false;
-
-                if (!isSuperAdmin && !isAllowedRole) {
-
-                    const filters = reqHandler.getFilters();
-                    let extractedId: string | null = null;
-
-                    if (!Array.isArray(filters?.where) && filters?.where) {
-                        extractedId = filters.where.customer?.id
-                                || filters.where.customer_id
-                                || filters.where.user?.id
-                                || filters.where.user_id
-                                || filters.where.booked_by
-                                || null;
-                    }
-                    
-                    if (extractedId == null) {
-                        return httpExec.paramsError();
-                    }
-
-                    if(await this.validateGetAllByUserId(reqHandler, httpExec, jwtData) !== true){ return; }
-                }
+                if(await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData) !== true){ return; }
             }
 
              // Get the page and size from the URL query parameters

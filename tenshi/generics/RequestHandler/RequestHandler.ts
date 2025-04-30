@@ -13,13 +13,12 @@ private module: string = "";
 private adapter: IAdapterFromBody;
 private requireValidateRole: boolean = false;
 private requireLogicalRemove: boolean = false;
-private requireValidWhereByUserId: boolean = false;
 private regexValidatorList: [string, string][] | null = null;
 private requiredFieldsList: Array<string> | null = null;
 private filters: FindManyOptions | null = null;
 private codeMessageResponse: string | null = null;
 private requireIdFromQueryParam: boolean = true;
-private allowRoleList: Array<string> | null = null;
+private dynamicRoleList: Array<[string, string]> | null = null;
 
 constructor(res: Response, req: Request, 
            method: string, 
@@ -27,13 +26,13 @@ constructor(res: Response, req: Request,
            adapter: IAdapterFromBody, 
            requireValidateRole: boolean,
            requireLogicalRemove: boolean,
-           requireValidWhereByUserId: boolean,
            regexValidatorList: [string, string][] | null,
            requiredFieldsList: Array<string> | null,
            filters: FindManyOptions,
            codeMessageResponse: string | null,
            requireIdFromQueryParam: boolean,
-           allowRoleList: Array<string> | null) {
+           dynamicRoleList: Array<[string, string]> | null) {
+   this.dynamicRoleList = dynamicRoleList;
    this.res = res;
    this.req = req;
    this.method = method;
@@ -41,13 +40,11 @@ constructor(res: Response, req: Request,
    this.adapter = adapter;
    this.requireValidateRole = requireValidateRole;
    this.requireLogicalRemove = requireLogicalRemove;
-   this.requireValidWhereByUserId = requireValidWhereByUserId;
    this.regexValidatorList = regexValidatorList;
    this.requiredFieldsList = requiredFieldsList;
    this.filters = filters;
    this.codeMessageResponse = codeMessageResponse;
    this.requireIdFromQueryParam = requireIdFromQueryParam;
-   this.allowRoleList = allowRoleList;
 }
 
     // Getters
@@ -83,10 +80,6 @@ constructor(res: Response, req: Request,
     return this.requireLogicalRemove;
     }
 
-    getRequireValidWhereByUserId(): boolean {
-    return this.requireValidWhereByUserId;
-    }
-
     getRegexValidatorList(): [string, string][] | null {
     return this.regexValidatorList;
     }
@@ -103,9 +96,10 @@ constructor(res: Response, req: Request,
         return this.requireIdFromQueryParam;
     }
 
-    getAllowRoleList(): Array<string> | null {
-        return this.allowRoleList;  
+    getDynamicRoleList(): Array<[string, string]> | null {
+        return this.dynamicRoleList;
     }
+
 }
    
 

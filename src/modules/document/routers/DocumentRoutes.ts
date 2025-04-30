@@ -115,7 +115,9 @@ class DocumentRoutes extends GenericRoutes {
                                     .setAdapter(new DocumentDTO(req))
                                     .setMethod("updateDocument")
                                     .isValidateRole("DOCUMENT")
-                                    .isValidateWhereByUserId()
+                                    .setDynamicRoleValidationByEntityField([
+                                        ["CUSTOMER", "user_id"]
+                                    ])
                                     .build();
         
             this.getController().update(requestHandler);
@@ -129,7 +131,9 @@ class DocumentRoutes extends GenericRoutes {
                                     .setMethod("deleteDocument")
                                     .isValidateRole("DOCUMENT")
                                     .isLogicalDelete()
-                                    .isValidateWhereByUserId()
+                                    .setDynamicRoleValidationByEntityField([
+                                        ["CUSTOMER", "user_id"]
+                                    ])
                                     .build();
         
             this.getController().delete(requestHandler);

@@ -23,27 +23,26 @@ private adapter: IAdapterFromBody;
 private requireValidateRole: boolean = false;
 //If the table has a logical remove, use it
 private requireLogicalRemove: boolean = false;
-//If the table have a foreign key with user id and needed to update, delete or something else, by this user id
-private requireValidWhereByUserId: boolean = false;
 //the list of regular expression
 private regexValidatorList: [string, string][];
 //List of required fields
 private requiredFieldsList: Array<string>;
-//List of roles that can access to any method
-private allowRoleList: Array<string>;
 //the filters for the gets
 private filters: FindManyOptions;
 //If the update service need the id required into url, by default it is true
 private requireIdFromQueryParam: boolean = true;
+//if the user need to validate the function with his current role, and specific field entity
+private dynamicRoleList: Array<[string, string]> | null = null;
 
 constructor(res: Response, req: Request) {
   this.res = res;
   this.req = req;
 }
-setAllowRoleList(allowRoleList: Array<string>): IRequestHandlerBuilder {
-  this.allowRoleList = allowRoleList;
-  return this;
-}
+  setDynamicRoleValidationByEntityField(dynamicRoleList: Array<[string, string]>): IRequestHandlerBuilder {
+    this.dynamicRoleList = dynamicRoleList;
+    return this;
+  }
+
   
 isRequireIdFromQueryParams(isRequired : boolean): IRequestHandlerBuilder {
   this.requireIdFromQueryParam = isRequired;
@@ -97,10 +96,7 @@ isLogicalDelete(): IRequestHandlerBuilder {
   return this;
 }
 
-isValidateWhereByUserId(): IRequestHandlerBuilder {
-  this.requireValidWhereByUserId = true;
-  return this;
-}
+
 
 //Return an object of request handler
 build(): RequestHandler {
@@ -109,12 +105,11 @@ build(): RequestHandler {
                             this.adapter, 
                             this.requireValidateRole, 
                             this.requireLogicalRemove,
-                            this.requireValidWhereByUserId,
                             this.regexValidatorList,
                             this.requiredFieldsList,
                             this.filters,
                             this.codeMessageResponse,
                             this.requireIdFromQueryParam,
-                          this.allowRoleList);
+                            this.dynamicRoleList);
 }
 }

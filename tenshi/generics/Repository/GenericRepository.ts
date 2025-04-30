@@ -1,5 +1,7 @@
 import { structPagination } from '@TenshiJS/objects/BodyResObject';
-import { ConstMessages } from 'tenshi/consts/Const';
+import { getMessage } from '@TenshiJS/utils/jsonUtils';
+import e from 'express';
+import { ConstMessages, ConstMessagesJson, ConstStatusJson } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
 import { DataSource, QueryFailedError } from 'typeorm';
@@ -179,6 +181,10 @@ export default  class GenericRepository implements IGenericRepository{
             options = { where: { id : id }  };  // Set the options to find the entity by its ID
 
             const entity = await this.entityManager.findOne(this.entityTarget, options);  // Find the entity by its ID
+            
+            if(entity === null || entity === undefined) {  // Check if the entity is found
+                throw new Error(getMessage(ConstMessagesJson.DONT_EXISTS));  // Throw an error if the entity is not found
+            }
 
             if (entity["is_deleted"] === undefined) {  // Check if the entity has an "is_deleted" property
                 throw new Error(ConstMessages.ERROR_NOT_HAVE_IS_DELETED);  // Throw an error if the entity does not have the property

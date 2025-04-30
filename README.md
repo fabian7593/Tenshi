@@ -560,7 +560,6 @@ Manages full CRUD operations on users.
 - **Admin**: Has full access to all user-related functions: CREATE, UPDATE, DELETE, GET_ALL, GET_BY_ID.
 - **Non-admin roles**:
   - Cannot create new users.
-  - Can only edit or retrieve their own data if the controller uses `isValidateWhereByUserId()`, which enforces a match between the authenticated user's ID and the ID in the URL.
   - Cannot access `GET_ALL` or `DELETE` unless explicitly permitted.
 
 > Note: Role logic is defined in `roles.json`. If a role lacks `"CREATE"` under the `USER` module, `/user/add` will be forbidden even if the token is valid.
@@ -599,7 +598,6 @@ Handles file management for all modules (user profile pictures, attachments, upl
 **Role Access:**
 
 - Admins: Full access to upload, modify, and delete documents.
-- Users: Can only modify or view documents tied to their user ID when the controller uses `isValidateWhereByUserId()`.
 - `is_public: true` documents can be accessed even without login if configured.
 
 **Frontend Tip:**  
@@ -732,47 +730,24 @@ This method flags the request to perform a logical delete instead of a physical 
 
 - #### `setCodeMessageResponse(codeMessage: string)`
 
-This method set the new code message for get a dynamic reply for any request.
-You need to set the code and the message from `src/data/json/messages.json`.
+This method sets the new code message to provide a dynamic reply for any request. You need to set the code and the message from `src/data/json/messages.json`.
 
-- #### `isValidateWhereByUserId()`
-  Enables validation based on the `user_id` field, ensuring that users can **only access their own records**.  
-  If the user is a `SUPER_ADMIN`, this validation is bypassed automatically.  
-  If this validation is active and the user does not own the record, the operation will be **denied with an unauthorized error**.
+- #### `isRequireIdFromQueryParams(isRequired: boolean)`
 
-  To **bypass this validation for specific roles**, see [`setAllowRoleList`](#setallowrolelistallowrolelist-arraystring).
+This method configures whether the request requires an ID to be passed through query parameters. By default, it is true.
 
-  > If you wish to **customize or disable** how this validation behaves, you can modify the `validateWhereByUserId` or `validateGetAllByUserId` methods located in the `GenericValidation` class.
+- #### `setDynamicRoleValidationByEntityField(dynamicRoleList: Array<[string, string]>)`
 
-  These methods internally validate ownership by comparing the authenticated user (`jwtData.id`) against one of the following fields in the database entity:
+Defines the access rules where a role can access or mutate an entity only if a specific field (or nested field) matches the JWT user ID. Accepts an array of `[role, field]`, such as:
 
-  - `user_id`
-  - `customer_id`
-  - `customer.id`
-  - `booked_by`
+```ts
+.setDynamicRoleValidationByEntityField([
+  ["CUSTOMER", "user_id"],
+  ["MANAGER", "customer.id"]
+])
+```
 
-  If none of these fields match or are present, access will be denied.
-
-- #### `setAllowRoleList(allowRoleList: Array<string>)`
-  Configures an exception list of roles that are allowed to bypass the `isValidateWhereByUserId` restriction.  
-  This provides flexibility when certain roles (such as managers, auditors, or specific customers) need broader access without being full `SUPER_ADMIN`s.
-
-  Example:
-
-  ```typescript
-  const allow_role_list: Array<string> = ["CUSTOMER", "MANAGER"];
-
-  const requestHandler: RequestHandler = 
-    new RequestHandlerBuilder(res, req)
-      .setAdapter(new AppointmentDTO(req))
-      .setMethod("getAppointments")
-      .isValidateRole("APPOINTMENT")
-      .isLogicalDelete()
-      .isValidateWhereByUserId()
-      .setAllowRoleList(allow_role_list)
-      .setFilters(this.filters)
-      .build();
-  ```
+This feature allows precise field-level access control per role.
 
 <br><br>
 
@@ -979,55 +954,7 @@ This is intentional and based on the framework’s modular and microservice-orie
 - `screens`: Optional UI-related metadata for frontend interfaces.
 
 
-### User ID Validation Logic
-
-The logic for validating ownership (whether a user is allowed to access or modify a record) is centralized in two methods inside `GenericValidation`:
-
-- #### `validateWhereByUserId`
-  Used mainly in `DELETE` and `UPDATE` operations.
-
-- #### `validateGetAllByUserId`
-  Used mainly in `GET` operations that retrieve lists or single items.
-
-### How validation works internally:
-The system checks if the authenticated user's ID (`jwtData.id`) matches any of these fields on the entity:
-
-```typescript
-const entityUserId = 'user_id' in entity ? entity.user_id : undefined;
-const entityUserNestedId = 'user' in entity && entity.user ? entity.user.id : undefined;
-const entityCustomerId = 'customer' in entity && entity.customer ? entity.customer.id : undefined;
-const entityBookedBy = 'booked_by' in entity ? entity.booked_by : undefined;
-```
-
-If none of these fields match the current user, the operation is blocked with an `Unauthorized` error.
-
-If none of these fields exist at all, access is also denied by default to ensure strict security.
-
-### Customizing Validation Behavior:
-If you need different fields or a different validation logic, you can modify the corresponding method:
-
-- For `DELETE` and `UPDATE`, edit `validateWhereByUserId`.
-- For `GET` operations, edit `validateGetAllByUserId`.
-
-Both are located in the `GenericValidation` class.
-
----
-
-### Quick Summary
-
-| Topic | Purpose |
-|:------|:--------|
-| `isValidateWhereByUserId` | Forces user-specific access control |
-| `setAllowRoleList` | Allows exceptions to user-specific control |
-| `validateWhereByUserId` | Validation for DELETE and UPDATE operations |
-| `validateGetAllByUserId` | Validation for GET operations |
-| Fields checked | `user_id`, `customer_id`, `customer.id`, `booked_by` |
-| Customization | Modify validation methods in `GenericValidation` |
-
----
-
 <br><br>
-
 
 
 ## Managing Regex Patterns
