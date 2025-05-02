@@ -58,6 +58,8 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
     - [Email Module](#email-module)  
     - [Logs Module](#logs-module)  
     - [Roles Module](#roles-module)  
+- [Basic Endpoints](#basic-endpoints)  
+- [Bulk Endpoints (Beta)](#bulk-endpoints-beta)  
 - [Project Architecture](#project-architecture)  
   - [GenericRepository](#genericrepository)  
   - [GenericController](#genericcontroller)  
@@ -657,6 +659,141 @@ Returns information about the roles and access levels in the system.
 - Useful for displaying available roles in admin user management screens.
 
 ---
+<br><br>
+
+## Basic Endpoints
+
+Tenshi automatically generates a set of standard CRUD endpoints for each module based on a shared `GenericRouter` and `GenericController`. These are:
+
+- `GET /entity/get`: Get a single entity by ID
+- `GET /entity/get_all`: Get all entities (supports filters via query params)
+- `POST /entity/add`: Insert a new entity
+- `PUT /entity/edit`: Update an existing entity
+- `DELETE /entity/delete`: Soft-delete an entity
+
+Each endpoint uses a `RequestHandlerBuilder`, which centralizes the validation and authorization logic:
+
+- Role validation (based on `roles.json`)
+- Required fields validation
+- Regex pattern validation
+- Logical delete filtering
+- Response message customization
+
+> Example: The UDC module (`/udc`) implements all of the above and demonstrates dynamic filtering. It will work similarly for any entity, as the structure is generic and scalable.
+
+---
+
+## Bulk Endpoints (Beta)
+
+Bulk endpoints allow inserting, updating, or deleting multiple records in one request. These endpoints are dynamic and will work for any entity.
+
+### Available Bulk Routes
+
+- `POST /entity/add_multiple`
+- `PATCH /entity/edit_multiple`
+- `PATCH /entity/edit_multiple_by_ids`
+- `POST /entity/delete_multiple`
+
+These bulk operations follow the same validation and role structure as basic endpoints, using the `RequestHandlerBuilder` logic.
+
+However, their **response structure is different**, returning both `success` and `errors` inside the `data` object:
+
+```json
+{
+  "status": {
+    "id": 1,
+    "message": "Success",
+    "http_code": 200
+  },
+  "data": {
+    "success": [
+      { "id": 128, "code": "es", "name": "Cluster D" }
+    ],
+    "errors": [
+      { "index": 1, "error": "Your language is not valid" },
+      { "index": 2, "error": "Your language is not valid" }
+    ]
+  },
+  "info": "Insert Entry Successful"
+}
+```
+
+>  The system continues processing even when some rows fail validation.
+>
+> ⚠️ **Bulk endpoints are currently in beta.** Review validation settings before production use.
+
+### Request Body Examples
+
+#### `POST /udc/add_multiple`
+```json
+[
+  {
+    "code": "code1",
+    "type": "EVENT_TYPES",
+    "name": "Cluster D",
+    "description": "test desc",
+    "value1": "D1",
+    "value2": "D2"
+  },
+  {
+    "code": "newtest2",
+    "type": "EVENT_TYPES",
+    "name": "Cluster E",
+    "description": "",
+    "value1": "E1",
+    "value2": "E2"
+  }
+  {
+    "code": "CLUSTER1007",
+    "type": "EVENT_TYPES",
+    "name": "Cluster G",
+    "description": "",
+    "value2": "G2"
+  }
+]
+```
+
+#### `PATCH /udc/edit_multiple`
+```json
+[
+  {
+    "id": 5,
+    "type": "EVENT_TYPES",
+    "name": "Cluster D"
+  },
+  {
+    "id": 111,
+    "description": "Quinta unidad",
+    "value1": "E1",
+    "value2": "E2"
+  },
+  {
+    "id": 777,
+    "value2": "F2"
+  }
+]
+```
+
+#### `PATCH /udc/edit_multiple_by_ids`
+```json
+{
+  "ids": [65,77,89,null,999],
+  "description": "test",
+  "value1": "cancel"
+}
+```
+
+#### `POST /udc/delete_multiple`
+```json
+{ 
+  "ids": [5,6,999,null] 
+}
+```
+
+Each of these routes uses the same `GenericController` methods: `insertMultiple`, `updateMultiple`, `updateMultipleByIds`, and `deleteMultiple`, with validation, required field checks, and optional regex enforcement configured through the `RequestHandlerBuilder`.
+
+---
+
 
 
 <br><br>

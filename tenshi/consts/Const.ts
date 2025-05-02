@@ -14,6 +14,9 @@ export class ConstHTTPRequest {
     public static readonly INSERT_SUCCESS: string = "INSERT_SUCCESS";
     public static readonly UPDATE_SUCCESS: string = "UPDATE_SUCCESS";
     public static readonly DELETE_SUCCESS: string = "DELETE_SUCCESS";
+    public static readonly INSERT_ENTRIES_SUCCESS: string = "INSERT_ENTRIES_SUCCESS";
+    public static readonly UPDATE_ENTRIES_SUCCESS: string = "UPDATE_ENTRIES_SUCCESS";
+    public static readonly DELETE_ENTRIES_SUCCESS: string = "DELETE_ENTRIES_SUCCESS";
     public static readonly GET_ALL_SUCCESS: string = "GET_SUCCESS";
     public static readonly GET_BY_ID_SUCCESS: string = "GET_BY_ID_SUCCESS";
     public static readonly SEND_MAIL_SUCCESS: string = "SEND_MAIL_SUCCESS";
