@@ -113,6 +113,39 @@
 							"response": []
 						},
 						{
+							"name": "Login User - Customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"fabian7593+test2@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Register - Admin",
 							"request": {
 								"method": "POST",
@@ -126,6 +159,39 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n  \"card_id\": 11111111,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test1@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\",\r\n  \"role_code\":\"94db2848-3df7-4593-b90d-1615a700bddd\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register - Customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{secret_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"card_id\": 777,\r\n  \"first_name\": \"Fabian\",\r\n  \"last_name\": \"Rosales\",\r\n  \"email\": \"fabian7593+test2@gmail.com\",\r\n  \"password\": \"Fabian7593@gmail.com\",\r\n  \"gender\": \"M\",\r\n  \"country_iso_code\": \"CRC\",\r\n  \"language\":\"en\",\r\n  \"role_code\":\"CUSTOMER\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -501,7 +567,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/udc/get_all?type=CAMP_TYPES",
+							"raw": "{{host}}/udc/get_all?id=65",
 							"host": [
 								"{{host}}"
 							],
@@ -512,7 +578,8 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "CAMP_TYPES"
+									"value": "CAMP_TYPES",
+									"disabled": true
 								},
 								{
 									"key": "code",
@@ -521,12 +588,7 @@
 								},
 								{
 									"key": "father_code",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "id",
-									"value": "1",
+									"value": "",
 									"disabled": true
 								},
 								{
@@ -538,7 +600,163 @@
 									"key": "size",
 									"value": "10",
 									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "65"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Insert UDC",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"code\": \"es\",\r\n    \"type\": \"EVENT_TYPES\",\r\n    \"name\": \"Cluster D\",\r\n    \"description\": \"Cuarta unidad\",\r\n    \"value1\": \"D1\",\r\n    \"value2\": \"D2\"\r\n  },\r\n  {\r\n    \"code\": \"newtest2\",\r\n    \"type\": \"EVENT_TYPES\",\r\n    \"name\": \"Cluster E\",\r\n    \"description\": \"Quinta unidad\",\r\n    \"value1\": \"E1\",\r\n    \"value2\": \"E2\"\r\n  },\r\n  {\r\n    \"name\": \"Cluster F sin código\",\r\n    \"description\": \"Falta el código\",\r\n    \"value1\": \"F1\",\r\n    \"value2\": \"F2\"\r\n  },\r\n  {\r\n    \"code\": \"CLUSTER1007\",\r\n    \"type\": \"EVENT_TYPES\",\r\n    \"name\": \"Cluster G sin value1\",\r\n    \"description\": \"Falta el value1\",\r\n    \"value2\": \"G2\"\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/add_multiple",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"add_multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update UDC",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 5,\r\n    \"code\": \"es2\",\r\n    \"type\": \"EVENT_TYPES\",\r\n    \"name\": \"Cluster D\",\r\n    \"description\": \"Cuarta unidad\",\r\n    \"value1\": \"D1\",\r\n    \"value2\": \"D2\"\r\n  },\r\n  {\r\n    \"id\": 111,\r\n    \"code\": \"newtest2\",\r\n    \"type\": \"EVENT_TYPES\",\r\n    \"name\": \"Cluster E\",\r\n    \"description\": \"Quinta unidad\",\r\n    \"value1\": \"E1\",\r\n    \"value2\": \"E2\"\r\n  },\r\n  {\r\n    \"id\": 777,\r\n    \"name\": \"Cluster F sin código\",\r\n    \"description\": \"Falta el código\",\r\n    \"value1\": \"F1\",\r\n    \"value2\": \"F2\"\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/edit_multiple",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"edit_multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update by Ids UDC",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ids\": [65,77,89,null,999],\r\n  \"description\": \"test\",\r\n  \"value1\": \"cancel\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/edit_multiple_by_ids",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"edit_multiple_by_ids"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete UDC",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{auth_jwt}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{secret_api_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"ids\": [5,6,999,null] \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/udc/delete_multiple",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"udc",
+								"delete_multiple"
 							]
 						}
 					},
@@ -762,11 +980,11 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Fabían Rosales/Desktop/github.png"
+									"src": "/C:/Users/fabia/OneDrive/Escritorio/SoccerSamba/HOLIDAYCAMPS.sql"
 								},
 								{
 									"key": "fields",
-									"value": "{\"title\":\"Front end SSS\",\"type\": \"DOC\", \"description\": \"Descripción del documento\", \"id_for_table\": 1, \"table\": \"USER\",  \"action_type\":  \"PROFILE_PICTURE\", \"user_id\": 5, \"is_public\":1}",
+									"value": "{\"title\":\"Front end SSS\",\"type\": \"DOC\", \"description\": \"Descripción del documento\", \"id_for_table\": 1, \"table\": \"USER\",  \"action_type\":  \"PROFILE_PICTURE\", \"user_id\": \"2db8647a-b91e-4fc8-bb15-d0452bd4569f\", \"is_public\":1}",
 									"type": "text"
 								}
 							]

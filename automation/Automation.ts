@@ -193,93 +193,151 @@ if (!fs.existsSync(dtoFilePath)) {
 
 // Generate routes fields
 const routesContent = `import { Request, Response, 
-         RequestHandler, RequestHandlerBuilder, 
-         GenericController, GenericRoutes,
-         FindManyOptions} from "@modules/index";
+RequestHandler, RequestHandlerBuilder, 
+GenericController, GenericRoutes,
+FindManyOptions} from "@modules/index";
 import { ${entityName} } from "@index/entity/${entityName}";
-import ${entityName}DTO from "@modules/02_Synco/${entityName.toLowerCase()}/dtos/${entityName}DTO";
+import ${entityName}DTO from "@modules/${entityName.toLowerCase()}/dtos/${entityName}DTO";
 
 class ${entityName}Routes extends GenericRoutes {
-    
-    private filters: FindManyOptions = {};
-    constructor() {
-        super(new GenericController(${entityName}), "/${entityName.toLowerCase()}");
-        ${relations.length > 0 ? `this.filters.relations = ${JSON.stringify(relations)};` : ''}
-    }
 
-    protected initializeRoutes() {
-        this.router.get(\`\${this.getRouterName()}/get\`, async (req: Request, res: Response) => {
-
-            const requestHandler: RequestHandler = 
-                                    new RequestHandlerBuilder(res, req)
-                                    .setAdapter(new ${entityName}DTO(req))
-                                    .setMethod("get${entityName}ById")
-                                    .isValidateRole("${entityName.toUpperCase()}")
-                                    .isLogicalDelete()
-                                    .setFilters(this.filters)
-                                    .build();
-        
-            this.getController().getById(requestHandler);
-        });
-        
-        this.router.get(\`\${this.getRouterName()}/get_all\`, async (req: Request, res: Response) => {
-        
-            const requestHandler: RequestHandler = 
-                                    new RequestHandlerBuilder(res, req)
-                                    .setAdapter(new ${entityName}DTO(req))
-                                    .setMethod("get${entityName}s")
-                                    .isValidateRole("${entityName.toUpperCase()}")
-                                    .isLogicalDelete()
-                                    .setFilters(this.filters)
-                                    .build();
-        
-            this.getController().getAll(requestHandler);
-        });
-        
-        this.router.post(\`\${this.getRouterName()}/add\`, async (req: Request, res: Response) => {
-
-            const requiredBodyList: Array<string> = [
-                ${routeFields.join(',\n                ')}
-            ];
-            
-            const requestHandler: RequestHandler = 
-                                    new RequestHandlerBuilder(res, req)
-                                    .setAdapter(new ${entityName}DTO(req))
-                                    .setMethod("insert${entityName}")
-                                    .setRequiredFiles(requiredBodyList)
-                                    .isValidateRole("${entityName.toUpperCase()}")
-                                    .build();
-        
-            this.getController().insert(requestHandler);
-        });
-        
-        this.router.put(\`\${this.getRouterName()}/edit\`, async (req: Request, res: Response) => {
-            const requestHandler: RequestHandler = 
-                                    new RequestHandlerBuilder(res, req)
-                                    .setAdapter(new ${entityName}DTO(req))
-                                    .setMethod("update${entityName}")
-                                    .isValidateRole("${entityName.toUpperCase()}")
-                                    .build();
-        
-            this.getController().update(requestHandler);
-        });
-        
-        this.router.delete(\`\${this.getRouterName()}/delete\`, async (req: Request, res: Response) => {
-            const requestHandler: RequestHandler = 
-                                    new RequestHandlerBuilder(res, req)
-                                    .setAdapter(new ${entityName}DTO(req))
-                                    .setMethod("delete${entityName}")
-                                    .isValidateRole("${entityName.toUpperCase()}")
-                                    .isLogicalDelete()
-                                    .build();
-        
-            this.getController().delete(requestHandler);
-        });
-    }
+private filters: FindManyOptions = {};
+constructor() {
+super(new GenericController(${entityName}), "/${entityName.toLowerCase()}");
+${relations.length > 0 ? `this.filters.relations = ${JSON.stringify(relations)};` : ''}
 }
 
-export default new ${entityName}Routes();
-`;
+protected initializeRoutes() {
+// —————————————————————————————————————————————————————————————————————
+// SINGLE CRUD
+// —————————————————————————————————————————————————————————————————————
+this.router.get(\`\${this.getRouterName()}/get\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("get${entityName}ById")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .isLogicalDelete()
+           .setFilters(this.filters)
+           .build();
+
+   this.getController().getById(requestHandler);
+});
+
+this.router.get(\`\${this.getRouterName()}/get_all\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("get${entityName}s")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .isLogicalDelete()
+           .setFilters(this.filters)
+           .build();
+
+   this.getController().getAll(requestHandler);
+});
+
+this.router.post(\`\${this.getRouterName()}/add\`, async (req: Request, res: Response) => {
+   const requiredBodyList: Array<string> = [
+       ${routeFields.join(',\n                ')}
+   ];
+   
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("insert${entityName}")
+           .setRequiredFiles(requiredBodyList)
+           .isValidateRole("${entityName.toUpperCase()}")
+           .build();
+
+   this.getController().insert(requestHandler);
+});
+
+this.router.put(\`\${this.getRouterName()}/edit\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("update${entityName}")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .build();
+
+   this.getController().update(requestHandler);
+});
+
+this.router.delete(\`\${this.getRouterName()}/delete\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("delete${entityName}")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .isLogicalDelete()
+           .build();
+
+   this.getController().delete(requestHandler);
+});
+
+// —————————————————————————————————————————————————————————————————————
+// BULK INSERT
+// —————————————————————————————————————————————————————————————————————
+this.router.post(\`\${this.getRouterName()}/add_multiple\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("insertMultiple${entityName}")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .build();
+
+   this.getController().insertMultiple(requestHandler);
+});
+
+// —————————————————————————————————————————————————————————————————————
+// BULK UPDATE (FULL OBJECTS)
+// —————————————————————————————————————————————————————————————————————
+this.router.patch(\`\${this.getRouterName()}/edit_multiple\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("updateMultiple${entityName}")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .build();
+
+   this.getController().updateMultiple(requestHandler);
+});
+
+// —————————————————————————————————————————————————————————————————————
+// BULK PARTIAL UPDATE BY IDS
+// —————————————————————————————————————————————————————————————————————
+this.router.patch(\`\${this.getRouterName()}/edit_multiple_by_ids\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("updateMultiple${entityName}ByIds")
+           .setRequiredFiles([req.body.ids])     
+           .isValidateRole("${entityName.toUpperCase()}")
+           .build();
+
+   this.getController().updateMultipleByIds(requestHandler);
+});
+
+// —————————————————————————————————————————————————————————————————————
+// BULK DELETE
+// —————————————————————————————————————————————————————————————————————
+this.router.post(\`\${this.getRouterName()}/delete_multiple\`, async (req: Request, res: Response) => {
+   const requestHandler: RequestHandler = 
+       new RequestHandlerBuilder(res, req)
+           .setAdapter(new ${entityName}DTO(req))
+           .setMethod("deleteMultiple${entityName}")
+           .isValidateRole("${entityName.toUpperCase()}")
+           .isLogicalDelete()
+           .build();
+
+   this.getController().deleteMultiple(requestHandler);
+});
+}
+}
+
+export default new ${entityName}Routes();`;
+
 
 const routerFilePath = path.join(routerPath, `${entityName}Routes.ts`);
 if (!fs.existsSync(routerFilePath)) {

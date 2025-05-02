@@ -4,9 +4,10 @@ import JWTObject from 'tenshi/objects/JWTObject';
 import Validations from 'tenshi/helpers/Validations';
 import GenericValidation from 'tenshi/generics/Validation/GenericValidation';
 import ConfigManager from 'tenshi/config/ConfigManager';
-import { ConstFunctions } from 'tenshi/consts/Const';
+import { ConstFunctions, ConstHTTPRequest, ConstMessagesJson, ConstStatusJson } from 'tenshi/consts/Const';
 import IGenericService from './IGenericService';
 import IGenericRepository from '../Repository/IGenericRepository';
+import { getMessage } from '@TenshiJS/utils/jsonUtils';
 
 export default  class GenericService extends GenericValidation implements IGenericService {
    
@@ -311,4 +312,326 @@ export default  class GenericService extends GenericValidation implements IGener
             return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
         }
    }
+
+
+   /**************************************************** */
+   //                    ADD MULTIPLE
+   /**************************************************** */
+
+    /**************************************************** */
+    /*
+        This function is used to insert multiple entities into the database.
+        It performs the following steps:
+        1. Validates the role of the user.
+        2. Validates the required fields of each entity in the array.
+        3. Executes the function provided as a parameter for each entity.
+        4. Returns a success response if all insertions are successful.
+        5. Returns an error response if any insertion fails.
+    /**************************************************** */
+    async insertMultipleService(
+        reqHandler: RequestHandler,
+        executeInsertFunction: (jwtData: JWTObject | null, httpExec: HttpAction, item: any) => Promise<any>
+    ): Promise<any> {
+        const httpExec: HttpAction = reqHandler.getResponse().locals.httpExec;
+    
+        try {
+            const validation: Validations = reqHandler.getResponse().locals.validation;
+            const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
+    
+            // Validate role only once before loop
+            if (jwtData != null) {
+                if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.CREATE, httpExec) !== true) {
+                    return;
+                }
+            }
+
+    
+            // Check if the request body is an array
+            const data: any[] = reqHandler.getRequest().body;
+            if (!Array.isArray(data)) {
+
+                return httpExec.dynamicError(ConstStatusJson.ERROR, ConstMessagesJson.DONT_EXISTS);
+            }
+    
+            const successList: any[] = [];
+            const errorList: any[] = [];
+    
+            for (const [index, item] of data.entries()) {
+                try {
+                    // Temporarily replace the request body for current validation
+                    const originalBody = reqHandler.getRequest().body;
+                    reqHandler.getRequest().body = item;
+    
+                    // Validate required fields
+                    /*if (!this.validateMultipleRequiredFields(reqHandler.getRequiredFieldsList(), item)) {
+                        errorList.push({ index, error: getMessage(ConstMessagesJson.REQUIRED_FIELDS) });
+                        continue;
+                    }*/
+    
+                    // Validate regex patterns
+                    const regexCheck = this.validateMultipleRegexPerItem(
+                        reqHandler,
+                        validation,
+                        item
+                      );
+                      if (regexCheck !== true) {
+                        errorList.push({ index, error: regexCheck });
+                        continue;
+                      }
+                    
+    
+                    // Add user_id if not present
+                    const newItem = this.setUserId(item, jwtData?.id);
+    
+                    // Try to execute the actual insert
+                    const inserted = await executeInsertFunction(jwtData, httpExec, newItem);
+                    successList.push(inserted);
+    
+                    // Restore original body after insert
+                    reqHandler.getRequest().body = originalBody;
+    
+                } catch (error: any) {
+                    errorList.push({ index, error: error.message || "Unknown error" });
+                }
+            }
+    
+            return httpExec.successAction(
+                { success: successList, errors: errorList },
+                ConstHTTPRequest.INSERT_ENTRIES_SUCCESS
+            );
+        } catch (error: any) {
+            return await httpExec.generalError(error, reqHandler.getMethod(), this.controllerName);
+        }
+    }
+    
+
+
+    async updateMultipleService(
+        reqHandler: RequestHandler,
+        executeUpdateFunction: (jwtData: JWTObject, httpExec: HttpAction, id: number | string, item: any
+        ) => Promise<any>
+      ): Promise<any> {
+        const httpExec = reqHandler.getResponse().locals.httpExec;
+        const validation = reqHandler.getResponse().locals.validation;
+        const jwtData = reqHandler.getResponse().locals.jwtData;
+      
+        // 1) Validate user role once before looping
+        if (jwtData != null) {
+          if (await this.validateRole(reqHandler, jwtData.role, ConstFunctions.UPDATE, httpExec ) !== true) {
+            return;
+          }
+        }
+      
+        // 2) Ensure request body is an array
+     
+
+
+        const data: any[] = reqHandler.getRequest().body;
+        if (!Array.isArray(data)) {
+            return httpExec.dynamicError(
+            ConstStatusJson.ERROR,
+            ConstMessagesJson.DONT_EXISTS
+            );
+        }
+      
+        const successList: any[] = [];
+        const errorList: any[] = [];
+      
+        // 3) Iterate over each item
+        for (const [index, item] of data.entries()) {
+
+          // temporarily swap in the current item as req.body
+          const originalBody = reqHandler.getRequest().body;
+      
+          // 4) Check that an identifier is present
+          if (item.id == null) {
+            errorList.push({ index, error: 'Missing identifier (id)' });
+            reqHandler.getRequest().body = originalBody;
+            continue;
+          }
+      
+          // 5) Validate required fields for this item
+          /*if (!this.validateMultipleRequiredFields(reqHandler.getRequiredFieldsList(), item)) {
+            errorList.push({index, error: getMessage(ConstMessagesJson.REQUIRED_FIELDS)});
+            reqHandler.getRequest().body = originalBody;
+            continue;
+          }*/
+      
+          // 6) Validate regex constraints per item
+          const regexCheck = this.validateMultipleRegexPerItem(reqHandler, validation, item.id);
+          if (regexCheck !== true) {
+            errorList.push({ index, error: regexCheck });
+            reqHandler.getRequest().body = originalBody;
+            continue;
+          }
+      
+          // 7) Enforce dynamic-role access for this item
+          if ( jwtData != null && (await this.validateDynamicRoleAccess(reqHandler,httpExec,jwtData, item.id)) !== true ) {
+            errorList.push({ index, error: 'Unauthorized' });
+            reqHandler.getRequest().body = originalBody;
+            continue;
+          }
+      
+          try {
+            // 8) Perform the actual update
+            const updated = await executeUpdateFunction(jwtData, httpExec, item.id, item);
+            successList.push(updated);
+          } catch (e: any) {
+            errorList.push({ index, error: e.message || 'Unknown error' });
+          }
+      
+          // 9) Restore original request body
+          reqHandler.getRequest().body = originalBody;
+        }
+      
+        // 10) Return combined result
+        return httpExec.successAction( { success: successList, errors: errorList }, ConstHTTPRequest.UPDATE_ENTRIES_SUCCESS);
+      }
+
+
+
+/**
+   * Bulk partial update:
+   * - Validates role once.
+   * - Expects body.ids: number[].
+   * - Uses the rest of body as patch payload.
+   * - For each id:
+   *     • checks dynamic role access
+   *     • runs per-item regex (if configured)
+   *     • calls `executeUpdateFunction`
+   * - Returns 200 with { success: [...], errors: [...] }.
+   */
+async updateMultipleByIdsService(
+    reqHandler: RequestHandler,
+    executeUpdateFunction: (jwtData: JWTObject | null, httpExec: HttpAction, id: number | string, payload: any) => Promise<any>
+  ): Promise<any> {
+    const httpExec = reqHandler.getResponse().locals.httpExec;
+    const validation: Validations = reqHandler.getResponse().locals.validation;
+    const jwtData: JWTObject = reqHandler.getResponse().locals.jwtData;
+
+    try {
+      // 1) Global role validation
+      if (jwtData) {
+        const validateRole = await this.validateRole(reqHandler, jwtData.role, ConstFunctions.UPDATE, httpExec);
+        if (validateRole !== true) return;
+      }
+
+      // 2) Extract ids + payload (everything except ids)
+      const body = reqHandler.getRequest().body;
+      const ids = body.ids;
+      const payload = { ...body };
+      delete payload.ids;
+
+      if (!Array.isArray(ids)) {
+        return httpExec.dynamicError(ConstStatusJson.ERROR, ConstMessagesJson.INVALID_BODY_REQUEST);
+      }
+
+      const successList: any[] = [];
+      const errorList: { index: number; error: string }[] = [];
+
+      // 3) Loop over each id
+      for (const [index, id] of ids.entries()) {
+        // backup original body so later loops still see full body
+        const originalBody = reqHandler.getRequest().body;
+        reqHandler.getRequest().body = payload;
+
+        try {
+          // 3a) ID must exist
+          if (id == null) {
+            errorList.push({ index, error: "Missing id" });
+            continue;
+          }
+
+          // 3b) Dynamic per‐item access control
+          if (jwtData) {
+            const accessOk = await this.validateDynamicRoleAccess(reqHandler, httpExec, jwtData, id);
+            if (accessOk !== true) {
+              errorList.push({ index, error: `Unauthorized for id ${id}` });
+              continue;
+            }
+          }
+
+          // 3c) Per‐item regex validation
+          const regexCheck = this.validateMultipleRegexPerItem(reqHandler, validation, payload);
+          if (regexCheck !== true) {
+            errorList.push({ index, error: regexCheck as string });
+            continue;
+          }
+
+          // 3d) Perform the update
+          const updated = await executeUpdateFunction(jwtData, httpExec, id, payload);
+          successList.push(updated);
+        } catch (err: any) {
+          errorList.push({ index, error: err.message || "Unknown error" });
+        } finally {
+          // restore for next iteration
+          reqHandler.getRequest().body = originalBody;
+        }
+      }
+
+      // 4) Return combined success/errors
+      return httpExec.successAction(
+        { success: successList, errors: errorList },
+        ConstHTTPRequest.UPDATE_ENTRIES_SUCCESS
+      );
+    } catch (err: any) {
+      return await httpExec.generalError(err, reqHandler.getMethod(), this.getControllerName());
+    }
+  }
+  
+
+    /**
+   * Deletes multiple entities by their IDs.
+   * 
+   * 1. Validates role once.
+   * 2. Ensures body.ids is an array.
+   * 3. Loops over each id, attempts delete, collects successes & errors.
+   */
+    async deleteMultipleService(
+        reqHandler: RequestHandler,
+        executeDeleteFunction: (jwtData: JWTObject | null, httpExec: HttpAction, id: number|string) => Promise<any>
+    ): Promise<any> {
+        const httpExec = reqHandler.getResponse().locals.httpExec;
+        try {
+        const validation = reqHandler.getResponse().locals.validation;
+        const jwtData     = reqHandler.getResponse().locals.jwtData;
+
+        // 1) role check once
+        if (jwtData && await this.validateRole(reqHandler, jwtData.role, ConstFunctions.DELETE, httpExec) !== true) {
+            return;
+        }
+
+        // 2) get ids[]
+        const body = reqHandler.getRequest().body;
+        if (!Array.isArray(body.ids)) {
+            return httpExec.paramsError();
+        }
+
+        const success: any[] = [];
+        const errors: { index:number, error:string }[] = [];
+
+        // 3) loop
+        for (const [i, id] of body.ids.entries()) {
+            try {
+            if (id == null) {
+                throw new Error('Invalid or missing id');
+            }
+            // actual delete (logical vs hard based on handler)
+            const result = await executeDeleteFunction(jwtData, httpExec, id);
+            success.push({ id, result });
+            } catch (err: any) {
+            errors.push({ index: i, error: err.message || 'Unknown error' });
+            }
+        }
+
+        // 4) respond 200 with per-item outcome
+        return httpExec.successAction(
+            { success, errors },
+            ConstHTTPRequest.DELETE_ENTRIES_SUCCESS
+        );
+
+        } catch (err: any) {
+        return await httpExec.generalError(err, reqHandler.getMethod(), this.getControllerName());
+        }
+    }
 }

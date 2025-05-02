@@ -13,6 +13,25 @@ interface IGenericService {
     getAllService(reqHandler: RequestHandler, executeGetAllFunction: (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => void): Promise<any>;
     setControllerName(controllerName: string):void;
     setRepositoryServiceValidation(repository: IGenericRepository): void;
+
+    insertMultipleService(
+            reqHandler: RequestHandler,
+                executeInsertFunction: (jwtData: JWTObject | null, httpExec: HttpAction, item: any) => Promise<any>
+        ): Promise<any>;
+
+    updateMultipleService(
+        reqHandler: RequestHandler,
+            executeUpdateFunction: (jwtData: JWTObject, httpExec: HttpAction, id: number | string, item: any) => Promise<any>
+        ): Promise<any>;
+
+    updateMultipleByIdsService(reqHandler: RequestHandler, 
+        executeUpdateFunction: (jwtData: JWTObject | null, httpExec: HttpAction,  id: number | string, items: any) => Promise<any>
+    ): Promise<any>;
+
+    deleteMultipleService(
+        reqHandler: RequestHandler,
+            executeDeleteFunction: (jwtData: JWTObject | null, httpExec: HttpAction, id: number|string) => Promise<any>
+        ): Promise<any>;
 }
 
 export default IGenericService;

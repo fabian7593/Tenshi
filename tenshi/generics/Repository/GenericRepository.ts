@@ -1,10 +1,9 @@
 import { structPagination } from '@TenshiJS/objects/BodyResObject';
 import { getMessage } from '@TenshiJS/utils/jsonUtils';
-import e from 'express';
-import { ConstMessages, ConstMessagesJson, ConstStatusJson } from 'tenshi/consts/Const';
+import { ConstMessages, ConstMessagesJson } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
-import { DataSource, QueryFailedError } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 /*
     This class have the Connection to DB with ORM &&

@@ -1,6 +1,7 @@
 {
     "INCOMPLETE_HEADER_REQUEST": "Missed Required Header",
     "INCOMPLETE_BODY_REQUEST": "Missed Body Request",
+    "INVALID_BODY_REQUEST": "Invalid Body Request",
     "REQUIRED_FIELDS": "Missed Required Fields",
     "REQUIRED_URL_PARAMS": "Missed Required URL Params",
     "REQUIRED_FILE": "Missed Required File",
@@ -17,6 +18,9 @@
     "ROUTE_DONT_EXISTS": "Route doesn't exists",
     "RESET_PASSWORD": "Change Password Success",
 
+    "ERROR_BODY_JSON": "The body json has an structure error",
+
+
     "INVALID_TOKEN": "Invalid JWT",
     "INVALID_API_KEY": "Invalid Api Key",
     "VALID_TOKEN_SUCCESS": "Valid Token Successful",
@@ -31,11 +35,16 @@
     "INSERT_SUCCESS": "Insert Entry Successful",
     "UPDATE_SUCCESS": "Update Entry Successful",
     "DELETE_SUCCESS": "Delete Entry Successful",
+    "INSERT_ENTRIES_SUCCESS": "Insert Entries Successful",
+    "UPDATE_ENTRIES_SUCCESS": "Update Entries Successful",
+    "DELETE_ENTRIES_SUCCESS": "Delete Entries Successful",
     "GET_SUCCESS": "Get Entries Successful",
     "GET_BY_ID_SUCCESS": "Get Entry Successful",
     "LOGIN_SUCCESS": "Login Successful",
     "LOGOUT_SUCCESS": "Logout Successful",
     "SEND_MAIL_SUCCESS": "Send Mail Successful",
+
+    "EXPECTED_OBJECT_ARRAY": "Expected an Array of Objects",
 
     "ERROR_GENERAL" : "Internal Server Error"
   }

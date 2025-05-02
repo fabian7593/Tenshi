@@ -169,16 +169,8 @@ const postmanCollection = {
                 "request": {
                     "method": "POST",
                     "header": [
-                        {
-                            "key": "authorization",
-                            "value": "{{auth_jwt}}",
-                            "type": "text"
-                        },
-                        {
-                            "key": "x-api-key",
-                            "value": "{{secret_api_key}}",
-                            "type": "text"
-                        }
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
                     ],
                     "body": {
                         "mode": "raw",
@@ -187,13 +179,11 @@ const postmanCollection = {
                             return acc;
                         }, {}), null, 2),
                         "options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+                            "raw": { "language": "json" }
+                        }
                     },
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/add",
+                        "raw": `{{host}}/${entityName.toLowerCase()}/add`,
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "add"]
                     }
@@ -204,16 +194,8 @@ const postmanCollection = {
                 "request": {
                     "method": "PUT",
                     "header": [
-                        {
-                            "key": "authorization",
-                            "value": "{{auth_jwt}}",
-                            "type": "text"
-                        },
-                        {
-                            "key": "x-api-key",
-                            "value": "{{secret_api_key}}",
-                            "type": "text"
-                        }
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
                     ],
                     "body": {
                         "mode": "raw",
@@ -222,21 +204,14 @@ const postmanCollection = {
                             return acc;
                         }, {}), null, 2),
                         "options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+                            "raw": { "language": "json" }
+                        }
                     },
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/edit?id=1",
+                        "raw": `{{host}}/${entityName.toLowerCase()}/edit?id=1`,
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "edit"],
-                        "query": [
-                            {
-                                "key": "id",
-                                "value": "1"
-                            }
-                        ]
+                        "query": [{ "key": "id", "value": "1" }]
                     }
                 }
             },
@@ -245,27 +220,14 @@ const postmanCollection = {
                 "request": {
                     "method": "GET",
                     "header": [
-                        {
-                            "key": "authorization",
-                            "value": "{{auth_jwt}}",
-                            "type": "text"
-                        },
-                        {
-                            "key": "x-api-key",
-                            "value": "{{secret_api_key}}",
-                            "type": "text"
-                        }
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
                     ],
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/get?id=1",
+                        "raw": `{{host}}/${entityName.toLowerCase()}/get?id=1`,
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "get"],
-                        "query": [
-                            {
-                                "key": "id",
-                                "value": "1"
-                            }
-                        ]
+                        "query": [{ "key": "id", "value": "1" }]
                     }
                 }
             },
@@ -274,19 +236,11 @@ const postmanCollection = {
                 "request": {
                     "method": "GET",
                     "header": [
-                        {
-                            "key": "authorization",
-                            "value": "{{auth_jwt}}",
-                            "type": "text"
-                        },
-                        {
-                          "key": "x-api-key",
-                          "value": "{{secret_api_key}}",
-                          "type": "text"
-                        }
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
                     ],
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/get_all",
+                        "raw": `{{host}}/${entityName.toLowerCase()}/get_all`,
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "get_all"]
                     }
@@ -297,34 +251,152 @@ const postmanCollection = {
                 "request": {
                     "method": "DELETE",
                     "header": [
-                        {
-                            "key": "authorization",
-                            "value": "{{auth_jwt}}",
-                            "type": "text"
-                        },
-                        {
-                          "key": "x-api-key",
-                          "value": "{{secret_api_key}}",
-                          "type": "text"
-                        }
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
                     ],
                     "url": {
-                        "raw": "{{host}}/${entityName.toLowerCase()}/delete?id=1",
+                        "raw": `{{host}}/${entityName.toLowerCase()}/delete?id=1`,
                         "host": ["{{host}}"],
                         "path": [`${entityName.toLowerCase()}`, "delete"],
-                        "query": [
-                            {
-                                "key": "id",
-                                "value": "1"
-                            }
-                        ]
+                        "query": [{ "key": "id", "value": "1" }]
                     }
                 }
+            },
+
+            // Bulk Insert
+            {
+                "name": `Bulk Insert ${entityName}`,
+                "request": {
+                    "method": "POST",
+                    "header": [
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
+                    ],
+                    "body": {
+                        "mode": "raw",
+                        "raw": JSON.stringify(
+                            Array.from({ length: 2 }, () =>
+                                fields.reduce((acc: { [key: string]: any }, field) => {
+                                    acc[field.name] = generateTestValue(field);
+                                    return acc;
+                                }, {})
+                            ),
+                            null,
+                            2
+                        ),
+                        "options": {
+                            "raw": { "language": "json" }
+                        }
+                    },
+                    "url": {
+                        "raw": `{{host}}/${entityName.toLowerCase()}/add_multiple`,
+                        "host": ["{{host}}"],
+                        "path": [`${entityName.toLowerCase()}`, "add_multiple"]
+                    }
+                },
+                "response": []
+            },
+
+            // Bulk Update (full objects)
+            {
+                "name": `Bulk Update ${entityName}`,
+                "request": {
+                    "method": "PATCH",
+                    "header": [
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
+                    ],
+                    "body": {
+                        "mode": "raw",
+                        "raw": JSON.stringify(
+                            Array.from({ length: 2 }, (_, i) => {
+                                // start with the id
+                                const obj: Record<string, any> = { id: i + 1 };
+                                // then fill in every other field
+                                for (const field of fields) {
+                                obj[field.name] = generateTestValue(field);
+                                }
+                                return obj;
+                            }),
+                            null,
+                            2
+                            ),
+                        "options": {
+                            "raw": { "language": "json" }
+                        }
+                    },
+                    "url": {
+                        "raw": `{{host}}/${entityName.toLowerCase()}/edit_multiple`,
+                        "host": ["{{host}}"],
+                        "path": [`${entityName.toLowerCase()}`, "edit_multiple"]
+                    }
+                },
+                "response": []
+            },
+
+            // Bulk Update by IDs (partial)
+            {
+                "name": `Bulk Update by Ids ${entityName}`,
+                "request": {
+                    "method": "PATCH",
+                    "header": [
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
+                    ],
+                    "body": {
+                        "mode": "raw",
+                        "raw": JSON.stringify(
+                            {
+                                "ids": [1, 2, null],
+                                ...fields.reduce((acc: { [key: string]: any }, field) => {
+                                    acc[field.name] = generateTestValue(field);
+                                    return acc;
+                                }, {})
+                            },
+                            null,
+                            2
+                        ),
+                        "options": {
+                            "raw": { "language": "json" }
+                        }
+                    },
+                    "url": {
+                        "raw": `{{host}}/${entityName.toLowerCase()}/edit_multiple_by_ids`,
+                        "host": ["{{host}}"],
+                        "path": [`${entityName.toLowerCase()}`, "edit_multiple_by_ids"]
+                    }
+                },
+                "response": []
+            },
+
+            // Bulk Delete
+            {
+                "name": `Bulk Delete ${entityName}`,
+                "request": {
+                    "method": "POST",
+                    "header": [
+                        { "key": "authorization", "value": "{{auth_jwt}}", "type": "text" },
+                        { "key": "x-api-key",     "value": "{{secret_api_key}}", "type": "text" }
+                    ],
+                    "body": {
+                        "mode": "raw",
+                        "raw": JSON.stringify({ "ids": [1, 2, 999, null] }, null, 2),
+                        "options": {
+                            "raw": { "language": "json" }
+                        }
+                    },
+                    "url": {
+                        "raw": `{{host}}/${entityName.toLowerCase()}/delete_multiple`,
+                        "host": ["{{host}}"],
+                        "path": [`${entityName.toLowerCase()}`, "delete_multiple"]
+                    }
+                },
+                "response": []
             }
         ]
     }
-   
 };
+
 
 // Save the Postman collection to a file
 if (!fs.existsSync(postmanCollectionPath)) {

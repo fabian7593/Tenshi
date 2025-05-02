@@ -37,6 +37,7 @@ export class ConstMessagesJson {
     public static readonly ERROR_GENERAL: string = "ERROR_GENERAL";
     public static readonly REQUIRED_URL_PARAMS: string = "REQUIRED_URL_PARAMS";
     public static readonly INCOMPLETE_BODY_REQUEST: string = "INCOMPLETE_BODY_REQUEST";
+    public static readonly INVALID_BODY_REQUEST: string = "INVALID_BODY_REQUEST";
     public static readonly REQUIRED_FIELDS: string = "REQUIRED_FIELDS";
     public static readonly INCOMPLETE_HEADER_REQUEST: string = "INCOMPLETE_HEADER_REQUEST";
     public static readonly INVALID_TOKEN: string = "INVALID_TOKEN";
@@ -51,6 +52,7 @@ export class ConstMessagesJson {
     public static readonly RESET_PASSWORD: string = "RESET_PASSWORD";
     public static readonly EMAIL_SENT_SUCCESS: string = "EMAIL_SENT_SUCCESS";
     public static readonly REGISTER_CONFIRMATION_SUCCESSFUL: string = "REGISTER_CONFIRMATION_SUCCESSFUL";
+    public static readonly EXPECTED_OBJECT_ARRAY: string = "EXPECTED_OBJECT_ARRAY";
 }
 
 export class ConstMessages {

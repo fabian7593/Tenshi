@@ -80,6 +80,50 @@ export default  class GenericValidation{
         return true;
     }
 
+
+
+    public validateMultipleRequiredFields(listRequiredFields: string[] | null, item: any): boolean {
+        if (!listRequiredFields || listRequiredFields.length === 0) {
+            return false;
+        }
+
+        return listRequiredFields.every(field => {
+            const value = item[field];
+            return value !== undefined && value !== null && value !== '';
+        });
+    }
+
+
+
+    /**
+ * Validates multiple regex rules against a specific object.
+ * It assumes the list of regex keys are provided via reqHandler.getRegexValidatorList(),
+ * and will extract the matching fields from the given `dataItem`.
+ *
+ * @param {RequestHandler} reqHandler - The request handler with regex validator config.
+ * @param {Validations} validation - The validation instance to use.
+ * @param {any} dataItem - The specific object from the request array to validate.
+ * @returns {boolean} - Returns true if all validations pass, false otherwise.
+ */
+    public validateMultipleRegexPerItem(
+        reqHandler: RequestHandler,
+        validation: Validations,
+        item: any
+    ): boolean | string {
+        const regexValidatorList = reqHandler.getRegexValidatorList();
+    
+        if (!regexValidatorList || regexValidatorList.length === 0) return true;
+    
+        const perItemRegexList: [string, string][] = regexValidatorList.map(([regexKey, field]) => {
+            return [regexKey, item[field] ?? ""];
+        });
+    
+        return validation.validateMultipleRegexPerItem(perItemRegexList);
+    }
+    
+
+    
+
     /**
      * Validates the regex of any fields.
      * It checks if the request handler object contains a list of regex validators.

@@ -103,6 +103,36 @@ export default class Validations{
 
 
 
+
+  // VALIDATIONS.TS
+
+/**
+ * Validates multiple regex rules against a list of [regexKey, value] pairs.
+ * Returns true if all pass, or the error message of the first failure.
+ */
+public validateMultipleRegexPerItem(
+    listRegex: [string, string][] | null
+  ): true | string {
+    if (!listRegex || listRegex.length === 0) {
+      // No rules to check
+      return true;
+    }
+  
+    for (const [regexKey, value] of listRegex) {
+      const { regex: pattern, message } = getRegex(regexKey);
+      const re = new RegExp(pattern);
+      if (!re.test(value)) {
+        // Return the error message (do NOT send HTTP here)
+        return message;
+      }
+    }
+  
+    // All passed
+    return true;
+  }
+  
+
+
     /**
      * This function validates the format of the current string.
      * It creates a regular expression object and checks if the validation word
@@ -128,9 +158,8 @@ export default class Validations{
             return this.httpAction.dynamicError(ConstStatusJson.REGEX, message);
         }
     }
- 
- 
-  
+
+
 
     /**
      * This function validates if the JWT exists and if it is required and if the user has authorization to perform the action.
@@ -308,4 +337,9 @@ export default class Validations{
             return null;
         } 
     }
+
+
+
+
+  
 }
