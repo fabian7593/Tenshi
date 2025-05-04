@@ -80,8 +80,6 @@ export default  class GenericValidation{
         return true;
     }
 
-
-
     public validateMultipleRequiredFields(listRequiredFields: string[] | null, item: any): boolean {
         if (!listRequiredFields || listRequiredFields.length === 0) {
             return false;
@@ -93,9 +91,7 @@ export default  class GenericValidation{
         });
     }
 
-
-
-    /**
+/**
  * Validates multiple regex rules against a specific object.
  * It assumes the list of regex keys are provided via reqHandler.getRegexValidatorList(),
  * and will extract the matching fields from the given `dataItem`.
@@ -121,9 +117,6 @@ export default  class GenericValidation{
         return validation.validateMultipleRegexPerItem(perItemRegexList);
     }
     
-
-    
-
     /**
      * Validates the regex of any fields.
      * It checks if the request handler object contains a list of regex validators.
@@ -165,52 +158,48 @@ export default  class GenericValidation{
     }
 
  
+    /**
+     * Validates if the user has access to a dynamic role.
+     * This function checks if the user has access to a dynamic role based on the provided ID or code.
+     * If the user does not have access, it returns an unauthorized error response.
+     * Just works with Get by id, Get by code, Update and Delete methods.
+     *
+     * @param {RequestHandler} reqHandler - The request handler object.
+     * @param {HttpAction} httpExec - The HTTP action object.
+     * @param {JWTObject} jwtData - The JWT data object containing user information.
+     * @param {number | string} idOrCode - The ID or code of the entity to validate access for.
+     * @return {Promise<boolean>} - Returns true if the user has access, false otherwise.
+     */
     protected async validateDynamicRoleAccess(
         reqHandler: RequestHandler,
         httpExec: HttpAction,
         jwtData: JWTObject,
-        idOrCode?: number | string
+        idOrCode: number | string
     ): Promise<boolean> {
         const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
         const dynamicRoleList = reqHandler.getDynamicRoleList();
-    
+
         // Si no hay validación requerida, se permite
         if (!reqHandler.getRoleValidation() || isSuperAdmin || !dynamicRoleList) return true;
     
-        let entities: any[] = [];
-    
         // Obtener entidades según el caso (por ID o por filtros)
-        if (idOrCode !== undefined) {
-            let entity: any = null;
-            if (typeof idOrCode === 'number') {
-                entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters());
-            } else {
-                entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters());
-            }
-    
-            if (!entity) {
-                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-                return false;
-            }
-            entities = [entity];
+        let entity: any = null;
+        if (typeof idOrCode === 'number') {
+            entity = await this.repository.findById(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters());
         } else {
-            entities = await this.repository.findByOptions(
-                reqHandler.getLogicalDelete(),
-                true,
-                reqHandler.getFilters()
-            );
-    
-            if (!entities || entities.length === 0) {
-                httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
-                return false;
-            }
+            entity = await this.repository.findByCode(idOrCode, reqHandler.getLogicalDelete(), reqHandler.getFilters());
         }
-    
-        const entity = entities[0];
-    
+
+        if (!entity) {
+            httpExec.dynamicError(ConstStatusJson.NOT_FOUND, ConstMessagesJson.DONT_EXISTS);
+            return false;
+        }
+
         for (const [role, field] of dynamicRoleList) {
+
             if (jwtData.role === role && jwtData.id != null) {
                 const fieldValue = this.getNestedField(entity, field);
+
                 if (fieldValue !== jwtData.id) {
                     httpExec.unauthorizedError(ConstMessagesJson.ROLE_AUTH_ERROR);
                     return false;
@@ -221,15 +210,56 @@ export default  class GenericValidation{
         return true;
     }
     
-
     private getNestedField(obj: any, path: string): any {
         return path.split('.').reduce((acc, key) => acc?.[key], obj);
     }
-    
-    
-    
 
+    /**
+     * 
+     * @param reqHandler 
+     * @param jwtData 
+     * @returns 
+     */
+    protected async validateDynamicRoleAccessGetByFiltering(
+        reqHandler: RequestHandler,
+        jwtData: JWTObject,
+    ): Promise<object> {
 
+        const dynamicRoleList = reqHandler.getDynamicRoleList();
+        let where = {};
+
+        if (dynamicRoleList != null) {
+            const match = dynamicRoleList.find(([roleName]) => roleName === jwtData.role);
+            if (match) {
+              const [, fieldPath] = match;
+              where = this.setNestedValueToObjectPath(where, fieldPath, jwtData.id);
+            } 
+        }
+
+        return where;
+    }
+
+    /**
+     * 
+     * @param obj 
+     * @param path 
+     * @param value 
+     * @returns 
+     */
+    setNestedValueToObjectPath(obj: any, path: string, value: any): any {
+        const keys = path.split(".");
+        let current = obj;
+    
+        for (let i = 0; i < keys.length - 1; i++) {
+          const key = keys[i];
+          if (!current[key]) current[key] = {};
+          current = current[key];
+        }
+    
+        current[keys[keys.length - 1]] = value;
+        return obj;
+    }
+    
     /**
      * Validates if the request handler has filters.
      * This function checks if the filters are set in the request handler.
@@ -266,7 +296,6 @@ export default  class GenericValidation{
         // Return the ID from the query parameters
         return id;
     }
-
 
     /**
      * Retrieves the code from the query parameters.

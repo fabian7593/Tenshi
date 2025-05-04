@@ -278,7 +278,7 @@ export default  class GenericController extends GenericValidation implements IGe
 
         return this.service.getAllService(reqHandler, async (jwtData : JWTObject, httpExec: HttpAction, page: number, size: number) => {
             try {
-               
+
                 // Execute the get all action in the database
                 const entities = this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
                 const pagination = this.getRepository().count(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
@@ -308,8 +308,6 @@ export default  class GenericController extends GenericValidation implements IGe
     }
 
 
-
-
    /**************************************************** */
    //                    ADD MULTIPLE
    /**************************************************** */
@@ -329,8 +327,6 @@ export default  class GenericController extends GenericValidation implements IGe
             }
         );
     }
-
-
 
     async updateMultiple(reqHandler: RequestHandler): Promise<any> {
         return this.service.updateMultipleService(
