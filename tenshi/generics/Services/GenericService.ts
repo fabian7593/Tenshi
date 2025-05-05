@@ -55,9 +55,10 @@ export default  class GenericService extends GenericValidation implements IGener
      * @param {Function} executeFunction - The function to be executed after validating the role and fields of the entity.
      * @return {Promise<any>} A promise that resolves to the success response if the insertion is successful.
      */
-    async insertService(reqHandler: RequestHandler, executeInsertFunction: (jwtData : JWTObject | null, httpExec: HttpAction) => void): Promise<any> {
+    async insertService(reqHandler: RequestHandler, executeInsertFunction: (jwtData : JWTObject | null, httpExec: HttpAction, body: any) => void): Promise<any> {
         // Execute the returns structure
         const httpExec : HttpAction = reqHandler.getResponse().locals.httpExec;
+        let body = reqHandler.getAdapter().entityFromPostBody();
 
         try{
             // Validate the role of the user
@@ -66,6 +67,7 @@ export default  class GenericService extends GenericValidation implements IGener
            
             if(jwtData != null){
                 if(await this.validateRole(reqHandler,  jwtData.role, ConstFunctions.CREATE, httpExec) !== true){ return; }
+                body = await this.validateDynamicRoleAccessInsert(reqHandler, jwtData, body);
             }
             
             // Validate the required fields of the entity
@@ -73,7 +75,7 @@ export default  class GenericService extends GenericValidation implements IGener
             // Validate the regex of the entity
             if(!this.validateRegex(reqHandler, validation)){ return; }
 
-            executeInsertFunction(jwtData, httpExec);
+            executeInsertFunction(jwtData, httpExec, body);
             return true;
         }catch(error : any){
             // Return the general error response
@@ -377,8 +379,9 @@ export default  class GenericService extends GenericValidation implements IGener
                     
     
                     // Add user_id if not present
-                    const newItem = this.setUserId(item, jwtData?.id);
-    
+                    let newItem = this.setUserId(item, jwtData?.id);
+                    newItem = await this.validateDynamicRoleAccessInsert(reqHandler, jwtData, newItem);
+                    console.log(newItem);
                     // Try to execute the actual insert
                     const inserted = await executeInsertFunction(jwtData, httpExec, newItem);
                     successList.push(inserted);

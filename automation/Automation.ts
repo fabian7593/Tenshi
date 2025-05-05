@@ -131,7 +131,6 @@ const { fields: routeFields, relations } = extractEntityFieldsAndRelations(entit
 const dtoContent = `
 import { ${entityName} } from "@index/entity/${entityName}";
 import { Request, IAdapterFromBody } from "@modules/index";
-import { User } from "@TenshiJS/entity/User";
 
 export default class ${entityName}DTO implements IAdapterFromBody {
     req: Request;
@@ -140,10 +139,8 @@ export default class ${entityName}DTO implements IAdapterFromBody {
         this.req = req;
     }
 
-    private getEntity(isCreating: boolean): ${entityName} {
+    private buildEntity(source: any, isCreating: boolean): ${entityName} {
         const entity = new ${entityName}();
-        ${fields.map(field => `        entity.${field.name} = this.req.body.${field.name};`).join('\n')}
-     
         if (isCreating) {
             entity.created_date = new Date();
         } else {
@@ -155,12 +152,17 @@ export default class ${entityName}DTO implements IAdapterFromBody {
 
     // POST
     entityFromPostBody(): ${entityName} {
-        return this.getEntity(true);
+        return this.buildEntity(this.req.body, true);
     }
 
     // PUT
     entityFromPutBody(): ${entityName} {
-        return this.getEntity(false);
+        return this.buildEntity(this.req.body, false);
+    }
+
+    // POST / PUT desde array
+    entityFromObject(obj: any, isCreating: boolean = true): ${entityName} {
+        return this.buildEntity(obj, isCreating);
     }
 
     // GET
@@ -170,14 +172,9 @@ export default class ${entityName}DTO implements IAdapterFromBody {
         };
     }
 
-    entitiesToResponse(entities: ${entityName}[] | null): any {
-        const response: any[] = [];
-        if (entities != null) {
-            for (const entity of entities) {
-                response.push(this.entityToResponse(entity));
-            }
-        }
-        return response;
+    entitiesToResponse(entities: ${entityName}[] | null): any[] {
+        if (!entities) return [];
+        return entities.map(this.entityToResponse);
     }
 }
 `;

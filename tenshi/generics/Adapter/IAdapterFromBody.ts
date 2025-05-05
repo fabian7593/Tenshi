@@ -12,7 +12,8 @@ interface IAdapterFromBody {
     entityFromPostBody(): any;
     entityFromPutBody(): any;
     entityToResponse(entity: any): any;
-    entitiesToResponse(entities: any[] | null): any 
+    entitiesToResponse(entities: any[] | null): any;
+    entityFromObject?(obj: any, isCreating: boolean): any;
 }
 
 export default IAdapterFromBody;

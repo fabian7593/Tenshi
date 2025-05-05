@@ -85,9 +85,8 @@ export default  class GenericController extends GenericValidation implements IGe
      */
     async insert(reqHandler: RequestHandler): Promise<any> {
 
-        return this.service.insertService(reqHandler, async (jwtData, httpExec) => {
+        return this.service.insertService(reqHandler, async (jwtData, httpExec, body) => {
 
-            let body = reqHandler.getAdapter().entityFromPostBody();
             // Set the user ID of the entity with the ID of the JWT
             body = this.setUserId(body, jwtData!.id);
 
@@ -317,11 +316,11 @@ export default  class GenericController extends GenericValidation implements IGe
             async (jwtData, httpExec, item) => {
                 try {
                     // Insert the entity into the database
-                    const createdEntity = await this.getRepository().add(item);
+                    const entity = reqHandler.getAdapter().entityFromObject!(item, true);
+                    const createdEntity = await this.getRepository().add(entity);
 
                     return reqHandler.getAdapter().entityToResponse(createdEntity);
                 } catch (error: any) {
-
                     throw new Error(error.message || "Insert failed");
                 }
             }

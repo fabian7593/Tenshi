@@ -259,6 +259,30 @@ export default  class GenericValidation{
         current[keys[keys.length - 1]] = value;
         return obj;
     }
+
+
+
+
+    protected async validateDynamicRoleAccessInsert(
+        reqHandler: RequestHandler,
+        jwtData: JWTObject,
+        body:any
+    ): Promise<object> {
+
+        const isSuperAdmin = jwtData?.role === config.SUPER_ADMIN.ROLE_CODE;
+        const dynamicRoleList = reqHandler.getDynamicRoleList();
+
+        if (!isSuperAdmin && dynamicRoleList) {
+            for (const [role, field] of dynamicRoleList) {
+                if (jwtData?.role === role && jwtData.id != null) {
+                    body = this.setNestedValueToObjectPath(body, field, jwtData.id);
+                }
+            }
+        }
+
+
+        return body;
+    }
     
     /**
      * Validates if the request handler has filters.
