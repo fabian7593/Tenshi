@@ -3,7 +3,7 @@ import { getMessage } from '@TenshiJS/utils/jsonUtils';
 import { ConstMessages, ConstMessagesJson } from 'tenshi/consts/Const';
 import { EntityTarget, EntityManager, FindOneOptions, FindManyOptions, Database, Repository} from 'tenshi/generics/index';
 import IGenericRepository from "tenshi/generics/Repository/IGenericRepository";
-import { DataSource } from 'typeorm';
+import { DataSource, SelectQueryBuilder } from 'typeorm';
 
 /*
     This class have the Connection to DB with ORM &&
@@ -380,6 +380,10 @@ export default  class GenericRepository implements IGenericRepository{
             // Throw the error if it occurs
             throw error;
         } 
+    }
+
+    createQueryBuilder(alias: string): SelectQueryBuilder<any> {
+        return this.repository.createQueryBuilder(alias);
     }
    
     //Execute query scripting and stored procedures.

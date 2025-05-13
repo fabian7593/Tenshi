@@ -1,5 +1,6 @@
 import { structPagination } from '@TenshiJS/objects/BodyResObject';
 import { FindManyOptions} from 'tenshi/generics/index';
+import { SelectQueryBuilder } from 'typeorm';
 
 interface IGenericRepository {
    
@@ -15,6 +16,8 @@ interface IGenericRepository {
     findByCode(code: string, hasLogicalDeleted: boolean, options: FindManyOptions | null): Promise<any | undefined>;
     findAll(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<any[] | null>;
     count(hasLogicalDeleted: boolean, options: FindManyOptions | null, page: number, size: number): Promise<structPagination | null>;
+
+    createQueryBuilder(alias: string): SelectQueryBuilder<any>;
 }
 
 export default IGenericRepository;
