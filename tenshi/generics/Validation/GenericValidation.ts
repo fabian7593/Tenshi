@@ -225,8 +225,12 @@ export default  class GenericValidation{
         jwtData: JWTObject,
     ): Promise<object> {
 
-        const dynamicRoleList = reqHandler.getDynamicRoleList();
         let where = {};
+        const isSuperAdmin = jwtData.role === config.SUPER_ADMIN.ROLE_CODE;
+        const dynamicRoleList = reqHandler.getDynamicRoleList();
+
+        // Si no hay validación requerida, se permite
+        if (!reqHandler.getRoleValidation() || isSuperAdmin || !dynamicRoleList) return where;
 
         if (dynamicRoleList != null) {
             const match = dynamicRoleList.find(([roleName]) => roleName === jwtData.role);

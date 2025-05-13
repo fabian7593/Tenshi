@@ -88,8 +88,12 @@ constructor(res: Response, req: Request,
     return this.requiredFieldsList;
     }
 
+    setFilters(filters: FindManyOptions): void {
+        this.filters = filters;
+    }
+
     getFilters(): FindManyOptions | null {
-    return this.filters;
+        return this.filters;
     }
 
     getRequiredIdFromQuery(): boolean {
@@ -99,7 +103,6 @@ constructor(res: Response, req: Request,
     getDynamicRoleList(): Array<[string, string]> | null {
         return this.dynamicRoleList;
     }
-
 }
    
 

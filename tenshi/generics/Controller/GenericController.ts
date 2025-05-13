@@ -279,6 +279,7 @@ export default  class GenericController extends GenericValidation implements IGe
             try {
 
                 // Execute the get all action in the database
+
                 const entities = this.getRepository().findAll(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
                 const pagination = this.getRepository().count(reqHandler.getLogicalDelete(), reqHandler.getFilters(), page, size);
 
