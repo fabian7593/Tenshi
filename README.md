@@ -9,6 +9,8 @@ With Tenshi, developers benefit from a well-organized structure that enhances pr
 
 <br><br>
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/fabian7593/Tenshi-Backend)
+
 ---
 
 ## Navigation Menu
